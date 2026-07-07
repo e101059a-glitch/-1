@@ -1,0 +1,85 @@
+.experience {
+  padding: 100px 0;
+  border-top: 0.5px solid var(--color-divider);
+}
+
+.inner {
+  text-align: center;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 36px;
+  color: var(--color-text);
+}
+
+.headingLine {
+  width: 48px;
+  height: 2px;
+  background: var(--color-accent);
+  margin: 24px auto 56px;
+}
+
+.timeline {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.item {
+  display: flex;
+  gap: 24px;
+}
+
+.marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.connector {
+  flex: 1;
+  width: 1px;
+  background: var(--color-divider);
+  margin: 8px 0;
+}
+
+.content {
+  padding-bottom: 48px;
+}
+
+.period {
+  font-size: 13px;
+  color: var(--color-muted);
+  letter-spacing: 0.3px;
+}
+
+.org {
+  font-family: var(--font-display);
+  font-size: 20px;
+  margin-top: 6px;
+  color: var(--color-text);
+}
+
+.role {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--color-accent);
+}
+
+.description {
+  margin-top: 12px;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.8;
+}

@@ -1,0 +1,90 @@
+.hero {
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+}
+
+.inner {
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--color-text);
+}
+
+.line {
+  width: 64px;
+  height: 2px;
+  background: var(--color-accent);
+  margin: 28px auto;
+  transform-origin: center;
+}
+
+.subtitle {
+  font-size: 20px;
+  color: var(--color-accent);
+  margin-bottom: 24px;
+  letter-spacing: 0.3px;
+}
+
+.description {
+  max-width: 560px;
+  margin: 0 auto;
+  color: var(--color-muted);
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.primaryButton,
+.secondaryButton {
+  padding: 14px 32px;
+  font-size: 15px;
+  border-radius: 4px;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.primaryButton {
+  background: var(--color-accent);
+  color: #fff;
+  border: 1px solid var(--color-accent);
+}
+
+.primaryButton:hover {
+  background: transparent;
+  color: var(--color-accent);
+}
+
+.secondaryButton {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-divider);
+}
+
+.secondaryButton:hover {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 44px;
+  }
+}
