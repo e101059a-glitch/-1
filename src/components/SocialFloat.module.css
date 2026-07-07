@@ -10,7 +10,7 @@
 }
 
 .icon {
-  color: var(--color-muted);
+  color: var(--color-text);
   transition:
     color 0.25s ease,
     transform 0.25s ease;

@@ -8,26 +8,26 @@
 
 .element {
   position: absolute;
-  opacity: 0.12;
+  opacity: 0.25;
 }
 
 /* Circles */
 .circle1 {
   width: 120px;
   height: 120px;
-  border: 1px solid var(--color-accent);
+  border: 1.5px solid var(--color-accent);
   border-radius: 50%;
   top: 15%;
-  left: -30px;
+  left: 20px;
 }
 
 .circle2 {
   width: 80px;
   height: 80px;
-  border: 1px solid var(--color-accent);
+  border: 1.5px solid var(--color-accent);
   border-radius: 50%;
   top: 55%;
-  right: -20px;
+  right: 20px;
 }
 
 /* Lines */
@@ -133,6 +133,15 @@
   border-radius: 50%;
   top: 10%;
   right: 40px;
+}
+
+@media (max-width: 1400px) {
+  .circle1, .line1, .dot1, .cross1, .ring1 {
+    left: 8px;
+  }
+  .circle2, .line2, .dot2, .dot3, .cross2, .ring2 {
+    right: 8px;
+  }
 }
 
 @media (max-width: 1100px) {
