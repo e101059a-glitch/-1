@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>作品集管理工具</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #faf8f5;
+    color: #1c1c1e;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #9b8e7e;
+    margin-bottom: 40px;
+    font-size: 14px;
+  }
+
+  /* Form */
+  .form-section {
+    background: #f4efe8;
+    border: 0.5px solid #e8e0d5;
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+
+  .form-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 24px;
+    color: #c17f3b;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #9b8e7e;
+  }
+
+  input, textarea {
+    font-family: 'DM Sans', sans-serif;
+    padding: 10px 14px;
+    border: 1px solid #e8e0d5;
+    border-radius: 4px;
+    background: #faf8f5;
+    font-size: 14px;
+    color: #1c1c1e;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, textarea:focus {
+    border-color: #c17f3b;
+  }
+
+  textarea { resize: vertical; min-height: 60px; }
+
+  .image-upload {
+    border: 2px dashed #e8e0d5;
+    border-radius: 6px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    position: relative;
+    background: #faf8f5;
+  }
+
+  .image-upload:hover { border-color: #c17f3b; }
+
+  .image-upload input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .image-upload .text {
+    color: #9b8e7e;
+    font-size: 14px;
+  }
+
+  .image-upload .text strong {
+    color: #c17f3b;
+  }
+
+  .image-preview {
+    max-width: 200px;
+    max-height: 120px;
+    border-radius: 4px;
+    margin: 10px auto 0;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    padding: 12px 28px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s;
+  }
+
+  .btn-primary {
+    background: #c17f3b;
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: #a86b2e; }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid #e8e0d5;
+    color: #1c1c1e;
+  }
+
+  .btn-secondary:hover {
+    border-color: #c17f3b;
+    color: #c17f3b;
+  }
+
+  .btn-danger {
+    background: transparent;
+    border: 1px solid #e8e0d5;
+    color: #c44;
+    font-size: 13px;
+    padding: 6px 14px;
+  }
+
+  .btn-danger:hover { border-color: #c44; }
+
+  /* Items list */
+  .items-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .item-card {
+    display: flex;
+    gap: 20px;
+    background: #f4efe8;
+    border: 0.5px solid #e8e0d5;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 12px;
+    align-items: center;
+  }
+
+  .item-thumb {
+    width: 120px;
+    height: 75px;
+    border-radius: 4px;
+    object-fit: cover;
+    background: #ede8e0;
+    flex-shrink: 0;
+  }
+
+  .item-thumb-placeholder {
+    width: 120px;
+    height: 75px;
+    border-radius: 4px;
+    background: #ede8e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9b8e7e;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .item-info { flex: 1; }
+
+  .item-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .item-info p {
+    font-size: 13px;
+    color: #9b8e7e;
+    margin-bottom: 6px;
+  }
+
+  .item-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .item-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: #faf8f5;
+    border: 0.5px solid #e8e0d5;
+    color: #9b8e7e;
+  }
+
+  .item-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .empty {
+    text-align: center;
+    color: #9b8e7e;
+    padding: 40px;
+    border: 1px dashed #e8e0d5;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+
+  /* Code output */
+  .code-section {
+    margin-top: 40px;
+  }
+
+  .code-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .code-section p {
+    font-size: 13px;
+    color: #9b8e7e;
+    margin-bottom: 16px;
+  }
+
+  .code-block {
+    background: #1c1c1e;
+    color: #e8e0d5;
+    padding: 24px;
+    border-radius: 8px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+    position: relative;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #c17f3b;
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .copy-btn:hover { background: #a86b2e; }
+
+  .steps {
+    background: #f4efe8;
+    border: 0.5px solid #e8e0d5;
+    border-radius: 8px;
+    padding: 24px 32px;
+    margin-top: 24px;
+  }
+
+  .steps h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #c17f3b;
+  }
+
+  .steps ol {
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 2;
+    color: #1c1c1e;
+  }
+
+  .steps code {
+    background: #ede8e0;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .item-card { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>作品集管理工具</h1>
+  <p class="subtitle">新增、編輯你的作品，產生程式碼後貼到專案裡即可更新網站</p>
+
+  <!-- Add / Edit Form -->
+  <div class="form-section">
+    <h2 id="form-title">新增作品</h2>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>中文標題</label>
+        <input type="text" id="title-zh" placeholder="例：摺扇設計" />
+      </div>
+      <div class="form-group">
+        <label>英文標題</label>
+        <input type="text" id="title-en" placeholder="e.g. Folding Fan Design" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>中文描述</label>
+        <textarea id="desc-zh" placeholder="簡短描述這個作品..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>英文描述</label>
+        <textarea id="desc-en" placeholder="Brief description of this project..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>標籤（用逗號分隔）</label>
+        <input type="text" id="tags" placeholder="例：SolidWorks, Rhino, 3D Printing" />
+      </div>
+      <div class="form-group">
+        <label>外部連結（選填）</label>
+        <input type="text" id="link" placeholder="https://..." />
+      </div>
+    </div>
+
+    <div class="form-group full">
+      <label>作品圖片</label>
+      <div class="image-upload" id="image-drop">
+        <input type="file" accept="image/*" id="image-input" />
+        <div class="text" id="image-text">
+          <strong>點擊上傳</strong> 或拖曳圖片到這裡<br>
+          建議尺寸 1600×1000，JPG 或 PNG
+        </div>
+        <img class="image-preview" id="image-preview" style="display:none" />
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="addItem()">新增作品</button>
+      <button class="btn btn-secondary" onclick="clearForm()">清除</button>
+    </div>
+  </div>
+
+  <!-- Items List -->
+  <div class="items-section">
+    <h2>目前作品 (<span id="item-count">0</span>)</h2>
+    <div id="items-list">
+      <div class="empty">尚未新增任何作品，從上方開始新增吧！</div>
+    </div>
+  </div>
+
+  <!-- Code Output -->
+  <div class="code-section">
+    <h2>產生的程式碼</h2>
+    <p>複製下方程式碼，貼到 <code>src/portfolioData.js</code> 取代原本的內容</p>
+    <div class="code-block" id="code-output">
+      <button class="copy-btn" onclick="copyCode()">複製</button>
+      <span id="code-content">// 新增作品後這裡會自動產生程式碼</span>
+    </div>
+
+    <div class="steps">
+      <h3>更新網站步驟</h3>
+      <ol>
+        <li>把作品圖片檔案放到 <code>public/portfolio/</code> 資料夾</li>
+        <li>複製上方程式碼，貼到 <code>src/portfolioData.js</code></li>
+        <li>在終端機執行 <code>npm run deploy</code></li>
+        <li>等 1-2 分鐘，網站就更新了！</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<script>
+let items = []
+let editIndex = -1
+let currentImageName = ''
+
+const $ = id => document.getElementById(id)
+
+function addItem() {
+  const titleZh = $('title-zh').value.trim()
+  const titleEn = $('title-en').value.trim()
+  const descZh = $('desc-zh').value.trim()
+  const descEn = $('desc-en').value.trim()
+  const tags = $('tags').value.trim().split(',').map(t => t.trim()).filter(Boolean)
+  const link = $('link').value.trim()
+
+  if (!titleZh && !titleEn) {
+    alert('請至少填寫一個標題')
+    return
+  }
+
+  const item = {
+    image: currentImageName ? `portfolio/${currentImageName}` : '',
+    title: { zh: titleZh || titleEn, en: titleEn || titleZh },
+    description: { zh: descZh, en: descEn },
+    tags,
+    link,
+    _thumbDataUrl: $('image-preview').src || '',
+  }
+
+  if (editIndex >= 0) {
+    items[editIndex] = item
+    editIndex = -1
+    $('form-title').textContent = '新增作品'
+  } else {
+    items.push(item)
+  }
+
+  clearForm()
+  renderItems()
+  generateCode()
+}
+
+function clearForm() {
+  $('title-zh').value = ''
+  $('title-en').value = ''
+  $('desc-zh').value = ''
+  $('desc-en').value = ''
+  $('tags').value = ''
+  $('link').value = ''
+  $('image-preview').style.display = 'none'
+  $('image-text').style.display = ''
+  $('image-input').value = ''
+  currentImageName = ''
+  editIndex = -1
+  $('form-title').textContent = '新增作品'
+}
+
+function editItem(index) {
+  const item = items[index]
+  $('title-zh').value = item.title.zh
+  $('title-en').value = item.title.en
+  $('desc-zh').value = item.description.zh
+  $('desc-en').value = item.description.en
+  $('tags').value = item.tags.join(', ')
+  $('link').value = item.link
+
+  if (item._thumbDataUrl) {
+    $('image-preview').src = item._thumbDataUrl
+    $('image-preview').style.display = 'block'
+    $('image-text').style.display = 'none'
+  }
+
+  currentImageName = item.image ? item.image.replace('portfolio/', '') : ''
+  editIndex = index
+  $('form-title').textContent = '編輯作品'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function deleteItem(index) {
+  if (confirm('確定要刪除這個作品嗎？')) {
+    items.splice(index, 1)
+    renderItems()
+    generateCode()
+  }
+}
+
+function moveItem(index, dir) {
+  const newIndex = index + dir
+  if (newIndex < 0 || newIndex >= items.length) return
+  ;[items[index], items[newIndex]] = [items[newIndex], items[index]]
+  renderItems()
+  generateCode()
+}
+
+function renderItems() {
+  const list = $('items-list')
+  $('item-count').textContent = items.length
+
+  if (items.length === 0) {
+    list.innerHTML = '<div class="empty">尚未新增任何作品，從上方開始新增吧！</div>'
+    return
+  }
+
+  list.innerHTML = items.map((item, i) => `
+    <div class="item-card">
+      ${item._thumbDataUrl
+        ? `<img class="item-thumb" src="${item._thumbDataUrl}" />`
+        : `<div class="item-thumb-placeholder">無圖片</div>`
+      }
+      <div class="item-info">
+        <h3>${item.title.zh}</h3>
+        <p>${item.description.zh || '（無描述）'}</p>
+        <div class="item-tags">
+          ${item.tags.map(t => `<span class="item-tag">${t}</span>`).join('')}
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-secondary" onclick="editItem(${i})" style="font-size:13px;padding:6px 14px">編輯</button>
+        <button class="btn btn-secondary" onclick="moveItem(${i},-1)" style="font-size:13px;padding:6px 14px">↑</button>
+        <button class="btn btn-secondary" onclick="moveItem(${i},1)" style="font-size:13px;padding:6px 14px">↓</button>
+        <button class="btn btn-danger" onclick="deleteItem(${i})">刪除</button>
+      </div>
+    </div>
+  `).join('')
+}
+
+function generateCode() {
+  const dataItems = items.map(item => {
+    const obj = {
+      image: item.image,
+      title: item.title,
+      description: item.description,
+      tags: item.tags,
+      link: item.link,
+    }
+    return JSON.stringify(obj, null, 2)
+      .replace(/"([^"]+)":/g, '$1:')
+      .replace(/"/g, "'")
+  })
+
+  const code = `const portfolioItems = [
+${dataItems.map(d => '  ' + d.split('\n').join('\n  ')).join(',\n')}
+]
+
+export default portfolioItems
+`
+
+  $('code-content').textContent = items.length > 0 ? code : '// 新增作品後這裡會自動產生程式碼'
+}
+
+function copyCode() {
+  const text = $('code-content').textContent
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn')
+    btn.textContent = '已複製 ✓'
+    setTimeout(() => btn.textContent = '複製', 2000)
+  })
+}
+
+// Image handling
+$('image-input').addEventListener('change', function(e) {
+  const file = e.target.files[0]
+  if (!file) return
+  currentImageName = file.name
+  const reader = new FileReader()
+  reader.onload = function(ev) {
+    $('image-preview').src = ev.target.result
+    $('image-preview').style.display = 'block'
+    $('image-text').style.display = 'none'
+  }
+  reader.readAsDataURL(file)
+})
+</script>
+</body>
+</html>

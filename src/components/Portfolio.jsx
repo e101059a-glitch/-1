@@ -1,19 +1,18 @@
 import { motion } from 'framer-motion'
+import portfolioItems from '../portfolioData.js'
 import styles from './Portfolio.module.css'
 
 const heading = { zh: '作品集', en: 'Portfolio' }
-const title = { zh: '作品即將推出', en: 'Coming Soon' }
-const description = {
+const placeholderTitle = { zh: '作品即將推出', en: 'Coming Soon' }
+const placeholderDesc = {
   zh: '正在整理設計作品，敬請期待。',
   en: 'Working on curating my projects.',
 }
 
-const placeholders = [1, 2, 3]
-
 function PlaceholderIcon() {
   return (
     <svg
-      className={styles.icon}
+      className={styles.placeholderIcon}
       viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +24,77 @@ function PlaceholderIcon() {
   )
 }
 
+function PlaceholderCard({ lang, index }) {
+  return (
+    <motion.div
+      className={styles.placeholderCard}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
+    >
+      <PlaceholderIcon />
+      <h3 className={styles.cardTitle}>{placeholderTitle[lang]}</h3>
+      <p className={styles.cardDescription}>{placeholderDesc[lang]}</p>
+    </motion.div>
+  )
+}
+
+function ProjectCard({ item, lang, index }) {
+  const hasImage = item.image && item.image.length > 0
+  const basePath = import.meta.env.BASE_URL
+
+  const inner = (
+    <>
+      <div className={styles.imageWrapper}>
+        {hasImage ? (
+          <img
+            src={`${basePath}${item.image}`}
+            alt={item.title[lang]}
+            className={styles.image}
+          />
+        ) : (
+          <div className={styles.imagePlaceholder}>
+            <PlaceholderIcon />
+          </div>
+        )}
+      </div>
+      <div className={styles.cardBody}>
+        <h3 className={styles.cardTitle}>{item.title[lang]}</h3>
+        <p className={styles.cardDescription}>{item.description[lang]}</p>
+        {item.tags && item.tags.length > 0 && (
+          <div className={styles.tags}>
+            {item.tags.map((tag) => (
+              <span key={tag} className={styles.tag}>{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  )
+
+  return (
+    <motion.div
+      className={styles.projectCard}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
+    >
+      {item.link ? (
+        <a href={item.link} target="_blank" rel="noreferrer" className={styles.cardLink}>
+          {inner}
+        </a>
+      ) : (
+        inner
+      )}
+    </motion.div>
+  )
+}
+
 function Portfolio({ lang }) {
+  const hasItems = portfolioItems.length > 0
+
   return (
     <section id="portfolio" className={styles.portfolio}>
       <div className={`section-container ${styles.inner}`}>
@@ -41,20 +110,14 @@ function Portfolio({ lang }) {
         <div className={styles.headingLine} />
 
         <div className={styles.grid}>
-          {placeholders.map((id, i) => (
-            <motion.div
-              key={id}
-              className={styles.card}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
-            >
-              <PlaceholderIcon />
-              <h3 className={styles.cardTitle}>{title[lang]}</h3>
-              <p className={styles.cardDescription}>{description[lang]}</p>
-            </motion.div>
-          ))}
+          {hasItems
+            ? portfolioItems.map((item, i) => (
+                <ProjectCard key={i} item={item} lang={lang} index={i} />
+              ))
+            : [1, 2, 3].map((id, i) => (
+                <PlaceholderCard key={id} lang={lang} index={i} />
+              ))
+          }
         </div>
       </div>
     </section>
