@@ -6,329 +6,74 @@
 <title>作品集管理工具</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap');
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #faf8f5; color: #1c1c1e; padding: 40px 20px; }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-family: 'Playfair Display', serif; font-size: 32px; text-align: center; margin-bottom: 8px; }
+  .subtitle { text-align: center; color: #9b8e7e; margin-bottom: 40px; font-size: 14px; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: #faf8f5;
-    color: #1c1c1e;
-    padding: 40px 20px;
-  }
-
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    text-align: center;
-    margin-bottom: 8px;
-  }
-
-  .subtitle {
-    text-align: center;
-    color: #9b8e7e;
-    margin-bottom: 40px;
-    font-size: 14px;
-  }
-
-  /* Form */
-  .form-section {
-    background: #f4efe8;
-    border: 0.5px solid #e8e0d5;
-    border-radius: 8px;
-    padding: 32px;
-    margin-bottom: 32px;
-  }
-
-  .form-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    margin-bottom: 24px;
-    color: #c17f3b;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .form-group.full {
-    grid-column: 1 / -1;
-  }
-
-  label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #9b8e7e;
-  }
-
-  input, textarea {
-    font-family: 'DM Sans', sans-serif;
-    padding: 10px 14px;
-    border: 1px solid #e8e0d5;
-    border-radius: 4px;
-    background: #faf8f5;
-    font-size: 14px;
-    color: #1c1c1e;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  input:focus, textarea:focus {
-    border-color: #c17f3b;
-  }
-
+  .form-section { background: #f4efe8; border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 32px; margin-bottom: 32px; }
+  .form-section h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 24px; color: #c17f3b; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: 13px; font-weight: 500; color: #9b8e7e; }
+  label .hint { font-weight: 400; opacity: 0.7; }
+  input, textarea { font-family: 'DM Sans', sans-serif; padding: 10px 14px; border: 1px solid #e8e0d5; border-radius: 4px; background: #faf8f5; font-size: 14px; color: #1c1c1e; outline: none; transition: border-color 0.2s; }
+  input:focus, textarea:focus { border-color: #c17f3b; }
   textarea { resize: vertical; min-height: 60px; }
 
-  .image-upload {
-    border: 2px dashed #e8e0d5;
-    border-radius: 6px;
-    padding: 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.2s;
-    position: relative;
-    background: #faf8f5;
-  }
+  .upload-area { border: 2px dashed #e8e0d5; border-radius: 6px; padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.2s; position: relative; background: #faf8f5; }
+  .upload-area:hover { border-color: #c17f3b; }
+  .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-text { color: #9b8e7e; font-size: 14px; }
+  .upload-text strong { color: #c17f3b; }
 
-  .image-upload:hover { border-color: #c17f3b; }
+  .cover-preview { max-width: 240px; max-height: 150px; border-radius: 4px; margin: 10px auto 0; }
 
-  .image-upload input[type="file"] {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
+  .gallery-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 12px; }
+  .gallery-thumb { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 4/3; background: #ede8e0; }
+  .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .gallery-thumb .remove-btn { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,0.6); color: #fff; border: none; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .gallery-caption-input { width: 100%; margin-top: 4px; font-size: 12px; padding: 4px 8px; border: 1px solid #e8e0d5; border-radius: 3px; background: #faf8f5; }
 
-  .image-upload .text {
-    color: #9b8e7e;
-    font-size: 14px;
-  }
-
-  .image-upload .text strong {
-    color: #c17f3b;
-  }
-
-  .image-preview {
-    max-width: 200px;
-    max-height: 120px;
-    border-radius: 4px;
-    margin: 10px auto 0;
-  }
-
-  .btn-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-  }
-
-  .btn {
-    font-family: 'DM Sans', sans-serif;
-    padding: 12px 28px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.25s;
-  }
-
-  .btn-primary {
-    background: #c17f3b;
-    color: #fff;
-  }
-
+  .btn-row { display: flex; gap: 12px; margin-top: 24px; }
+  .btn { font-family: 'DM Sans', sans-serif; padding: 12px 28px; border-radius: 4px; border: none; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.25s; }
+  .btn-primary { background: #c17f3b; color: #fff; }
   .btn-primary:hover { background: #a86b2e; }
-
-  .btn-secondary {
-    background: transparent;
-    border: 1px solid #e8e0d5;
-    color: #1c1c1e;
-  }
-
-  .btn-secondary:hover {
-    border-color: #c17f3b;
-    color: #c17f3b;
-  }
-
-  .btn-danger {
-    background: transparent;
-    border: 1px solid #e8e0d5;
-    color: #c44;
-    font-size: 13px;
-    padding: 6px 14px;
-  }
-
+  .btn-secondary { background: transparent; border: 1px solid #e8e0d5; color: #1c1c1e; }
+  .btn-secondary:hover { border-color: #c17f3b; color: #c17f3b; }
+  .btn-danger { background: transparent; border: 1px solid #e8e0d5; color: #c44; font-size: 13px; padding: 6px 14px; }
   .btn-danger:hover { border-color: #c44; }
+  .btn-sm { font-size: 13px; padding: 6px 14px; }
 
-  /* Items list */
-  .items-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    margin-bottom: 20px;
-  }
-
-  .item-card {
-    display: flex;
-    gap: 20px;
-    background: #f4efe8;
-    border: 0.5px solid #e8e0d5;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 12px;
-    align-items: center;
-  }
-
-  .item-thumb {
-    width: 120px;
-    height: 75px;
-    border-radius: 4px;
-    object-fit: cover;
-    background: #ede8e0;
-    flex-shrink: 0;
-  }
-
-  .item-thumb-placeholder {
-    width: 120px;
-    height: 75px;
-    border-radius: 4px;
-    background: #ede8e0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #9b8e7e;
-    font-size: 12px;
-    flex-shrink: 0;
-  }
-
+  .items-section h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 20px; }
+  .item-card { display: flex; gap: 20px; background: #f4efe8; border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 20px; margin-bottom: 12px; align-items: center; }
+  .item-thumb { width: 120px; height: 75px; border-radius: 4px; object-fit: cover; background: #ede8e0; flex-shrink: 0; }
+  .item-thumb-placeholder { width: 120px; height: 75px; border-radius: 4px; background: #ede8e0; display: flex; align-items: center; justify-content: center; color: #9b8e7e; font-size: 12px; flex-shrink: 0; }
   .item-info { flex: 1; }
+  .item-info h3 { font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 2px; }
+  .item-info .item-sub { font-size: 12px; color: #c17f3b; margin-bottom: 4px; }
+  .item-info p { font-size: 13px; color: #9b8e7e; margin-bottom: 6px; }
+  .item-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .item-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .item-tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #faf8f5; border: 0.5px solid #e8e0d5; color: #9b8e7e; }
+  .item-badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #c17f3b; color: #fff; }
+  .item-actions { display: flex; flex-direction: column; gap: 6px; }
 
-  .item-info h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    margin-bottom: 4px;
-  }
+  .empty { text-align: center; color: #9b8e7e; padding: 40px; border: 1px dashed #e8e0d5; border-radius: 8px; margin-bottom: 24px; }
 
-  .item-info p {
-    font-size: 13px;
-    color: #9b8e7e;
-    margin-bottom: 6px;
-  }
-
-  .item-tags {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-  }
-
-  .item-tag {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    background: #faf8f5;
-    border: 0.5px solid #e8e0d5;
-    color: #9b8e7e;
-  }
-
-  .item-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .empty {
-    text-align: center;
-    color: #9b8e7e;
-    padding: 40px;
-    border: 1px dashed #e8e0d5;
-    border-radius: 8px;
-    margin-bottom: 24px;
-  }
-
-  /* Code output */
-  .code-section {
-    margin-top: 40px;
-  }
-
-  .code-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    margin-bottom: 12px;
-  }
-
-  .code-section p {
-    font-size: 13px;
-    color: #9b8e7e;
-    margin-bottom: 16px;
-  }
-
-  .code-block {
-    background: #1c1c1e;
-    color: #e8e0d5;
-    padding: 24px;
-    border-radius: 8px;
-    font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 13px;
-    line-height: 1.6;
-    overflow-x: auto;
-    white-space: pre;
-    position: relative;
-  }
-
-  .copy-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: #c17f3b;
-    color: #fff;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-
+  .code-section { margin-top: 40px; }
+  .code-section h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 12px; }
+  .code-section p { font-size: 13px; color: #9b8e7e; margin-bottom: 16px; }
+  .code-block { background: #1c1c1e; color: #e8e0d5; padding: 24px; border-radius: 8px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; white-space: pre; position: relative; }
+  .copy-btn { position: absolute; top: 12px; right: 12px; background: #c17f3b; color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; cursor: pointer; }
   .copy-btn:hover { background: #a86b2e; }
 
-  .steps {
-    background: #f4efe8;
-    border: 0.5px solid #e8e0d5;
-    border-radius: 8px;
-    padding: 24px 32px;
-    margin-top: 24px;
-  }
-
-  .steps h3 {
-    font-size: 16px;
-    margin-bottom: 12px;
-    color: #c17f3b;
-  }
-
-  .steps ol {
-    padding-left: 20px;
-    font-size: 14px;
-    line-height: 2;
-    color: #1c1c1e;
-  }
-
-  .steps code {
-    background: #ede8e0;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 13px;
-  }
+  .steps { background: #f4efe8; border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 24px 32px; margin-top: 24px; }
+  .steps h3 { font-size: 16px; margin-bottom: 12px; color: #c17f3b; }
+  .steps ol { padding-left: 20px; font-size: 14px; line-height: 2; color: #1c1c1e; }
+  .steps code { background: #ede8e0; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
 
   @media (max-width: 600px) {
     .form-row { grid-template-columns: 1fr; }
@@ -340,12 +85,12 @@
 
 <div class="container">
   <h1>作品集管理工具</h1>
-  <p class="subtitle">新增、編輯你的作品，產生程式碼後貼到專案裡即可更新網站</p>
+  <p class="subtitle">新增作品、上傳流程照片、附加 PDF 報告，產生程式碼後貼到專案即可更新</p>
 
-  <!-- Add / Edit Form -->
   <div class="form-section">
     <h2 id="form-title">新增作品</h2>
 
+    <!-- Basic info -->
     <div class="form-row">
       <div class="form-group">
         <label>中文標題</label>
@@ -359,12 +104,23 @@
 
     <div class="form-row">
       <div class="form-group">
+        <label>中文副標題 <span class="hint">（選填）</span></label>
+        <input type="text" id="subtitle-zh" placeholder="例：工業設計期末專案" />
+      </div>
+      <div class="form-group">
+        <label>英文副標題 <span class="hint">（選填）</span></label>
+        <input type="text" id="subtitle-en" placeholder="e.g. ID Final Project" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
         <label>中文描述</label>
-        <textarea id="desc-zh" placeholder="簡短描述這個作品..."></textarea>
+        <textarea id="desc-zh" placeholder="詳細描述這個作品的設計理念、過程..."></textarea>
       </div>
       <div class="form-group">
         <label>英文描述</label>
-        <textarea id="desc-en" placeholder="Brief description of this project..."></textarea>
+        <textarea id="desc-en" placeholder="Describe the design concept, process..."></textarea>
       </div>
     </div>
 
@@ -374,21 +130,40 @@
         <input type="text" id="tags" placeholder="例：SolidWorks, Rhino, 3D Printing" />
       </div>
       <div class="form-group">
-        <label>外部連結（選填）</label>
-        <input type="text" id="link" placeholder="https://..." />
+        <label>PDF 報告檔名 <span class="hint">（選填，放在 public/portfolio/）</span></label>
+        <input type="text" id="pdf" placeholder="例：fan-report.pdf" />
       </div>
     </div>
 
-    <div class="form-group full">
-      <label>作品圖片</label>
-      <div class="image-upload" id="image-drop">
-        <input type="file" accept="image/*" id="image-input" />
-        <div class="text" id="image-text">
-          <strong>點擊上傳</strong> 或拖曳圖片到這裡<br>
-          建議尺寸 1600×1000，JPG 或 PNG
-        </div>
-        <img class="image-preview" id="image-preview" style="display:none" />
+    <div class="form-row">
+      <div class="form-group">
+        <label>PDF 按鈕中文文字</label>
+        <input type="text" id="pdf-label-zh" placeholder="例：設計報告 PDF" />
       </div>
+      <div class="form-group">
+        <label>PDF 按鈕英文文字</label>
+        <input type="text" id="pdf-label-en" placeholder="e.g. Design Report PDF" />
+      </div>
+    </div>
+
+    <!-- Cover image -->
+    <div class="form-group full" style="margin-bottom:16px">
+      <label>封面圖片 <span class="hint">（首頁顯示的那張，建議 1600×1000）</span></label>
+      <div class="upload-area" id="cover-drop">
+        <input type="file" accept="image/*" id="cover-input" />
+        <div class="upload-text" id="cover-text"><strong>點擊上傳封面</strong></div>
+        <img class="cover-preview" id="cover-preview" style="display:none" />
+      </div>
+    </div>
+
+    <!-- Gallery images -->
+    <div class="form-group full">
+      <label>流程 / 系列圖片 <span class="hint">（點進作品後看到的多張照片）</span></label>
+      <div class="upload-area">
+        <input type="file" accept="image/*" multiple id="gallery-input" />
+        <div class="upload-text"><strong>點擊上傳多張圖片</strong>（可一次選多張）</div>
+      </div>
+      <div class="gallery-list" id="gallery-list"></div>
     </div>
 
     <div class="btn-row">
@@ -417,8 +192,8 @@
     <div class="steps">
       <h3>更新網站步驟</h3>
       <ol>
-        <li>把作品圖片檔案放到 <code>public/portfolio/</code> 資料夾</li>
-        <li>複製上方程式碼，貼到 <code>src/portfolioData.js</code></li>
+        <li>把封面圖、流程圖、PDF 檔案全部放到 <code>public/portfolio/</code> 資料夾</li>
+        <li>複製上方程式碼，貼到 <code>src/portfolioData.js</code> 取代全部內容</li>
         <li>在終端機執行 <code>npm run deploy</code></li>
         <li>等 1-2 分鐘，網站就更新了！</li>
       </ol>
@@ -429,30 +204,86 @@
 <script>
 let items = []
 let editIndex = -1
-let currentImageName = ''
+let coverFileName = ''
+let coverDataUrl = ''
+let galleryFiles = []
 
 const $ = id => document.getElementById(id)
+
+$('cover-input').addEventListener('change', function(e) {
+  const file = e.target.files[0]
+  if (!file) return
+  coverFileName = file.name
+  const reader = new FileReader()
+  reader.onload = ev => {
+    coverDataUrl = ev.target.result
+    $('cover-preview').src = coverDataUrl
+    $('cover-preview').style.display = 'block'
+    $('cover-text').style.display = 'none'
+  }
+  reader.readAsDataURL(file)
+})
+
+$('gallery-input').addEventListener('change', function(e) {
+  Array.from(e.target.files).forEach(file => {
+    const reader = new FileReader()
+    reader.onload = ev => {
+      galleryFiles.push({ name: file.name, dataUrl: ev.target.result, captionZh: '', captionEn: '' })
+      renderGalleryPreview()
+    }
+    reader.readAsDataURL(file)
+  })
+  e.target.value = ''
+})
+
+function renderGalleryPreview() {
+  $('gallery-list').innerHTML = galleryFiles.map((g, i) => `
+    <div>
+      <div class="gallery-thumb">
+        <img src="${g.dataUrl}" />
+        <button class="remove-btn" onclick="removeGalleryItem(${i})">×</button>
+      </div>
+      <input class="gallery-caption-input" placeholder="中文說明" value="${g.captionZh}" onchange="galleryFiles[${i}].captionZh=this.value" />
+      <input class="gallery-caption-input" placeholder="English caption" value="${g.captionEn}" onchange="galleryFiles[${i}].captionEn=this.value" />
+    </div>
+  `).join('')
+}
+
+function removeGalleryItem(i) {
+  galleryFiles.splice(i, 1)
+  renderGalleryPreview()
+}
 
 function addItem() {
   const titleZh = $('title-zh').value.trim()
   const titleEn = $('title-en').value.trim()
+  if (!titleZh && !titleEn) { alert('請至少填寫一個標題'); return }
+
+  const subtitleZh = $('subtitle-zh').value.trim()
+  const subtitleEn = $('subtitle-en').value.trim()
   const descZh = $('desc-zh').value.trim()
   const descEn = $('desc-en').value.trim()
   const tags = $('tags').value.trim().split(',').map(t => t.trim()).filter(Boolean)
-  const link = $('link').value.trim()
-
-  if (!titleZh && !titleEn) {
-    alert('請至少填寫一個標題')
-    return
-  }
+  const pdfFile = $('pdf').value.trim()
+  const pdfLabelZh = $('pdf-label-zh').value.trim()
+  const pdfLabelEn = $('pdf-label-en').value.trim()
 
   const item = {
-    image: currentImageName ? `portfolio/${currentImageName}` : '',
+    cover: coverFileName ? `portfolio/${coverFileName}` : '',
+    _coverDataUrl: coverDataUrl,
     title: { zh: titleZh || titleEn, en: titleEn || titleZh },
+    subtitle: (subtitleZh || subtitleEn) ? { zh: subtitleZh, en: subtitleEn } : null,
     description: { zh: descZh, en: descEn },
     tags,
-    link,
-    _thumbDataUrl: $('image-preview').src || '',
+    gallery: galleryFiles.map(g => ({
+      src: `portfolio/${g.name}`,
+      caption: { zh: g.captionZh, en: g.captionEn },
+      _dataUrl: g.dataUrl,
+    })),
+    pdf: pdfFile ? {
+      src: `portfolio/${pdfFile}`,
+      label: { zh: pdfLabelZh || '檢視 PDF', en: pdfLabelEn || 'View PDF' },
+    } : null,
   }
 
   if (editIndex >= 0) {
@@ -469,16 +300,14 @@ function addItem() {
 }
 
 function clearForm() {
-  $('title-zh').value = ''
-  $('title-en').value = ''
-  $('desc-zh').value = ''
-  $('desc-en').value = ''
-  $('tags').value = ''
-  $('link').value = ''
-  $('image-preview').style.display = 'none'
-  $('image-text').style.display = ''
-  $('image-input').value = ''
-  currentImageName = ''
+  ;['title-zh','title-en','subtitle-zh','subtitle-en','desc-zh','desc-en','tags','pdf','pdf-label-zh','pdf-label-en'].forEach(id => $(id).value = '')
+  $('cover-preview').style.display = 'none'
+  $('cover-text').style.display = ''
+  $('cover-input').value = ''
+  coverFileName = ''
+  coverDataUrl = ''
+  galleryFiles = []
+  renderGalleryPreview()
   editIndex = -1
   $('form-title').textContent = '新增作品'
 }
@@ -487,18 +316,31 @@ function editItem(index) {
   const item = items[index]
   $('title-zh').value = item.title.zh
   $('title-en').value = item.title.en
+  $('subtitle-zh').value = item.subtitle ? item.subtitle.zh : ''
+  $('subtitle-en').value = item.subtitle ? item.subtitle.en : ''
   $('desc-zh').value = item.description.zh
   $('desc-en').value = item.description.en
   $('tags').value = item.tags.join(', ')
-  $('link').value = item.link
+  $('pdf').value = item.pdf ? item.pdf.src.replace('portfolio/', '') : ''
+  $('pdf-label-zh').value = item.pdf ? item.pdf.label.zh : ''
+  $('pdf-label-en').value = item.pdf ? item.pdf.label.en : ''
 
-  if (item._thumbDataUrl) {
-    $('image-preview').src = item._thumbDataUrl
-    $('image-preview').style.display = 'block'
-    $('image-text').style.display = 'none'
+  if (item._coverDataUrl) {
+    coverDataUrl = item._coverDataUrl
+    coverFileName = item.cover.replace('portfolio/', '')
+    $('cover-preview').src = coverDataUrl
+    $('cover-preview').style.display = 'block'
+    $('cover-text').style.display = 'none'
   }
 
-  currentImageName = item.image ? item.image.replace('portfolio/', '') : ''
+  galleryFiles = item.gallery.map(g => ({
+    name: g.src.replace('portfolio/', ''),
+    dataUrl: g._dataUrl || '',
+    captionZh: g.caption.zh,
+    captionEn: g.caption.en,
+  }))
+  renderGalleryPreview()
+
   editIndex = index
   $('form-title').textContent = '編輯作品'
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -513,9 +355,9 @@ function deleteItem(index) {
 }
 
 function moveItem(index, dir) {
-  const newIndex = index + dir
-  if (newIndex < 0 || newIndex >= items.length) return
-  ;[items[index], items[newIndex]] = [items[newIndex], items[index]]
+  const n = index + dir
+  if (n < 0 || n >= items.length) return
+  ;[items[index], items[n]] = [items[n], items[index]]
   renderItems()
   generateCode()
 }
@@ -523,29 +365,29 @@ function moveItem(index, dir) {
 function renderItems() {
   const list = $('items-list')
   $('item-count').textContent = items.length
-
   if (items.length === 0) {
     list.innerHTML = '<div class="empty">尚未新增任何作品，從上方開始新增吧！</div>'
     return
   }
-
   list.innerHTML = items.map((item, i) => `
     <div class="item-card">
-      ${item._thumbDataUrl
-        ? `<img class="item-thumb" src="${item._thumbDataUrl}" />`
-        : `<div class="item-thumb-placeholder">無圖片</div>`
-      }
+      ${item._coverDataUrl
+        ? `<img class="item-thumb" src="${item._coverDataUrl}" />`
+        : `<div class="item-thumb-placeholder">無封面</div>`}
       <div class="item-info">
         <h3>${item.title.zh}</h3>
-        <p>${item.description.zh || '（無描述）'}</p>
-        <div class="item-tags">
-          ${item.tags.map(t => `<span class="item-tag">${t}</span>`).join('')}
+        ${item.subtitle ? `<div class="item-sub">${item.subtitle.zh}</div>` : ''}
+        <p>${item.description.zh ? item.description.zh.slice(0, 60) + '...' : '（無描述）'}</p>
+        <div class="item-meta">
+          <div class="item-tags">${item.tags.map(t => `<span class="item-tag">${t}</span>`).join('')}</div>
+          ${item.gallery.length > 0 ? `<span class="item-badge">${item.gallery.length} 張流程圖</span>` : ''}
+          ${item.pdf ? `<span class="item-badge">PDF</span>` : ''}
         </div>
       </div>
       <div class="item-actions">
-        <button class="btn btn-secondary" onclick="editItem(${i})" style="font-size:13px;padding:6px 14px">編輯</button>
-        <button class="btn btn-secondary" onclick="moveItem(${i},-1)" style="font-size:13px;padding:6px 14px">↑</button>
-        <button class="btn btn-secondary" onclick="moveItem(${i},1)" style="font-size:13px;padding:6px 14px">↓</button>
+        <button class="btn btn-secondary btn-sm" onclick="editItem(${i})">編輯</button>
+        <button class="btn btn-secondary btn-sm" onclick="moveItem(${i},-1)">↑</button>
+        <button class="btn btn-secondary btn-sm" onclick="moveItem(${i},1)">↓</button>
         <button class="btn btn-danger" onclick="deleteItem(${i})">刪除</button>
       </div>
     </div>
@@ -553,17 +395,21 @@ function renderItems() {
 }
 
 function generateCode() {
+  if (items.length === 0) {
+    $('code-content').textContent = '// 新增作品後這裡會自動產生程式碼'
+    return
+  }
+
   const dataItems = items.map(item => {
-    const obj = {
-      image: item.image,
-      title: item.title,
-      description: item.description,
-      tags: item.tags,
-      link: item.link,
+    const obj = { cover: item.cover, title: item.title }
+    if (item.subtitle) obj.subtitle = item.subtitle
+    obj.description = item.description
+    obj.tags = item.tags
+    if (item.gallery.length > 0) {
+      obj.gallery = item.gallery.map(g => ({ src: g.src, caption: g.caption }))
     }
-    return JSON.stringify(obj, null, 2)
-      .replace(/"([^"]+)":/g, '$1:')
-      .replace(/"/g, "'")
+    if (item.pdf) obj.pdf = item.pdf
+    return JSON.stringify(obj, null, 2).replace(/"([^"]+)":/g, '$1:').replace(/"/g, "'")
   })
 
   const code = `const portfolioItems = [
@@ -572,32 +418,16 @@ ${dataItems.map(d => '  ' + d.split('\n').join('\n  ')).join(',\n')}
 
 export default portfolioItems
 `
-
-  $('code-content').textContent = items.length > 0 ? code : '// 新增作品後這裡會自動產生程式碼'
+  $('code-content').textContent = code
 }
 
 function copyCode() {
-  const text = $('code-content').textContent
-  navigator.clipboard.writeText(text).then(() => {
+  navigator.clipboard.writeText($('code-content').textContent).then(() => {
     const btn = document.querySelector('.copy-btn')
     btn.textContent = '已複製 ✓'
     setTimeout(() => btn.textContent = '複製', 2000)
   })
 }
-
-// Image handling
-$('image-input').addEventListener('change', function(e) {
-  const file = e.target.files[0]
-  if (!file) return
-  currentImageName = file.name
-  const reader = new FileReader()
-  reader.onload = function(ev) {
-    $('image-preview').src = ev.target.result
-    $('image-preview').style.display = 'block'
-    $('image-text').style.display = 'none'
-  }
-  reader.readAsDataURL(file)
-})
 </script>
 </body>
 </html>

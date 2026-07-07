@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import portfolioItems from '../portfolioData.js'
+import ProjectModal from './ProjectModal.jsx'
 import styles from './Portfolio.module.css'
 
 const heading = { zh: '作品集', en: 'Portfolio' }
@@ -8,6 +10,7 @@ const placeholderDesc = {
   zh: '正在整理設計作品，敬請期待。',
   en: 'Working on curating my projects.',
 }
+const viewText = { zh: '查看詳情', en: 'View Details' }
 
 function PlaceholderIcon() {
   return (
@@ -40,38 +43,10 @@ function PlaceholderCard({ lang, index }) {
   )
 }
 
-function ProjectCard({ item, lang, index }) {
-  const hasImage = item.image && item.image.length > 0
+function ProjectCard({ item, lang, index, onClick }) {
+  const hasCover = item.cover && item.cover.length > 0
   const basePath = import.meta.env.BASE_URL
-
-  const inner = (
-    <>
-      <div className={styles.imageWrapper}>
-        {hasImage ? (
-          <img
-            src={`${basePath}${item.image}`}
-            alt={item.title[lang]}
-            className={styles.image}
-          />
-        ) : (
-          <div className={styles.imagePlaceholder}>
-            <PlaceholderIcon />
-          </div>
-        )}
-      </div>
-      <div className={styles.cardBody}>
-        <h3 className={styles.cardTitle}>{item.title[lang]}</h3>
-        <p className={styles.cardDescription}>{item.description[lang]}</p>
-        {item.tags && item.tags.length > 0 && (
-          <div className={styles.tags}>
-            {item.tags.map((tag) => (
-              <span key={tag} className={styles.tag}>{tag}</span>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
-  )
+  const galleryCount = item.gallery ? item.gallery.length : 0
 
   return (
     <motion.div
@@ -80,19 +55,46 @@ function ProjectCard({ item, lang, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
+      onClick={onClick}
     >
-      {item.link ? (
-        <a href={item.link} target="_blank" rel="noreferrer" className={styles.cardLink}>
-          {inner}
-        </a>
-      ) : (
-        inner
-      )}
+      <div className={styles.imageWrapper}>
+        {hasCover ? (
+          <img
+            src={`${basePath}${item.cover}`}
+            alt={item.title[lang]}
+            className={styles.image}
+          />
+        ) : (
+          <div className={styles.imagePlaceholder}>
+            <PlaceholderIcon />
+          </div>
+        )}
+        <div className={styles.imageOverlay}>
+          <span className={styles.viewBtn}>{viewText[lang]}</span>
+        </div>
+        {galleryCount > 0 && (
+          <span className={styles.badge}>{galleryCount} {lang === 'zh' ? '張' : 'photos'}</span>
+        )}
+      </div>
+      <div className={styles.cardBody}>
+        <h3 className={styles.cardTitle}>{item.title[lang]}</h3>
+        {item.subtitle && (
+          <p className={styles.cardSubtitle}>{item.subtitle[lang]}</p>
+        )}
+        {item.tags && item.tags.length > 0 && (
+          <div className={styles.tags}>
+            {item.tags.map((tag) => (
+              <span key={tag} className={styles.tag}>{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
     </motion.div>
   )
 }
 
 function Portfolio({ lang }) {
+  const [selectedIndex, setSelectedIndex] = useState(null)
   const hasItems = portfolioItems.length > 0
 
   return (
@@ -112,7 +114,13 @@ function Portfolio({ lang }) {
         <div className={styles.grid}>
           {hasItems
             ? portfolioItems.map((item, i) => (
-                <ProjectCard key={i} item={item} lang={lang} index={i} />
+                <ProjectCard
+                  key={i}
+                  item={item}
+                  lang={lang}
+                  index={i}
+                  onClick={() => setSelectedIndex(i)}
+                />
               ))
             : [1, 2, 3].map((id, i) => (
                 <PlaceholderCard key={id} lang={lang} index={i} />
@@ -120,6 +128,14 @@ function Portfolio({ lang }) {
           }
         </div>
       </div>
+
+      {selectedIndex !== null && (
+        <ProjectModal
+          item={portfolioItems[selectedIndex]}
+          lang={lang}
+          onClose={() => setSelectedIndex(null)}
+        />
+      )}
     </section>
   )
 }
