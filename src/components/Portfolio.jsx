@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import portfolioItems from '../portfolioData.js'
 import ProjectModal from './ProjectModal.jsx'
 import styles from './Portfolio.module.css'
@@ -11,6 +12,8 @@ const placeholderDesc = {
   en: 'Working on curating my projects.',
 }
 const viewText = { zh: '查看詳情', en: 'View Details' }
+const seeAllText = { zh: '查看全部作品', en: 'See All' }
+const collapseText = { zh: '收合', en: 'Collapse' }
 
 function PlaceholderIcon() {
   return (
@@ -93,40 +96,104 @@ function ProjectCard({ item, lang, index, onClick }) {
   )
 }
 
+const VISIBLE_COUNT = 3
+
 function Portfolio({ lang }) {
   const [selectedIndex, setSelectedIndex] = useState(null)
+  const [showAll, setShowAll] = useState(false)
+  const scrollRef = useRef(null)
   const hasItems = portfolioItems.length > 0
+  const hasMore = portfolioItems.length > VISIBLE_COUNT
+
+  const scroll = (dir) => {
+    if (!scrollRef.current) return
+    const card = scrollRef.current.querySelector('[class*="projectCard"]')
+    const w = card ? card.offsetWidth + 24 : 320
+    scrollRef.current.scrollBy({ left: dir * w, behavior: 'smooth' })
+  }
 
   return (
     <section id="portfolio" className={styles.portfolio}>
       <div className={`section-container ${styles.inner}`}>
-        <motion.h2
-          className={styles.heading}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          {heading[lang]}
-        </motion.h2>
-        <div className={styles.headingLine} />
-
-        <div className={styles.grid}>
-          {hasItems
-            ? portfolioItems.map((item, i) => (
-                <ProjectCard
-                  key={i}
-                  item={item}
-                  lang={lang}
-                  index={i}
-                  onClick={() => setSelectedIndex(i)}
-                />
-              ))
-            : [1, 2, 3].map((id, i) => (
-                <PlaceholderCard key={id} lang={lang} index={i} />
-              ))
-          }
+        <div className={styles.headingRow}>
+          <div>
+            <motion.h2
+              className={styles.heading}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              {heading[lang]}
+            </motion.h2>
+            <div className={styles.headingLine} />
+          </div>
+          {hasMore && (
+            <button
+              type="button"
+              className={styles.seeAllBtn}
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? collapseText[lang] : seeAllText[lang]}
+              <ChevronRight size={16} strokeWidth={2} className={showAll ? styles.chevronUp : ''} />
+            </button>
+          )}
         </div>
+
+        {/* Carousel view */}
+        {!showAll && (
+          <div className={styles.carouselWrapper}>
+            {hasMore && (
+              <button type="button" className={`${styles.navArrow} ${styles.navLeft}`} onClick={() => scroll(-1)}>
+                <ChevronLeft size={20} strokeWidth={2} />
+              </button>
+            )}
+            <div className={styles.carousel} ref={scrollRef}>
+              {hasItems
+                ? portfolioItems.map((item, i) => (
+                    <div className={styles.carouselSlide} key={i}>
+                      <ProjectCard
+                        item={item}
+                        lang={lang}
+                        index={i}
+                        onClick={() => setSelectedIndex(i)}
+                      />
+                    </div>
+                  ))
+                : [1, 2, 3].map((id, i) => (
+                    <div className={styles.carouselSlide} key={id}>
+                      <PlaceholderCard lang={lang} index={i} />
+                    </div>
+                  ))
+              }
+            </div>
+            {hasMore && (
+              <button type="button" className={`${styles.navArrow} ${styles.navRight}`} onClick={() => scroll(1)}>
+                <ChevronRight size={20} strokeWidth={2} />
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Grid view (see all) */}
+        {showAll && (
+          <motion.div
+            className={styles.grid}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+          >
+            {portfolioItems.map((item, i) => (
+              <ProjectCard
+                key={i}
+                item={item}
+                lang={lang}
+                index={i}
+                onClick={() => setSelectedIndex(i)}
+              />
+            ))}
+          </motion.div>
+        )}
       </div>
 
       {selectedIndex !== null && (
