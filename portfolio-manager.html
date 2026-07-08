@@ -107,24 +107,22 @@
 
 <div class="container">
   <h1>作品集管理工具</h1>
-  <p class="subtitle">新增、編輯作品後，按「儲存到專案」直接更新網站資料</p>
+  <p class="subtitle">新增、編輯作品後，按「下載 data.json」更新網站資料</p>
   <div class="save-notice">
     <strong>自動儲存</strong> — 資料會存在瀏覽器裡，關掉再打開不會消失
   </div>
 
   <div class="sync-bar">
-    <button class="btn btn-sync" onclick="saveToProject()">&#x1F4BE; 儲存到專案 (data.json)</button>
-    <button class="btn btn-secondary" onclick="downloadJson()">&#x2B07; 下載 data.json</button>
+    <button class="btn btn-sync" onclick="downloadJson()">&#x2B07; 下載 data.json</button>
   </div>
 
   <div class="how-to">
-    <h3>如何更新網站？</h3>
+    <h3>如何更新網站？（只要 3 步）</h3>
     <ol>
       <li>在這裡新增或編輯作品</li>
-      <li>按上方「<strong>儲存到專案</strong>」，選擇 <code>portfolio</code> 資料夾裡的 <code>public/portfolio/data.json</code></li>
-      <li>回到終端機，執行 <code>npm run deploy</code> 即可上線</li>
+      <li>按上方「<strong>下載 data.json</strong>」，把下載的檔案拖進<br/><code>Desktop\portfolio\public\portfolio\</code> 資料夾取代舊檔案</li>
+      <li>開終端機，輸入 <code>cd C:\Users\calvi\Desktop\portfolio</code> 再輸入 <code>cmd /c "npm run deploy"</code></li>
     </ol>
-    <p style="font-size:13px;color:#9b8e7e;margin-top:8px;">第一次使用時瀏覽器會請你選檔案位置，之後都會直接覆蓋同一個檔案。</p>
   </div>
 
   <!-- Tabs -->
@@ -251,7 +249,7 @@ let items = [];
 let editIndex = -1;
 let galleryImages = [];
 let dragSrc = null;
-let fileHandle = null;
+
 
 const STORAGE_KEY = 'portfolio-manager-items';
 
@@ -518,36 +516,17 @@ function buildJsonData() {
   return JSON.stringify(items, null, 2);
 }
 
-async function saveToProject() {
-  const jsonStr = buildJsonData();
-  try {
-    if (!fileHandle) {
-      fileHandle = await window.showSaveFilePicker({
-        suggestedName: 'data.json',
-        types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
-      });
-    }
-    const writable = await fileHandle.createWritable();
-    await writable.write(jsonStr);
-    await writable.close();
-    toast('✅ 已儲存到 data.json！執行 npm run deploy 即可上線');
-  } catch (e) {
-    if (e.name === 'AbortError') return;
-    downloadJson();
-    toast('無法直接儲存，已改為下載');
-  }
-}
-
 function downloadJson() {
   const jsonStr = buildJsonData();
-  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+  const blob = new Blob([bom, jsonStr], { type: 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
   a.download = 'data.json';
   a.click();
   URL.revokeObjectURL(url);
-  toast('已下載 data.json，請放到 public/portfolio/ 資料夾');
+  toast('已下載 data.json — 放到 public/portfolio/ 取代舊檔，再 deploy');
 }
 
 init();
