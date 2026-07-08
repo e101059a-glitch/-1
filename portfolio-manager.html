@@ -15,6 +15,9 @@
   .save-notice { text-align: center; margin-bottom: 32px; padding: 10px 16px; background: #ede8e0; border-radius: 6px; font-size: 13px; color: #9b8e7e; }
   .save-notice strong { color: #c17f3b; }
 
+  .sync-bar { display: flex; gap: 12px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
+  .sync-bar .btn { font-size: 15px; padding: 14px 32px; }
+
   .tabs { display: flex; gap: 0; margin-bottom: 32px; border-bottom: 2px solid #e8e0d5; }
   .tab { flex: 1; padding: 14px; text-align: center; font-size: 15px; font-weight: 500; cursor: pointer; border: none; background: none; color: #9b8e7e; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
   .tab.active { color: #c17f3b; border-bottom-color: #c17f3b; }
@@ -59,6 +62,8 @@
   .btn { font-family: 'DM Sans', sans-serif; padding: 12px 28px; border-radius: 4px; border: none; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.25s; }
   .btn-primary { background: #c17f3b; color: #fff; }
   .btn-primary:hover { background: #a86b2e; }
+  .btn-sync { background: #2d8a4e; color: #fff; }
+  .btn-sync:hover { background: #236b3c; }
   .btn-secondary { background: transparent; border: 1px solid #e8e0d5; color: #1c1c1e; }
   .btn-secondary:hover { border-color: #c17f3b; color: #c17f3b; }
   .btn-danger { background: transparent; border: 1px solid #e8e0d5; color: #c44; font-size: 13px; padding: 6px 14px; }
@@ -83,20 +88,13 @@
   .empty { text-align: center; color: #9b8e7e; padding: 48px; border: 1px dashed #e8e0d5; border-radius: 8px; margin-bottom: 24px; }
   .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
 
-  .code-section { margin-top: 32px; }
-  .code-section h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 12px; }
-  .code-section p { font-size: 13px; color: #9b8e7e; margin-bottom: 16px; }
-  .code-block { background: #1c1c1e; color: #e8e0d5; padding: 24px; border-radius: 8px; font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; white-space: pre; position: relative; max-height: 500px; overflow-y: auto; }
-  .copy-btn { position: sticky; top: 0; float: right; background: #c17f3b; color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; cursor: pointer; z-index: 2; }
-  .copy-btn:hover { background: #a86b2e; }
-
-  .steps { background: #f4efe8; border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 24px 32px; margin-top: 24px; }
-  .steps h3 { font-size: 16px; margin-bottom: 12px; color: #c17f3b; }
-  .steps ol { padding-left: 20px; font-size: 14px; line-height: 2.2; color: #1c1c1e; }
-  .steps code { background: #ede8e0; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
-
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1c1c1e; color: #fff; padding: 12px 28px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
   .toast.show { opacity: 1; }
+
+  .how-to { background: #f4efe8; border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 24px 32px; margin-bottom: 32px; }
+  .how-to h3 { font-size: 16px; margin-bottom: 12px; color: #c17f3b; }
+  .how-to ol { padding-left: 20px; font-size: 14px; line-height: 2.2; color: #1c1c1e; }
+  .how-to code { background: #ede8e0; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
 
   @media (max-width: 700px) {
     .form-row { grid-template-columns: 1fr; }
@@ -109,27 +107,41 @@
 
 <div class="container">
   <h1>作品集管理工具</h1>
-  <p class="subtitle">新增、編輯作品，調整照片順序，產生程式碼後貼到專案即可更新</p>
+  <p class="subtitle">新增、編輯作品後，按「儲存到專案」直接更新網站資料</p>
   <div class="save-notice">
     <strong>自動儲存</strong> — 資料會存在瀏覽器裡，關掉再打開不會消失
+  </div>
+
+  <div class="sync-bar">
+    <button class="btn btn-sync" onclick="saveToProject()">&#x1F4BE; 儲存到專案 (data.json)</button>
+    <button class="btn btn-secondary" onclick="downloadJson()">&#x2B07; 下載 data.json</button>
+  </div>
+
+  <div class="how-to">
+    <h3>如何更新網站？</h3>
+    <ol>
+      <li>在這裡新增或編輯作品</li>
+      <li>按上方「<strong>儲存到專案</strong>」，選擇 <code>portfolio</code> 資料夾裡的 <code>public/portfolio/data.json</code></li>
+      <li>回到終端機，執行 <code>npm run deploy</code> 即可上線</li>
+    </ol>
+    <p style="font-size:13px;color:#9b8e7e;margin-top:8px;">第一次使用時瀏覽器會請你選檔案位置，之後都會直接覆蓋同一個檔案。</p>
   </div>
 
   <!-- Tabs -->
   <div class="tabs">
     <button class="tab active" onclick="switchTab('projects')">作品列表</button>
     <button class="tab" onclick="switchTab('add')">新增 / 編輯作品</button>
-    <button class="tab" onclick="switchTab('code')">產生程式碼</button>
   </div>
 
   <!-- Tab 1: Projects List -->
   <div class="tab-panel active" id="panel-projects">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
       <h2>目前作品 (<span id="item-count">0</span>)</h2>
-      <button class="btn btn-primary btn-sm" onclick="switchTab('add');clearForm()">＋ 新增作品</button>
+      <button class="btn btn-primary btn-sm" onclick="switchTab('add');clearForm()">+ 新增作品</button>
     </div>
     <div id="items-list">
       <div class="empty">
-        <div class="empty-icon">📁</div>
+        <div class="empty-icon">&#x1F4C1;</div>
         尚未新增任何作品，點擊上方「新增作品」開始吧！
       </div>
     </div>
@@ -147,489 +159,398 @@
         </div>
         <div class="form-group">
           <label>英文標題</label>
-          <input type="text" id="title-en" placeholder="e.g. Folding Fan Design" />
+          <input type="text" id="title-en" placeholder="e.g. Fan Design" />
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label>中文副標題 <span class="hint">（選填）</span></label>
-          <input type="text" id="subtitle-zh" placeholder="例：工業設計期末專案" />
+          <label>中文副標題</label>
+          <input type="text" id="subtitle-zh" placeholder="例：居家產品設計" />
         </div>
         <div class="form-group">
-          <label>英文副標題 <span class="hint">（選填）</span></label>
-          <input type="text" id="subtitle-en" placeholder="e.g. ID Final Project" />
+          <label>英文副標題</label>
+          <input type="text" id="subtitle-en" placeholder="e.g. Home Product Design" />
         </div>
       </div>
 
       <div class="form-row">
-        <div class="form-group">
+        <div class="form-group full">
           <label>中文描述</label>
-          <textarea id="desc-zh" placeholder="詳細描述這個作品的設計理念、過程..."></textarea>
+          <textarea id="desc-zh" rows="3" placeholder="作品描述..."></textarea>
         </div>
-        <div class="form-group">
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
           <label>英文描述</label>
-          <textarea id="desc-en" placeholder="Describe the design concept, process..."></textarea>
+          <textarea id="desc-en" rows="3" placeholder="Project description..."></textarea>
         </div>
       </div>
 
       <div class="form-row">
-        <div class="form-group">
-          <label>標籤（用逗號分隔）</label>
-          <input type="text" id="tags" placeholder="例：SolidWorks, Rhino, 3D Printing" />
-        </div>
-        <div class="form-group">
-          <label>PDF 檔名 <span class="hint">（選填，放在 public/portfolio/）</span></label>
-          <input type="text" id="pdf" placeholder="例：fan-report.pdf" />
+        <div class="form-group full">
+          <label>標籤 <span class="hint">(逗號分隔)</span></label>
+          <input type="text" id="tags" placeholder="例：Solidworks, Rhino, 3D Printing" />
         </div>
       </div>
+    </div>
 
+    <div class="form-section">
+      <h2>封面圖片</h2>
+      <div class="form-group">
+        <label>檔案名稱 <span class="hint">(放在 public/portfolio/ 裡的檔名)</span></label>
+        <input type="text" id="cover-file" placeholder="例：my-project-cover.jpg" />
+      </div>
+      <div id="cover-preview-area"></div>
+    </div>
+
+    <div class="form-section">
+      <h2>作品圖片集</h2>
+      <p style="font-size:13px;color:#9b8e7e;margin-bottom:12px;">輸入檔名新增圖片，可拖曳排序</p>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <input type="text" id="gallery-file-input" placeholder="檔案名稱，例：process-1.jpg" style="flex:1;" />
+        <button class="btn btn-primary btn-sm" onclick="addGalleryByFilename()">新增</button>
+      </div>
+      <div class="gallery-grid" id="gallery-grid"></div>
+      <div class="drag-hint" id="drag-hint" style="display:none;">&#x2195; 拖曳卡片可調整順序</div>
+    </div>
+
+    <div class="form-section">
+      <h2>PDF 報告</h2>
       <div class="form-row">
         <div class="form-group">
-          <label>PDF 按鈕中文文字</label>
-          <input type="text" id="pdf-label-zh" placeholder="例：設計報告 PDF" />
+          <label>PDF 檔案名稱</label>
+          <input type="text" id="pdf-file" placeholder="例：report.pdf" />
         </div>
         <div class="form-group">
-          <label>PDF 按鈕英文文字</label>
-          <input type="text" id="pdf-label-en" placeholder="e.g. Design Report PDF" />
+          <label>PDF 顯示名稱 (中文)</label>
+          <input type="text" id="pdf-label-zh" placeholder="例：設計報告" />
         </div>
       </div>
-
-      <!-- Cover -->
-      <div class="form-group full" style="margin-bottom:16px">
-        <label>封面圖片 <span class="hint">（首頁卡片顯示，建議 1600×1000）</span></label>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <div class="upload-area" style="flex:1">
-            <input type="file" accept="image/*" id="cover-input" />
-            <div class="upload-text" id="cover-text"><strong>點擊上傳封面</strong></div>
-            <img class="cover-preview" id="cover-preview" style="display:none" />
-          </div>
-          <div class="form-group" style="flex:0 0 220px;">
-            <label>或直接輸入檔名</label>
-            <input type="text" id="cover-filename" placeholder="例：fan-cover.jpg" />
-          </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>PDF 顯示名稱 (英文)</label>
+          <input type="text" id="pdf-label-en" placeholder="e.g. Design Report" />
         </div>
       </div>
+    </div>
 
-      <!-- Gallery -->
-      <div class="form-group full">
-        <label>流程 / 系列圖片 <span class="hint">（點進作品後的多張照片，可拖曳調整順序）</span></label>
-        <div class="upload-area">
-          <input type="file" accept="image/*" multiple id="gallery-input" />
-          <div class="upload-text"><strong>點擊上傳多張圖片</strong>（可一次選多張）</div>
-        </div>
-
-        <div style="margin-top:8px;">
-          <label>或手動新增圖片檔名</label>
-          <div style="display:flex;gap:8px;margin-top:4px;">
-            <input type="text" id="manual-gallery-name" placeholder="例：fan-sketch.jpg" style="flex:1" />
-            <button class="btn btn-secondary btn-sm" onclick="addManualGallery()">加入</button>
-          </div>
-        </div>
-
-        <div class="gallery-grid" id="gallery-list"></div>
-        <div class="drag-hint" id="drag-hint" style="display:none">拖曳照片卡片可調整順序，或用 ← → 箭頭按鈕移動</div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="saveItem()">儲存作品</button>
-        <button class="btn btn-secondary" onclick="clearForm();switchTab('projects')">取消</button>
-      </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveItem()">儲存作品</button>
+      <button class="btn btn-secondary" onclick="switchTab('projects')">取消</button>
+      <button class="btn btn-danger" id="delete-btn" style="display:none;margin-left:auto;" onclick="deleteItem()">刪除此作品</button>
     </div>
   </div>
 
-  <!-- Tab 3: Code Output -->
-  <div class="tab-panel" id="panel-code">
-    <div class="code-section">
-      <h2>產生的程式碼</h2>
-      <p>複製下方程式碼，貼到 <code>src/portfolioData.js</code> 取代全部內容</p>
-      <div class="code-block" id="code-output">
-        <button class="copy-btn" onclick="copyCode()">複製</button>
-        <span id="code-content">// 新增作品後這裡會自動產生程式碼</span>
-      </div>
-
-      <div class="steps">
-        <h3>更新網站步驟</h3>
-        <ol>
-          <li>把圖片和 PDF 放到 <code>public/portfolio/</code> 資料夾</li>
-          <li>複製上方程式碼，貼到 <code>src/portfolioData.js</code> 取代全部內容</li>
-          <li>開啟 PowerShell，依序輸入：</li>
-        </ol>
-        <div style="background:#1c1c1e;color:#e8e0d5;padding:14px 18px;border-radius:6px;font-family:Consolas,monospace;font-size:13px;line-height:2;margin-top:8px;">
-          cd C:\Users\calvi\Desktop\portfolio<br>
-          git add .<br>
-          git commit -m "更新作品集"<br>
-          git push<br>
-          npm run deploy
-        </div>
-        <p style="font-size:13px;color:#9b8e7e;margin-top:10px;">等 1-2 分鐘，重新整理網站即可看到更新</p>
-      </div>
-    </div>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-let items = []
-let editIndex = -1
-let coverFileName = ''
-let coverDataUrl = ''
-let galleryFiles = []
-let dragIndex = null
+let items = [];
+let editIndex = -1;
+let galleryImages = [];
+let dragSrc = null;
+let fileHandle = null;
 
-const $ = id => document.getElementById(id)
-const STORAGE_KEY = 'portfolio-manager-data'
+const STORAGE_KEY = 'portfolio-manager-items';
 
-function saveToStorage() {
-  const data = items.map(item => ({
-    ...item,
-    _coverDataUrl: undefined,
-    gallery: item.gallery.map(g => ({ ...g, _dataUrl: undefined }))
-  }))
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)) } catch(e) {}
+function init() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try { items = JSON.parse(saved); } catch(e) { items = []; }
+  }
+  if (items.length === 0) {
+    items = [{
+      cover: 'portfolio/S__4628507.jpg',
+      title: { zh: 'ERGO PEEL', en: 'ERGO PEEL' },
+      subtitle: { zh: '居家產品設計', en: 'Home Product Design' },
+      description: {
+        zh: '將人體工學融入最日常的備料動作，以拇指、食指、中指的自然夾持姿勢為核心，讓施力方向與手部肌肉走向一致。底部快拆式刀盤可自由切換削皮刀片或磨板，一個握把應對多種廚房需求。',
+        en: 'Seamlessly blending ergonomics into daily meal prep, ERGO PEEL centers on the natural pinch grip of the thumb, index, and middle fingers, aligning applying force with hand anatomy. Featuring a quick-release base, it easily switches between a peeler and a grater—handling diverse kitchen tasks with just one handle.'
+      },
+      tags: ['Solidworks', 'Claude Code'],
+      gallery: [
+        { src: 'portfolio/IMG_6015.png', caption: { zh: '主題表板', en: 'Display Board' } },
+        { src: 'portfolio/1.png', caption: { zh: '產品表板-1', en: 'Presentation Board-1' } },
+        { src: 'portfolio/2.png', caption: { zh: '產品表板-2', en: 'Presentation Board-2' } },
+        { src: 'portfolio/S__27705349_0.jpg', caption: { zh: '草模-1', en: 'Mockup-1' } },
+        { src: 'portfolio/S__27705350_0.jpg', caption: { zh: '草模-2', en: 'Mockup-2' } },
+        { src: 'portfolio/S__27705351_0.jpg', caption: { zh: '草模-3', en: 'Mockup-3' } },
+        { src: 'portfolio/S__27705368_0.jpg', caption: { zh: '3D模型', en: '3D model' } },
+        { src: 'portfolio/S__27705371_0.jpg', caption: { zh: '3D模型', en: '3D model' } },
+        { src: 'portfolio/S__27705369_0.jpg', caption: { zh: '3D模型', en: '3D model' } },
+        { src: 'portfolio/S__27705366_0.jpg', caption: { zh: '成品-1', en: 'Final product-1' } },
+        { src: 'portfolio/S__27705367_0.jpg', caption: { zh: '成品-2', en: 'Final product-2' } },
+        { src: 'portfolio/S__27729924_0.jpg', caption: { zh: '展示', en: 'Showcase' } }
+      ],
+      pdf: { src: 'portfolio/ERGO PEEL 簡報.pdf.pdf', label: { zh: 'ERGO PEEL', en: 'ERGO PEEL' } }
+    }];
+    persist();
+  }
+  renderList();
 }
 
-function loadFromStorage() {
-  try {
-    const data = localStorage.getItem(STORAGE_KEY)
-    if (data) { items = JSON.parse(data); renderItems(); generateCode() }
-  } catch(e) {}
+function persist() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 }
 
-function showToast(msg) {
-  const t = $('toast')
-  t.textContent = msg
-  t.classList.add('show')
-  setTimeout(() => t.classList.remove('show'), 2000)
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
 }
 
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach((t, i) => {
-    const panels = ['projects', 'add', 'code']
-    const isActive = panels[i] === name
-    t.classList.toggle('active', isActive)
-  })
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
-  $('panel-' + name).classList.add('active')
-  if (name === 'code') generateCode()
+    const panels = ['projects', 'add'];
+    t.classList.toggle('active', panels[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
 }
 
-// Cover
-$('cover-input').addEventListener('change', function(e) {
-  const file = e.target.files[0]
-  if (!file) return
-  coverFileName = file.name
-  $('cover-filename').value = file.name
-  const reader = new FileReader()
-  reader.onload = ev => {
-    coverDataUrl = ev.target.result
-    $('cover-preview').src = coverDataUrl
-    $('cover-preview').style.display = 'block'
-    $('cover-text').style.display = 'none'
+function renderList() {
+  document.getElementById('item-count').textContent = items.length;
+  const container = document.getElementById('items-list');
+  if (items.length === 0) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">&#x1F4C1;</div>尚未新增任何作品</div>';
+    return;
   }
-  reader.readAsDataURL(file)
-})
-
-$('cover-filename').addEventListener('input', function() {
-  coverFileName = this.value.trim()
-})
-
-// Gallery upload
-$('gallery-input').addEventListener('change', function(e) {
-  Array.from(e.target.files).forEach(file => {
-    const reader = new FileReader()
-    reader.onload = ev => {
-      galleryFiles.push({ name: file.name, dataUrl: ev.target.result, captionZh: '', captionEn: '' })
-      renderGalleryPreview()
-    }
-    reader.readAsDataURL(file)
-  })
-  e.target.value = ''
-})
-
-function addManualGallery() {
-  const name = $('manual-gallery-name').value.trim()
-  if (!name) return
-  galleryFiles.push({ name, dataUrl: '', captionZh: '', captionEn: '' })
-  $('manual-gallery-name').value = ''
-  renderGalleryPreview()
+  container.innerHTML = items.map((item, i) => {
+    const thumbHtml = item.cover
+      ? '<img class="item-thumb" src="" alt="" onerror="this.style.display=\'none\'" />'
+      : '<div class="item-thumb-placeholder">No Cover</div>';
+    const tagsHtml = (item.tags || []).map(t => '<span class="item-tag">' + esc(t) + '</span>').join('');
+    const galleryBadge = item.gallery && item.gallery.length > 0
+      ? '<span class="item-badge">' + item.gallery.length + ' 張圖片</span>' : '';
+    const pdfBadge = item.pdf && item.pdf.src ? '<span class="item-badge">PDF</span>' : '';
+    return '<div class="item-card">' + thumbHtml +
+      '<div class="item-info"><h3>' + esc(item.title.zh) + '</h3>' +
+      (item.subtitle ? '<div class="item-sub">' + esc(item.subtitle.zh) + '</div>' : '') +
+      '<p>' + esc((item.description && item.description.zh || '').substring(0, 60)) + '...</p>' +
+      '<div class="item-meta">' + tagsHtml + galleryBadge + pdfBadge + '</div></div>' +
+      '<div class="item-actions">' +
+      '<button class="btn btn-secondary btn-sm" onclick="editItem(' + i + ')">&#x270F; 編輯</button>' +
+      '<button class="btn btn-danger" onclick="confirmDelete(' + i + ')">&#x1F5D1; 刪除</button>' +
+      '</div></div>';
+  }).join('');
 }
 
-function renderGalleryPreview() {
-  const list = $('gallery-list')
-  $('drag-hint').style.display = galleryFiles.length > 1 ? '' : 'none'
+function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : ''; }
 
-  list.innerHTML = galleryFiles.map((g, i) => `
-    <div class="gallery-card" draggable="true" data-index="${i}"
-      ondragstart="onDragStart(event,${i})" ondragover="onDragOver(event)" ondragenter="onDragEnter(event,this)" ondragleave="onDragLeave(event,this)" ondrop="onDrop(event,${i})" ondragend="onDragEnd()">
-      <div class="gallery-img-wrap">
-        ${g.dataUrl ? `<img src="${g.dataUrl}" />` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#9b8e7e;">${g.name}</div>`}
-        <span class="gallery-order">${i + 1}</span>
-        <div class="gallery-controls">
-          ${i > 0 ? `<button onclick="moveGallery(${i},-1)" title="往前">←</button>` : ''}
-          ${i < galleryFiles.length - 1 ? `<button onclick="moveGallery(${i},1)" title="往後">→</button>` : ''}
-          <button onclick="removeGallery(${i})" title="刪除">×</button>
-        </div>
-      </div>
-      <div class="gallery-body">
-        <input class="gallery-caption-input" placeholder="中文說明" value="${g.captionZh}" onchange="galleryFiles[${i}].captionZh=this.value" />
-        <input class="gallery-caption-input" placeholder="English caption" value="${g.captionEn}" onchange="galleryFiles[${i}].captionEn=this.value" />
-      </div>
-    </div>
-  `).join('')
+function clearForm() {
+  editIndex = -1;
+  galleryImages = [];
+  document.getElementById('form-title').textContent = '新增作品';
+  document.getElementById('delete-btn').style.display = 'none';
+  ['title-zh','title-en','subtitle-zh','subtitle-en','desc-zh','desc-en','tags','cover-file','pdf-file','pdf-label-zh','pdf-label-en'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('cover-preview-area').innerHTML = '';
+  renderGallery();
 }
 
-function moveGallery(i, dir) {
-  const n = i + dir
-  if (n < 0 || n >= galleryFiles.length) return
-  ;[galleryFiles[i], galleryFiles[n]] = [galleryFiles[n], galleryFiles[i]]
-  renderGalleryPreview()
+function editItem(i) {
+  editIndex = i;
+  const item = items[i];
+  document.getElementById('form-title').textContent = '編輯作品';
+  document.getElementById('delete-btn').style.display = 'inline-block';
+  document.getElementById('title-zh').value = item.title.zh || '';
+  document.getElementById('title-en').value = item.title.en || '';
+  document.getElementById('subtitle-zh').value = item.subtitle ? item.subtitle.zh : '';
+  document.getElementById('subtitle-en').value = item.subtitle ? item.subtitle.en : '';
+  document.getElementById('desc-zh').value = item.description ? item.description.zh : '';
+  document.getElementById('desc-en').value = item.description ? item.description.en : '';
+  document.getElementById('tags').value = (item.tags || []).join(', ');
+  document.getElementById('cover-file').value = item.cover ? item.cover.replace('portfolio/', '') : '';
+  document.getElementById('cover-preview-area').innerHTML = '';
+  if (item.pdf) {
+    document.getElementById('pdf-file').value = item.pdf.src ? item.pdf.src.replace('portfolio/', '') : '';
+    document.getElementById('pdf-label-zh').value = item.pdf.label ? item.pdf.label.zh : '';
+    document.getElementById('pdf-label-en').value = item.pdf.label ? item.pdf.label.en : '';
+  } else {
+    document.getElementById('pdf-file').value = '';
+    document.getElementById('pdf-label-zh').value = '';
+    document.getElementById('pdf-label-en').value = '';
+  }
+  galleryImages = (item.gallery || []).map(g => ({
+    src: g.src,
+    captionZh: g.caption ? g.caption.zh : '',
+    captionEn: g.caption ? g.caption.en : ''
+  }));
+  renderGallery();
+  switchTab('add');
 }
 
-function removeGallery(i) {
-  galleryFiles.splice(i, 1)
-  renderGalleryPreview()
-}
-
-// Drag and drop for gallery
-function onDragStart(e, i) {
-  dragIndex = i
-  e.currentTarget.classList.add('dragging')
-  e.dataTransfer.effectAllowed = 'move'
-}
-function onDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move' }
-function onDragEnter(e, el) { e.preventDefault(); el.classList.add('drag-over') }
-function onDragLeave(e, el) { el.classList.remove('drag-over') }
-function onDrop(e, targetI) {
-  e.preventDefault()
-  e.currentTarget.classList.remove('drag-over')
-  if (dragIndex === null || dragIndex === targetI) return
-  const item = galleryFiles.splice(dragIndex, 1)[0]
-  galleryFiles.splice(targetI, 0, item)
-  renderGalleryPreview()
-}
-function onDragEnd() {
-  dragIndex = null
-  document.querySelectorAll('.gallery-card').forEach(c => c.classList.remove('dragging', 'drag-over'))
-}
-
-// Save item
 function saveItem() {
-  const titleZh = $('title-zh').value.trim()
-  const titleEn = $('title-en').value.trim()
-  if (!titleZh && !titleEn) { alert('請至少填寫一個標題'); return }
+  const titleZh = document.getElementById('title-zh').value.trim();
+  const titleEn = document.getElementById('title-en').value.trim();
+  if (!titleZh && !titleEn) { toast('請輸入標題'); return; }
 
-  const cover = coverFileName || $('cover-filename').value.trim()
-  const subtitleZh = $('subtitle-zh').value.trim()
-  const subtitleEn = $('subtitle-en').value.trim()
-  const descZh = $('desc-zh').value.trim()
-  const descEn = $('desc-en').value.trim()
-  const tags = $('tags').value.trim().split(',').map(t => t.trim()).filter(Boolean)
-  const pdfFile = $('pdf').value.trim()
-  const pdfLabelZh = $('pdf-label-zh').value.trim()
-  const pdfLabelEn = $('pdf-label-en').value.trim()
+  const coverFile = document.getElementById('cover-file').value.trim();
+  const pdfFile = document.getElementById('pdf-file').value.trim();
 
   const item = {
-    cover: cover ? (cover.startsWith('portfolio/') ? cover : `portfolio/${cover}`) : '',
-    _coverDataUrl: coverDataUrl,
-    title: { zh: titleZh || titleEn, en: titleEn || titleZh },
-    subtitle: (subtitleZh || subtitleEn) ? { zh: subtitleZh, en: subtitleEn } : null,
-    description: { zh: descZh, en: descEn },
-    tags,
-    gallery: galleryFiles.map(g => ({
-      src: g.name.startsWith('portfolio/') ? g.name : `portfolio/${g.name}`,
-      caption: { zh: g.captionZh, en: g.captionEn },
-      _dataUrl: g.dataUrl,
-    })),
-    pdf: pdfFile ? {
-      src: pdfFile.startsWith('portfolio/') ? pdfFile : `portfolio/${pdfFile}`,
-      label: { zh: pdfLabelZh || '檢視 PDF', en: pdfLabelEn || 'View PDF' },
-    } : null,
+    cover: coverFile ? 'portfolio/' + coverFile : '',
+    title: { zh: titleZh, en: titleEn },
+    subtitle: {
+      zh: document.getElementById('subtitle-zh').value.trim(),
+      en: document.getElementById('subtitle-en').value.trim()
+    },
+    description: {
+      zh: document.getElementById('desc-zh').value.trim(),
+      en: document.getElementById('desc-en').value.trim()
+    },
+    tags: document.getElementById('tags').value.split(/[,，]/).map(s => s.trim()).filter(Boolean),
+    gallery: galleryImages.map(g => ({
+      src: g.src,
+      caption: { zh: g.captionZh || '', en: g.captionEn || '' }
+    }))
+  };
+
+  if (pdfFile) {
+    item.pdf = {
+      src: 'portfolio/' + pdfFile,
+      label: {
+        zh: document.getElementById('pdf-label-zh').value.trim() || titleZh,
+        en: document.getElementById('pdf-label-en').value.trim() || titleEn
+      }
+    };
   }
 
   if (editIndex >= 0) {
-    items[editIndex] = item
-    showToast('作品已更新')
-    editIndex = -1
+    items[editIndex] = item;
+    toast('作品已更新！');
   } else {
-    items.push(item)
-    showToast('作品已新增')
+    items.push(item);
+    toast('作品已新增！');
   }
-
-  saveToStorage()
-  clearForm()
-  renderItems()
-  generateCode()
-  switchTab('projects')
+  persist();
+  renderList();
+  switchTab('projects');
 }
 
-function clearForm() {
-  ;['title-zh','title-en','subtitle-zh','subtitle-en','desc-zh','desc-en','tags','pdf','pdf-label-zh','pdf-label-en','cover-filename','manual-gallery-name'].forEach(id => $(id).value = '')
-  $('cover-preview').style.display = 'none'
-  $('cover-text').style.display = ''
-  $('cover-input').value = ''
-  coverFileName = ''
-  coverDataUrl = ''
-  galleryFiles = []
-  renderGalleryPreview()
-  editIndex = -1
-  $('form-title').textContent = '新增作品'
-}
-
-function editItem(index) {
-  const item = items[index]
-  $('title-zh').value = item.title.zh || ''
-  $('title-en').value = item.title.en || ''
-  $('subtitle-zh').value = item.subtitle ? item.subtitle.zh : ''
-  $('subtitle-en').value = item.subtitle ? item.subtitle.en : ''
-  $('desc-zh').value = item.description.zh || ''
-  $('desc-en').value = item.description.en || ''
-  $('tags').value = item.tags.join(', ')
-  $('pdf').value = item.pdf ? item.pdf.src.replace('portfolio/', '') : ''
-  $('pdf-label-zh').value = item.pdf ? item.pdf.label.zh : ''
-  $('pdf-label-en').value = item.pdf ? item.pdf.label.en : ''
-  $('cover-filename').value = item.cover ? item.cover.replace('portfolio/', '') : ''
-  coverFileName = item.cover ? item.cover.replace('portfolio/', '') : ''
-
-  if (item._coverDataUrl) {
-    coverDataUrl = item._coverDataUrl
-    $('cover-preview').src = coverDataUrl
-    $('cover-preview').style.display = 'block'
-    $('cover-text').style.display = 'none'
-  }
-
-  galleryFiles = (item.gallery || []).map(g => ({
-    name: g.src.replace('portfolio/', ''),
-    dataUrl: g._dataUrl || '',
-    captionZh: g.caption.zh || '',
-    captionEn: g.caption.en || '',
-  }))
-  renderGalleryPreview()
-
-  editIndex = index
-  $('form-title').textContent = '編輯作品'
-  switchTab('add')
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-
-function deleteItem(index) {
-  if (confirm('確定要刪除「' + items[index].title.zh + '」嗎？')) {
-    items.splice(index, 1)
-    saveToStorage()
-    renderItems()
-    generateCode()
-    showToast('已刪除')
+function confirmDelete(i) {
+  if (confirm('確定要刪除「' + items[i].title.zh + '」嗎？')) {
+    items.splice(i, 1);
+    persist();
+    renderList();
+    toast('已刪除');
   }
 }
 
-function moveItem(index, dir) {
-  const n = index + dir
-  if (n < 0 || n >= items.length) return
-  ;[items[index], items[n]] = [items[n], items[index]]
-  saveToStorage()
-  renderItems()
-  generateCode()
+function deleteItem() {
+  if (editIndex >= 0) {
+    confirmDelete(editIndex);
+    switchTab('projects');
+  }
 }
 
-function renderItems() {
-  const list = $('items-list')
-  $('item-count').textContent = items.length
-  if (items.length === 0) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">📁</div>尚未新增任何作品，點擊上方「新增作品」開始吧！</div>'
-    return
-  }
-  list.innerHTML = items.map((item, i) => `
-    <div class="item-card">
-      ${item._coverDataUrl
-        ? `<img class="item-thumb" src="${item._coverDataUrl}" />`
-        : `<div class="item-thumb-placeholder">${item.cover ? item.cover.replace('portfolio/','') : '無封面'}</div>`}
-      <div class="item-info">
-        <h3>${item.title.zh}</h3>
-        ${item.subtitle ? `<div class="item-sub">${item.subtitle.zh}</div>` : ''}
-        <p>${item.description.zh ? item.description.zh.slice(0, 80) + (item.description.zh.length > 80 ? '...' : '') : '（無描述）'}</p>
-        <div class="item-meta">
-          ${item.tags.map(t => `<span class="item-tag">${t}</span>`).join('')}
-          ${(item.gallery || []).length > 0 ? `<span class="item-badge">${item.gallery.length} 張照片</span>` : ''}
-          ${item.pdf ? `<span class="item-badge">PDF</span>` : ''}
-        </div>
-      </div>
-      <div class="item-actions">
-        <button class="btn btn-secondary btn-sm" onclick="editItem(${i})">編輯</button>
-        <button class="btn btn-secondary btn-sm" onclick="moveItem(${i},-1)">↑ 上移</button>
-        <button class="btn btn-secondary btn-sm" onclick="moveItem(${i},1)">↓ 下移</button>
-        <button class="btn btn-danger" onclick="deleteItem(${i})">刪除</button>
-      </div>
-    </div>
-  `).join('')
+function addGalleryByFilename() {
+  const input = document.getElementById('gallery-file-input');
+  const filename = input.value.trim();
+  if (!filename) return;
+  galleryImages.push({ src: 'portfolio/' + filename, captionZh: '', captionEn: '' });
+  input.value = '';
+  renderGallery();
 }
 
-function generateCode() {
-  if (items.length === 0) {
-    $('code-content').textContent = 'const portfolioItems = []\n\nexport default portfolioItems'
-    return
+function removeGalleryImage(i) {
+  galleryImages.splice(i, 1);
+  renderGallery();
+}
+
+function updateCaption(i, lang, val) {
+  if (lang === 'zh') galleryImages[i].captionZh = val;
+  else galleryImages[i].captionEn = val;
+}
+
+function renderGallery() {
+  const grid = document.getElementById('gallery-grid');
+  const hint = document.getElementById('drag-hint');
+  if (galleryImages.length === 0) {
+    grid.innerHTML = '';
+    hint.style.display = 'none';
+    return;
   }
-  const dataItems = items.map(item => {
-    const obj = { cover: item.cover, title: item.title }
-    if (item.subtitle) obj.subtitle = item.subtitle
-    obj.description = item.description
-    obj.tags = item.tags
-    if (item.gallery && item.gallery.length > 0) {
-      obj.gallery = item.gallery.map(g => ({ src: g.src, caption: g.caption }))
+  hint.style.display = 'block';
+  grid.innerHTML = galleryImages.map((img, i) => {
+    const fname = img.src.replace('portfolio/', '');
+    return '<div class="gallery-card" draggable="true" data-idx="' + i + '">' +
+      '<div class="gallery-img-wrap">' +
+      '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:11px;color:#9b8e7e;padding:8px;word-break:break-all;">' + esc(fname) + '</div>' +
+      '<span class="gallery-order">#' + (i + 1) + '</span>' +
+      '<div class="gallery-controls">' +
+      '<button title="刪除" onclick="removeGalleryImage(' + i + ')">&#x2715;</button>' +
+      '</div></div>' +
+      '<div class="gallery-body">' +
+      '<input class="gallery-caption-input" placeholder="中文說明" value="' + esc(img.captionZh) + '" onchange="updateCaption(' + i + ',\'zh\',this.value)" />' +
+      '<input class="gallery-caption-input" placeholder="English caption" value="' + esc(img.captionEn) + '" onchange="updateCaption(' + i + ',\'en\',this.value)" />' +
+      '</div></div>';
+  }).join('');
+
+  grid.querySelectorAll('.gallery-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      dragSrc = +card.dataset.idx;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      dragSrc = null;
+    });
+    card.addEventListener('dragover', e => { e.preventDefault(); card.classList.add('drag-over'); });
+    card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+    card.addEventListener('drop', e => {
+      e.preventDefault();
+      card.classList.remove('drag-over');
+      const to = +card.dataset.idx;
+      if (dragSrc !== null && dragSrc !== to) {
+        const moved = galleryImages.splice(dragSrc, 1)[0];
+        galleryImages.splice(to, 0, moved);
+        renderGallery();
+      }
+    });
+  });
+}
+
+function buildJsonData() {
+  return JSON.stringify(items, null, 2);
+}
+
+async function saveToProject() {
+  const jsonStr = buildJsonData();
+  try {
+    if (!fileHandle) {
+      fileHandle = await window.showSaveFilePicker({
+        suggestedName: 'data.json',
+        types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
+      });
     }
-    if (item.pdf) obj.pdf = item.pdf
-    return JSON.stringify(obj, null, 2).replace(/"([^"]+)":/g, '$1:').replace(/"/g, "'")
-  })
-  $('code-content').textContent = `const portfolioItems = [\n${dataItems.map(d => '  ' + d.split('\n').join('\n  ')).join(',\n')}\n]\n\nexport default portfolioItems\n`
-}
-
-function copyCode() {
-  navigator.clipboard.writeText($('code-content').textContent).then(() => {
-    const btn = document.querySelector('.copy-btn')
-    btn.textContent = '已複製 ✓'
-    showToast('程式碼已複製到剪貼簿')
-    setTimeout(() => btn.textContent = '複製', 2000)
-  })
-}
-
-// Pre-loaded data from existing portfolioData.js
-const PRELOADED = [
-  {
-    cover: 'portfolio/S__4628507.jpg',
-    _coverDataUrl: '',
-    title: { zh: 'ERGO PEEL', en: 'ERGO PEEL' },
-    subtitle: { zh: '居家產品設計', en: 'Home Product Design' },
-    description: {
-      zh: '將人體工學融入最日常的備料動作，以拇指、食指、中指的自然夾持姿勢為核心，讓施力方向與手部肌肉走向一致。底部快拆式刀盤可自由切換削皮刀片或磨板，一個握把應對多種廚房需求。',
-      en: 'Seamlessly blending ergonomics into daily meal prep, ERGO PEEL centers on the natural pinch grip of the thumb, index, and middle fingers, aligning applying force with hand anatomy. Featuring a quick-release base, it easily switches between a peeler and a grater—handling diverse kitchen tasks with just one handle.'
-    },
-    tags: ['Solidworks', 'Claude Code'],
-    gallery: [
-      { src: 'portfolio/S__27705349_0.jpg', caption: { zh: '草模-1', en: 'Mockup-1' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705368_0.jpg', caption: { zh: '3D模型', en: '3D model' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705371_0.jpg', caption: { zh: '3D模型', en: '3D model' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705350_0.jpg', caption: { zh: '草模-2', en: 'Mockup-2' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705369_0.jpg', caption: { zh: '3D模型', en: '3D model' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705351_0.jpg', caption: { zh: '草模-3', en: 'Mockup-3' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705366_0.jpg', caption: { zh: '成品-1', en: 'Final product-1' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705367_0.jpg', caption: { zh: '成品-2', en: 'Final product-2' }, _dataUrl: '' },
-      { src: 'portfolio/S__27729924_0.jpg', caption: { zh: '展示', en: 'Showcase' }, _dataUrl: '' },
-      { src: 'portfolio/IMG_6015.png', caption: { zh: '主題表板', en: 'Display Board' }, _dataUrl: '' },
-      { src: 'portfolio/1.png', caption: { zh: '產品表板-1', en: 'Presentation Board-1' }, _dataUrl: '' },
-      { src: 'portfolio/2.png', caption: { zh: '產品表板-2', en: 'Presentation Board-2' }, _dataUrl: '' },
-    ],
-    pdf: { src: 'portfolio/ERGO PEEL 簡報.pdf.pdf', label: { zh: 'ERGO PEEL', en: 'ERGO PEEL' } }
+    const writable = await fileHandle.createWritable();
+    await writable.write(jsonStr);
+    await writable.close();
+    toast('✅ 已儲存到 data.json！執行 npm run deploy 即可上線');
+  } catch (e) {
+    if (e.name === 'AbortError') return;
+    downloadJson();
+    toast('無法直接儲存，已改為下載');
   }
-]
-
-// Init
-loadFromStorage()
-if (items.length === 0) {
-  items = PRELOADED
-  saveToStorage()
-  renderItems()
-  generateCode()
 }
+
+function downloadJson() {
+  const jsonStr = buildJsonData();
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('已下載 data.json，請放到 public/portfolio/ 資料夾');
+}
+
+init();
 </script>
 </body>
 </html>

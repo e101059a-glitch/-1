@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import portfolioItems from '../portfolioData.js'
+import staticItems from '../portfolioData.js'
 import ProjectModal from './ProjectModal.jsx'
 import styles from './Portfolio.module.css'
 
@@ -101,7 +101,17 @@ const VISIBLE_COUNT = 3
 function Portfolio({ lang }) {
   const [selectedIndex, setSelectedIndex] = useState(null)
   const [showAll, setShowAll] = useState(false)
+  const [portfolioItems, setPortfolioItems] = useState(staticItems)
   const scrollRef = useRef(null)
+
+  useEffect(() => {
+    const basePath = import.meta.env.BASE_URL
+    fetch(`${basePath}portfolio/data.json`)
+      .then(r => { if (r.ok) return r.json(); throw new Error() })
+      .then(data => { if (data && data.length > 0) setPortfolioItems(data) })
+      .catch(() => {})
+  }, [])
+
   const hasItems = portfolioItems.length > 0
   const hasMore = portfolioItems.length > VISIBLE_COUNT
 
@@ -140,7 +150,6 @@ function Portfolio({ lang }) {
           )}
         </div>
 
-        {/* Carousel view */}
         {!showAll && (
           <div className={styles.carouselWrapper}>
             {hasMore && (
@@ -175,7 +184,6 @@ function Portfolio({ lang }) {
           </div>
         )}
 
-        {/* Grid view (see all) */}
         {showAll && (
           <motion.div
             className={styles.grid}
