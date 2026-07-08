@@ -18,8 +18,28 @@ const portfolioItems = [
     ],
     gallery: [
       {
+        src: 'portfolio/IMG_6015.png',
+        caption: { zh: '主題表板', en: 'Display Board' }
+      },
+      {
+        src: 'portfolio/1.png',
+        caption: { zh: '產品表板-1', en: 'Presentation Board-1' }
+      },
+      {
+        src: 'portfolio/2.png',
+        caption: { zh: '產品表板-2', en: 'Presentation Board-2' }
+      },
+      {
         src: 'portfolio/S__27705349_0.jpg',
         caption: { zh: '草模-1', en: 'Mockup-1' }
+      },
+      {
+        src: 'portfolio/S__27705350_0.jpg',
+        caption: { zh: '草模-2', en: 'Mockup-2' }
+      },
+      {
+        src: 'portfolio/S__27705351_0.jpg',
+        caption: { zh: '草模-3', en: 'Mockup-3' }
       },
       {
         src: 'portfolio/S__27705368_0.jpg',
@@ -30,16 +50,8 @@ const portfolioItems = [
         caption: { zh: '3D模型', en: '3D model' }
       },
       {
-        src: 'portfolio/S__27705350_0.jpg',
-        caption: { zh: '草模-2', en: 'Mockup-2' }
-      },
-      {
         src: 'portfolio/S__27705369_0.jpg',
         caption: { zh: '3D模型', en: '3D model' }
-      },
-      {
-        src: 'portfolio/S__27705351_0.jpg',
-        caption: { zh: '草模-3', en: 'Mockup-3' }
       },
       {
         src: 'portfolio/S__27705366_0.jpg',
@@ -52,18 +64,6 @@ const portfolioItems = [
       {
         src: 'portfolio/S__27729924_0.jpg',
         caption: { zh: '展示', en: 'Showcase' }
-      },
-      {
-        src: 'portfolio/IMG_6015.png',
-        caption: { zh: '主題表板', en: 'Display Board' }
-      },
-      {
-        src: 'portfolio/1.png',
-        caption: { zh: '產品表板-1', en: 'Presentation Board-1' }
-      },
-      {
-        src: 'portfolio/2.png',
-        caption: { zh: '產品表板-2', en: 'Presentation Board-2' }
       }
     ],
     pdf: {
