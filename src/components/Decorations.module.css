@@ -11,6 +11,56 @@
   opacity: 0.25;
 }
 
+/* Gentle looping motion so the page feels alive */
+@keyframes floatY {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -14px;
+  }
+}
+
+@keyframes floatX {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 10px 0;
+  }
+}
+
+@keyframes spin {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.25;
+    scale: 1;
+  }
+  50% {
+    opacity: 0.55;
+    scale: 1.6;
+  }
+}
+
+@keyframes breathe {
+  0%, 100% {
+    scale: 1;
+    opacity: 0.25;
+  }
+  50% {
+    scale: 1.12;
+    opacity: 0.4;
+  }
+}
+
 /* Circles */
 .circle1 {
   width: 120px;
@@ -19,6 +69,7 @@
   border-radius: 50%;
   top: 15%;
   left: 20px;
+  animation: floatY 9s ease-in-out infinite;
 }
 
 .circle2 {
@@ -28,6 +79,7 @@
   border-radius: 50%;
   top: 55%;
   right: 20px;
+  animation: floatY 11s ease-in-out 1.5s infinite;
 }
 
 /* Lines */
@@ -38,6 +90,7 @@
   top: 35%;
   left: 60px;
   transform: rotate(20deg);
+  animation: floatY 12s ease-in-out 0.5s infinite;
 }
 
 .line2 {
@@ -47,6 +100,7 @@
   top: 75%;
   right: 70px;
   transform: rotate(-15deg);
+  animation: floatY 10s ease-in-out 2.5s infinite;
 }
 
 /* Dots */
@@ -57,6 +111,7 @@
   border-radius: 50%;
   top: 60%;
   left: 45px;
+  animation: twinkle 4s ease-in-out infinite;
 }
 
 .dot2 {
@@ -66,6 +121,7 @@
   border-radius: 50%;
   top: 25%;
   right: 55px;
+  animation: twinkle 5s ease-in-out 1s infinite;
 }
 
 .dot3 {
@@ -75,6 +131,7 @@
   border-radius: 50%;
   top: 85%;
   right: 45px;
+  animation: twinkle 3.5s ease-in-out 2s infinite;
 }
 
 /* Crosses */
@@ -87,11 +144,13 @@
 .cross1 {
   top: 45%;
   left: 35px;
+  animation: spin 24s linear infinite;
 }
 
 .cross2 {
   top: 40%;
   right: 50px;
+  animation: spin 30s linear infinite reverse;
 }
 
 .cross1 span,
@@ -124,6 +183,7 @@
   border-radius: 50%;
   top: 80%;
   left: 50px;
+  animation: breathe 7s ease-in-out infinite;
 }
 
 .ring2 {
@@ -133,6 +193,7 @@
   border-radius: 50%;
   top: 10%;
   right: 40px;
+  animation: breathe 8s ease-in-out 2s infinite;
 }
 
 @media (max-width: 1400px) {

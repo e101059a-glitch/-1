@@ -33,6 +33,16 @@
   border: 0.5px solid var(--color-divider);
   border-radius: 6px;
   padding: 28px 24px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(193, 127, 59, 0.12);
+  border-color: var(--color-accent);
 }
 
 .cardTitle {
@@ -59,13 +69,15 @@
   transition:
     background 0.25s ease,
     color 0.25s ease,
-    border-color 0.25s ease;
+    border-color 0.25s ease,
+    transform 0.25s ease;
 }
 
 .tag:hover {
   background: var(--color-accent);
   border-color: var(--color-accent);
   color: #fff;
+  transform: translateY(-2px) scale(1.05);
 }
 
 @media (max-width: 860px) {

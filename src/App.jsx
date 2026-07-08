@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { MotionConfig } from 'framer-motion'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
 import About from './components/About.jsx'
@@ -10,12 +11,14 @@ import Footer from './components/Footer.jsx'
 import SideNav from './components/SideNav.jsx'
 import SocialFloat from './components/SocialFloat.jsx'
 import Decorations from './components/Decorations.jsx'
+import ScrollProgress from './components/ScrollProgress.jsx'
 
 function App() {
   const [lang, setLang] = useState('zh')
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
+      <ScrollProgress />
       <Decorations />
       <SocialFloat />
       <SideNav />
@@ -29,7 +32,7 @@ function App() {
         <Contact lang={lang} />
       </main>
       <Footer lang={lang} />
-    </>
+    </MotionConfig>
   )
 }
 
