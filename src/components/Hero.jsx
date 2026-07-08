@@ -9,6 +9,7 @@ const content = {
       '國立高雄師範大學工業設計系二年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業暑期實習機會。',
     primary: '查看作品集',
     secondary: '聯絡我',
+    scrollHint: '往下探索',
   },
   en: {
     title: 'Yao-Wei Hsieh',
@@ -17,6 +18,24 @@ const content = {
       "2nd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with business strategy, seeking summer internship opportunities.",
     primary: 'View Portfolio',
     secondary: 'Get in Touch',
+    scrollHint: 'Scroll',
+  },
+}
+
+const titleContainer = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.1 },
+  },
+}
+
+const titleChar = {
+  hidden: { opacity: 0, y: 24, rotate: 6 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotate: 0,
+    transition: { type: 'spring', stiffness: 280, damping: 20 },
   },
 }
 
@@ -29,22 +48,37 @@ function Hero({ lang }) {
 
   return (
     <section id="hero" className={styles.hero}>
+      <div className={styles.glows} aria-hidden="true">
+        <div className={`${styles.glow} ${styles.glowLeft}`} />
+        <div className={`${styles.glow} ${styles.glowRight}`} />
+      </div>
+
       <div className={`section-container ${styles.inner}`}>
         <motion.h1
           key={`title-${lang}`}
           className={styles.title}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          variants={titleContainer}
+          initial="hidden"
+          animate="visible"
+          aria-label={t.title}
         >
-          {t.title}
+          {Array.from(t.title).map((char, i) => (
+            <motion.span
+              key={`${char}-${i}`}
+              className={styles.titleChar}
+              variants={titleChar}
+              aria-hidden="true"
+            >
+              {char === ' ' ? ' ' : char}
+            </motion.span>
+          ))}
         </motion.h1>
 
         <motion.div
           className={styles.line}
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
+          transition={{ duration: 0.6, delay: 0.35, ease: 'easeOut' }}
         />
 
         <motion.p
@@ -52,7 +86,7 @@ function Hero({ lang }) {
           className={styles.subtitle}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+          transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
         >
           {t.subtitle}
         </motion.p>
@@ -62,7 +96,7 @@ function Hero({ lang }) {
           className={styles.description}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 0.6, delay: 0.5, ease: 'easeOut' }}
         >
           {t.description}
         </motion.p>
@@ -71,24 +105,51 @@ function Hero({ lang }) {
           className={styles.actions}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
+          transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
         >
-          <button
+          <motion.button
             type="button"
             className={styles.primaryButton}
             onClick={() => scrollTo('portfolio')}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             {t.primary}
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             type="button"
             className={styles.secondaryButton}
             onClick={() => scrollTo('contact')}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             {t.secondary}
-          </button>
+          </motion.button>
         </motion.div>
       </div>
+
+      <motion.button
+        type="button"
+        className={styles.scrollHint}
+        onClick={() => scrollTo('about')}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 1.2 }}
+        aria-label={t.scrollHint}
+      >
+        <span className={styles.scrollHintText}>{t.scrollHint}</span>
+        <motion.span
+          className={styles.scrollHintArrow}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6 L8 11 L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </motion.span>
+      </motion.button>
     </section>
   )
 }

@@ -22,9 +22,9 @@ function GithubIcon(props) {
 }
 
 const links = [
-  { icon: Mail, href: 'mailto:your@email.com', label: 'Email' },
-  { icon: LinkedinIcon, href: 'https://linkedin.com', label: 'LinkedIn' },
-  { icon: GithubIcon, href: 'https://github.com', label: 'GitHub' },
+  { icon: Mail, href: 'mailto:e101059a@gmail.com', label: 'Email' },
+  { icon: LinkedinIcon, href: 'https://www.linkedin.com/in/耀緯-謝-0080082a7', label: 'LinkedIn' },
+  { icon: GithubIcon, href: 'https://github.com/e101059a-glitch', label: 'GitHub' },
 ]
 
 function SocialFloat() {

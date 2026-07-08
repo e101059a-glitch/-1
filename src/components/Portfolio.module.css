@@ -43,6 +43,16 @@
   width: 48px;
   height: 48px;
   color: var(--color-muted);
+  animation: iconFloat 4s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 /* Project cards */
@@ -59,8 +69,9 @@
 }
 
 .projectCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(193, 127, 59, 0.14);
+  border-color: var(--color-accent);
 }
 
 .imageWrapper {

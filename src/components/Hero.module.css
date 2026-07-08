@@ -1,10 +1,63 @@
 .hero {
+  position: relative;
   min-height: 88vh;
   display: flex;
   align-items: center;
+  overflow: hidden;
+}
+
+/* Soft drifting glows behind the hero content */
+.glows {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+}
+
+.glowLeft {
+  background: radial-gradient(circle, rgba(193, 127, 59, 0.45), transparent 70%);
+  top: 5%;
+  left: -10%;
+  animation: driftLeft 14s ease-in-out infinite alternate;
+}
+
+.glowRight {
+  background: radial-gradient(circle, rgba(224, 167, 99, 0.4), transparent 70%);
+  bottom: -5%;
+  right: -12%;
+  animation: driftRight 18s ease-in-out infinite alternate;
+}
+
+@keyframes driftLeft {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(70px, 50px) scale(1.15);
+  }
+}
+
+@keyframes driftRight {
+  from {
+    transform: translate(0, 0) scale(1.1);
+  }
+  to {
+    transform: translate(-60px, -45px) scale(0.95);
+  }
 }
 
 .inner {
+  position: relative;
+  z-index: 1;
   text-align: center;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -16,6 +69,11 @@
   font-weight: 600;
   letter-spacing: 0.5px;
   color: var(--color-text);
+}
+
+.titleChar {
+  display: inline-block;
+  white-space: pre;
 }
 
 .line {
@@ -83,8 +141,45 @@
   border-color: var(--color-accent);
 }
 
+.scrollHint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 8px;
+  color: var(--color-muted);
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+.scrollHint:hover {
+  color: var(--color-accent);
+}
+
+.scrollHintText {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.scrollHintArrow {
+  display: flex;
+}
+
 @media (max-width: 600px) {
   .title {
     font-size: 44px;
+  }
+
+  .glow {
+    width: 300px;
+    height: 300px;
+    filter: blur(70px);
   }
 }

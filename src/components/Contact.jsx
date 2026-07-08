@@ -34,9 +34,9 @@ const content = {
 }
 
 const contacts = [
-  { icon: Mail, label: 'Email', value: 'your@email.com', href: 'mailto:your@email.com' },
-  { icon: LinkedinIcon, label: 'LinkedIn', value: 'linkedin.com/in/yourprofile', href: 'https://linkedin.com' },
-  { icon: GithubIcon, label: 'GitHub', value: 'github.com/yourusername', href: 'https://github.com' },
+  { icon: Mail, label: 'Email', value: 'e101059a@gmail.com', href: 'mailto:e101059a@gmail.com' },
+  { icon: LinkedinIcon, label: 'LinkedIn', value: '謝耀緯 · LinkedIn', href: 'https://www.linkedin.com/in/耀緯-謝-0080082a7' },
+  { icon: GithubIcon, label: 'GitHub', value: 'github.com/e101059a-glitch', href: 'https://github.com/e101059a-glitch' },
 ]
 
 function Contact({ lang }) {
