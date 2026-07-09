@@ -104,6 +104,18 @@
   line-height: 1.9;
 }
 
+/* Reflection */
+.reflectionSection {
+  margin-top: 40px;
+}
+
+.reflection {
+  font-size: 15px;
+  color: var(--color-muted);
+  line-height: 1.9;
+  white-space: pre-line;
+}
+
 /* Section titles */
 .sectionTitle {
   font-family: var(--font-display);

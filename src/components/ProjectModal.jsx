@@ -114,6 +114,17 @@ function ProjectModal({ item, lang, onClose }) {
               </div>
             )}
 
+            {/* Reflection */}
+            {item.reflection && t(item.reflection) && (
+              <div className={styles.reflectionSection}>
+                <h3 className={styles.sectionTitle}>
+                  {lang === 'zh' ? '作品反思' : 'Reflection'}
+                </h3>
+                <div className={styles.divider} />
+                <p className={styles.reflection}>{t(item.reflection)}</p>
+              </div>
+            )}
+
             {/* PDF */}
             {item.pdf && item.pdf.src && (
               <div className={styles.pdfSection}>

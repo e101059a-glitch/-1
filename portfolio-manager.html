@@ -176,6 +176,17 @@
 
       <div class="form-row">
         <div class="form-group">
+          <label>中文反思 <span class="hint">（選填，完成作品後的心得與檢討）</span></label>
+          <textarea id="refl-zh" placeholder="這個作品學到了什麼、遇到什麼困難、下次可以怎麼做得更好..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>英文反思 <span class="hint">（選填）</span></label>
+          <textarea id="refl-en" placeholder="What you learned, challenges faced, what you'd improve..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
           <label>標籤（用逗號分隔）</label>
           <input type="text" id="tags" placeholder="例：SolidWorks, Rhino, 3D Printing" />
         </div>
@@ -495,6 +506,8 @@ function saveItem() {
   const subtitleEn = $('subtitle-en').value.trim()
   const descZh = $('desc-zh').value.trim()
   const descEn = $('desc-en').value.trim()
+  const reflZh = $('refl-zh').value.trim()
+  const reflEn = $('refl-en').value.trim()
   const tags = $('tags').value.trim().split(',').map(t => t.trim()).filter(Boolean)
   const pdfFile = $('pdf').value.trim()
   const pdfLabelZh = $('pdf-label-zh').value.trim()
@@ -506,6 +519,7 @@ function saveItem() {
     title: { zh: titleZh || titleEn, en: titleEn || titleZh },
     subtitle: (subtitleZh || subtitleEn) ? { zh: subtitleZh, en: subtitleEn } : null,
     description: { zh: descZh, en: descEn },
+    reflection: (reflZh || reflEn) ? { zh: reflZh, en: reflEn } : null,
     tags,
     gallery: galleryFiles.map(g => ({
       src: g.name.startsWith('portfolio/') ? g.name : `portfolio/${g.name}`,
@@ -535,7 +549,7 @@ function saveItem() {
 }
 
 function clearForm() {
-  ;['title-zh','title-en','subtitle-zh','subtitle-en','desc-zh','desc-en','tags','pdf','pdf-label-zh','pdf-label-en','cover-filename','manual-gallery-name'].forEach(id => $(id).value = '')
+  ;['title-zh','title-en','subtitle-zh','subtitle-en','desc-zh','desc-en','refl-zh','refl-en','tags','pdf','pdf-label-zh','pdf-label-en','cover-filename','manual-gallery-name'].forEach(id => $(id).value = '')
   $('cover-preview').style.display = 'none'
   $('cover-text').style.display = ''
   $('cover-input').value = ''
@@ -555,6 +569,8 @@ function editItem(index) {
   $('subtitle-en').value = item.subtitle ? item.subtitle.en : ''
   $('desc-zh').value = item.description.zh || ''
   $('desc-en').value = item.description.en || ''
+  $('refl-zh').value = item.reflection ? (item.reflection.zh || '') : ''
+  $('refl-en').value = item.reflection ? (item.reflection.en || '') : ''
   $('tags').value = item.tags.join(', ')
   $('pdf').value = item.pdf ? item.pdf.src.replace('portfolio/', '') : ''
   $('pdf-label-zh').value = item.pdf ? item.pdf.label.zh : ''
@@ -653,6 +669,7 @@ function generateCode() {
     const obj = { cover: item.cover, title: item.title }
     if (item.subtitle) obj.subtitle = item.subtitle
     obj.description = item.description
+    if (item.reflection) obj.reflection = item.reflection
     obj.tags = item.tags
     if (item.gallery && item.gallery.length > 0) {
       obj.gallery = item.gallery.map(g => ({ src: g.src, caption: g.caption }))
