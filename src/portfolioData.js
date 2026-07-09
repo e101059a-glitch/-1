@@ -18,15 +18,15 @@ const portfolioItems = [
     ],
     gallery: [
       {
-        src: 'portfolio/IMG_6015.png',
+        src: 'portfolio/IMG_6015.webp',
         caption: { zh: '主題表板', en: 'Display Board' }
       },
       {
-        src: 'portfolio/1.png',
+        src: 'portfolio/1.webp',
         caption: { zh: '產品表板-1', en: 'Presentation Board-1' }
       },
       {
-        src: 'portfolio/2.png',
+        src: 'portfolio/2.webp',
         caption: { zh: '產品表板-2', en: 'Presentation Board-2' }
       },
       {
@@ -67,7 +67,7 @@ const portfolioItems = [
       }
     ],
     pdf: {
-      src: 'portfolio/ERGO PEEL 簡報.pdf.pdf',
+      src: 'portfolio/ergo-peel.pdf',
       label: { zh: 'ERGO PEEL', en: 'ERGO PEEL' }
     }
   }

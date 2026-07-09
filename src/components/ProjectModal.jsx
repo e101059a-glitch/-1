@@ -1,7 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, FileText, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
 import styles from './ProjectModal.module.css'
 
 function ProjectModal({ item, lang, onClose }) {
@@ -102,6 +101,8 @@ function ProjectModal({ item, lang, onClose }) {
                           src={`${basePath}${img.src}`}
                           alt={t(img.caption)}
                           className={styles.galleryImage}
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                       {img.caption && t(img.caption) && (
