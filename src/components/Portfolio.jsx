@@ -1,9 +1,10 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import portfolioItems from '../portfolioData.js'
-import ProjectModal from './ProjectModal.jsx'
 import styles from './Portfolio.module.css'
+
+const ProjectModal = lazy(() => import('./ProjectModal.jsx'))
 
 const heading = { zh: '作品集', en: 'Portfolio' }
 const placeholderTitle = { zh: '作品即將推出', en: 'Coming Soon' }
@@ -66,6 +67,8 @@ function ProjectCard({ item, lang, index, onClick }) {
             src={`${basePath}${item.cover}`}
             alt={item.title[lang]}
             className={styles.image}
+            loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className={styles.imagePlaceholder}>
@@ -197,11 +200,13 @@ function Portfolio({ lang }) {
       </div>
 
       {selectedIndex !== null && (
-        <ProjectModal
-          item={portfolioItems[selectedIndex]}
-          lang={lang}
-          onClose={() => setSelectedIndex(null)}
-        />
+        <Suspense fallback={null}>
+          <ProjectModal
+            item={portfolioItems[selectedIndex]}
+            lang={lang}
+            onClose={() => setSelectedIndex(null)}
+          />
+        </Suspense>
       )}
     </section>
   )
