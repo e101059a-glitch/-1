@@ -675,7 +675,9 @@ function generateCode() {
       obj.gallery = item.gallery.map(g => ({ src: g.src, caption: g.caption }))
     }
     if (item.pdf) obj.pdf = item.pdf
-    return JSON.stringify(obj, null, 2).replace(/"([^"]+)":/g, '$1:').replace(/"/g, "'")
+    // 保留 JSON 的雙引號字串（合法的 JS），只把 key 的引號拿掉；
+    // 之前把雙引號全換成單引號，內容一出現 ' 就會產生壞掉的程式碼
+    return JSON.stringify(obj, null, 2).replace(/^(\s*)"([A-Za-z_$][\w$]*)":/gm, '$1$2:')
   })
   $('code-content').textContent = `const portfolioItems = [\n${dataItems.map(d => '  ' + d.split('\n').join('\n  ')).join(',\n')}\n]\n\nexport default portfolioItems\n`
 }
