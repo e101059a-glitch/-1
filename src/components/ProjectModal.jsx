@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, FileText, ChevronLeft, ChevronRight } from 'lucide-react'
 import styles from './ProjectModal.module.css'
@@ -6,6 +6,11 @@ import styles from './ProjectModal.module.css'
 function ProjectModal({ item, lang, onClose }) {
   const [lightbox, setLightbox] = useState(null)
   const basePath = import.meta.env.BASE_URL
+  const closeRef = useRef(null)
+
+  useEffect(() => {
+    closeRef.current?.focus()
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -44,8 +49,11 @@ function ProjectModal({ item, lang, onClose }) {
           exit={{ opacity: 0, y: 40 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
           onClick={(e) => e.stopPropagation()}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t(item.title)}
         >
-          <button type="button" className={styles.closeBtn} onClick={onClose}>
+          <button type="button" className={styles.closeBtn} onClick={onClose} ref={closeRef} aria-label={lang === 'zh' ? '關閉' : 'Close'}>
             <X size={22} strokeWidth={1.5} />
           </button>
 
@@ -95,6 +103,15 @@ function ProjectModal({ item, lang, onClose }) {
                       key={i}
                       className={styles.galleryItem}
                       onClick={() => setLightbox(i)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={t(img.caption) || `${lang === 'zh' ? '放大圖片' : 'Enlarge image'} ${i + 1}`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          setLightbox(i)
+                        }
+                      }}
                     >
                       <div className={styles.galleryImageWrapper}>
                         <img
@@ -160,6 +177,7 @@ function ProjectModal({ item, lang, onClose }) {
             type="button"
             className={styles.lightboxClose}
             onClick={() => setLightbox(null)}
+            aria-label={lang === 'zh' ? '關閉圖片' : 'Close image'}
           >
             <X size={24} strokeWidth={1.5} />
           </button>
@@ -169,6 +187,7 @@ function ProjectModal({ item, lang, onClose }) {
               type="button"
               className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
               onClick={(e) => { e.stopPropagation(); setLightbox(lightbox - 1) }}
+              aria-label={lang === 'zh' ? '上一張' : 'Previous image'}
             >
               <ChevronLeft size={32} strokeWidth={1.5} />
             </button>
@@ -195,6 +214,7 @@ function ProjectModal({ item, lang, onClose }) {
               type="button"
               className={`${styles.lightboxNav} ${styles.lightboxNext}`}
               onClick={(e) => { e.stopPropagation(); setLightbox(lightbox + 1) }}
+              aria-label={lang === 'zh' ? '下一張' : 'Next image'}
             >
               <ChevronRight size={32} strokeWidth={1.5} />
             </button>

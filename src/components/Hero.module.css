@@ -86,7 +86,7 @@
 
 .subtitle {
   font-size: 20px;
-  color: var(--color-accent);
+  color: var(--color-accent-deep);
   margin-bottom: 24px;
   letter-spacing: 0.3px;
 }
@@ -119,14 +119,14 @@
 }
 
 .primaryButton {
-  background: var(--color-accent);
+  background: var(--color-accent-deep);
   color: #fff;
-  border: 1px solid var(--color-accent);
+  border: 1px solid var(--color-accent-deep);
 }
 
 .primaryButton:hover {
   background: transparent;
-  color: var(--color-accent);
+  color: var(--color-accent-deep);
 }
 
 .secondaryButton {
@@ -136,9 +136,9 @@
 }
 
 .secondaryButton:hover {
-  background: var(--color-accent);
+  background: var(--color-accent-deep);
   color: #fff;
-  border-color: var(--color-accent);
+  border-color: var(--color-accent-deep);
 }
 
 .scrollHint {

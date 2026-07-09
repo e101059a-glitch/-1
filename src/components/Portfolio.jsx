@@ -60,6 +60,15 @@ function ProjectCard({ item, lang, index, onClick }) {
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      aria-label={`${viewText[lang]}: ${item.title[lang]}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick()
+        }
+      }}
     >
       <div className={styles.imageWrapper}>
         {hasCover ? (
@@ -147,7 +156,7 @@ function Portfolio({ lang }) {
         {!showAll && (
           <div className={styles.carouselWrapper}>
             {hasMore && (
-              <button type="button" className={`${styles.navArrow} ${styles.navLeft}`} onClick={() => scroll(-1)}>
+              <button type="button" className={`${styles.navArrow} ${styles.navLeft}`} onClick={() => scroll(-1)} aria-label={lang === 'zh' ? '上一個作品' : 'Previous project'}>
                 <ChevronLeft size={20} strokeWidth={2} />
               </button>
             )}
@@ -171,7 +180,7 @@ function Portfolio({ lang }) {
               }
             </div>
             {hasMore && (
-              <button type="button" className={`${styles.navArrow} ${styles.navRight}`} onClick={() => scroll(1)}>
+              <button type="button" className={`${styles.navArrow} ${styles.navRight}`} onClick={() => scroll(1)} aria-label={lang === 'zh' ? '下一個作品' : 'Next project'}>
                 <ChevronRight size={20} strokeWidth={2} />
               </button>
             )}

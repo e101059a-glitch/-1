@@ -45,6 +45,7 @@ function Navbar({ lang, setLang }) {
           type="button"
           className={styles.langToggle}
           onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
+          aria-label={lang === 'zh' ? 'Switch to English' : '切換為中文'}
         >
           {lang === 'zh' ? '中 / EN' : 'EN / 中'}
         </button>
@@ -53,7 +54,8 @@ function Navbar({ lang, setLang }) {
           type="button"
           className={styles.menuButton}
           onClick={() => setOpen(!open)}
-          aria-label="Menu"
+          aria-label={lang === 'zh' ? '選單' : 'Menu'}
+          aria-expanded={open}
         >
           <span />
           <span />
