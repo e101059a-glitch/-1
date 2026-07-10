@@ -1,0 +1,18 @@
+.container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* 不攔截任何點擊，滑鼠事件由 window 監聽換算格子位置 */
+  pointer-events: none;
+  z-index: 0;
+}
+
+.row {
+  display: flex;
+}
+
+.dot {
+  flex-shrink: 0;
+  opacity: 0;
+  border-radius: 1px;
+}

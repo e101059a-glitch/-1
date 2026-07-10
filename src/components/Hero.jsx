@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import PixelTrail from './PixelTrail.jsx'
 import styles from './Hero.module.css'
 
 const content = {
@@ -52,6 +53,8 @@ function Hero({ lang }) {
         <div className={`${styles.glow} ${styles.glowLeft}`} />
         <div className={`${styles.glow} ${styles.glowRight}`} />
       </div>
+
+      <PixelTrail />
 
       <div className={`section-container ${styles.inner}`}>
         <motion.h1
