@@ -60,10 +60,13 @@ function ProjectModal({ item, lang, onClose }) {
           {/* Hero cover */}
           {item.cover && (
             <div className={styles.coverWrapper}>
-              <img
+              <motion.img
                 src={`${basePath}${item.cover}`}
                 alt={t(item.title)}
                 className={styles.coverImage}
+                initial={{ scale: 1.08 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               />
             </div>
           )}
@@ -99,9 +102,13 @@ function ProjectModal({ item, lang, onClose }) {
                 <div className={styles.divider} />
                 <div className={styles.gallery}>
                   {item.gallery.map((img, i) => (
-                    <div
+                    <motion.div
                       key={i}
                       className={styles.galleryItem}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ duration: 0.45, delay: (i % 2) * 0.08, ease: 'easeOut' }}
                       onClick={() => setLightbox(i)}
                       role="button"
                       tabIndex={0}
@@ -125,7 +132,7 @@ function ProjectModal({ item, lang, onClose }) {
                       {img.caption && t(img.caption) && (
                         <p className={styles.galleryCaption}>{t(img.caption)}</p>
                       )}
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
@@ -193,11 +200,15 @@ function ProjectModal({ item, lang, onClose }) {
             </button>
           )}
 
-          <img
+          <motion.img
+            key={lightbox}
             src={`${basePath}${item.gallery[lightbox].src}`}
             alt={t(item.gallery[lightbox].caption)}
             className={styles.lightboxImage}
             onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
           />
 
           {item.gallery[lightbox].caption && (

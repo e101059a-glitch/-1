@@ -104,7 +104,7 @@
   line-height: 1.9;
 }
 
-/* Reflection */
+/* Reflection — 以引言卡片區隔於一般描述，是作者的個人註記 */
 .reflectionSection {
   margin-top: 40px;
 }
@@ -114,6 +114,10 @@
   color: var(--color-muted);
   line-height: 1.9;
   white-space: pre-line;
+  background: var(--color-card);
+  border-left: 2px solid var(--color-accent);
+  border-radius: 0 6px 6px 0;
+  padding: 20px 24px;
 }
 
 /* Section titles */

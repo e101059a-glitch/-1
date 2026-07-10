@@ -1,5 +1,5 @@
 .experience {
-  padding: 100px 0;
+  padding: clamp(72px, 9vw, 120px) 0;
   border-top: 0.5px solid var(--color-divider);
 }
 
@@ -9,7 +9,9 @@
 
 .heading {
   font-family: var(--font-display);
-  font-size: 36px;
+  font-size: clamp(28px, 5.5vw, 38px);
+  letter-spacing: 0.02em;
+  text-wrap: balance;
   color: var(--color-text);
 }
 
