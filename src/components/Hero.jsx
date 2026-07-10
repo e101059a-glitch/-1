@@ -84,15 +84,41 @@ function Hero({ lang }) {
           transition={{ duration: 0.6, delay: 0.35, ease: 'easeOut' }}
         />
 
-        <motion.p
+        <motion.div
           key={`subtitle-${lang}`}
-          className={styles.subtitle}
+          className={styles.subtitleWrap}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
         >
-          {t.subtitle}
-        </motion.p>
+          <motion.svg
+            className={styles.subtitleCircle}
+            viewBox="0 0 320 120"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.path
+              d="M 253 22 C 333 64 280 100 160 106 C 67 106 38 96 38 62 C 38 26 93 16 160 16 C 227 16 255 34 257 42"
+              fill="none"
+              strokeWidth="2.6"
+              strokeLinecap="round"
+              variants={{
+                hidden: { pathLength: 0, opacity: 0 },
+                visible: {
+                  pathLength: 1,
+                  opacity: 0.85,
+                  transition: {
+                    pathLength: { duration: 1.6, delay: 0.8, ease: [0.43, 0.13, 0.23, 0.96] },
+                    opacity: { duration: 0.3, delay: 0.8 },
+                  },
+                },
+              }}
+            />
+          </motion.svg>
+          <p className={styles.subtitle}>{t.subtitle}</p>
+        </motion.div>
 
         <motion.p
           key={`desc-${lang}`}
