@@ -2,6 +2,7 @@ import { useState, useRef, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import portfolioItems from '../portfolioData.js'
+import FeaturedShowcase from './FeaturedShowcase.jsx'
 import styles from './Portfolio.module.css'
 
 const ProjectModal = lazy(() => import('./ProjectModal.jsx'))
@@ -151,6 +152,15 @@ function Portfolio({ lang }) {
             </button>
           )}
         </div>
+
+        {/* Featured project showcase */}
+        {hasItems && (
+          <FeaturedShowcase
+            item={portfolioItems[0]}
+            lang={lang}
+            onOpen={() => setSelectedIndex(0)}
+          />
+        )}
 
         {/* Carousel view */}
         {!showAll && (
