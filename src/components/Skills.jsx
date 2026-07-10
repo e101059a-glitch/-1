@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import LetterSwap from './LetterSwap.jsx'
 import styles from './Skills.module.css'
 
 const categories = [
@@ -27,6 +29,8 @@ const categories = [
 const heading = { zh: '技能', en: 'Skills' }
 
 function Skills({ lang }) {
+  const [hovered, setHovered] = useState(null)
+
   return (
     <section id="skills" className={styles.skills}>
       <div className={`section-container ${styles.inner}`}>
@@ -50,9 +54,11 @@ function Skills({ lang }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
             >
               <h3 className={styles.cardTitle}>
-                {category[lang]}
+                <LetterSwap label={category[lang]} active={hovered === i} />
               </h3>
               <div className={styles.tags}>
                 {category.items.map((item) => {
