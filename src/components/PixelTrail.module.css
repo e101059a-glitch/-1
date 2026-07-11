@@ -1,10 +1,12 @@
 .container {
-  position: absolute;
+  /* 固定鋪滿整個視窗，隨滑鼠在全頁留下軌跡；捲動時網格固定、內容在下方流動 */
+  position: fixed;
   inset: 0;
   overflow: hidden;
   /* 不攔截任何點擊，滑鼠事件由 window 監聽換算格子位置 */
   pointer-events: none;
-  z-index: 0;
+  /* 在內容之上、但在導覽列(100)/側邊(90)/彈窗(200+)之下 */
+  z-index: 5;
 }
 
 .row {

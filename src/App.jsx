@@ -12,6 +12,7 @@ import SideNav from './components/SideNav.jsx'
 import SocialFloat from './components/SocialFloat.jsx'
 import Decorations from './components/Decorations.jsx'
 import ScrollProgress from './components/ScrollProgress.jsx'
+import PixelTrail from './components/PixelTrail.jsx'
 
 function App() {
   const [lang, setLang] = useState('zh')
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <MotionConfig reducedMotion="user">
+      <PixelTrail />
       <ScrollProgress />
       <Decorations />
       <SocialFloat />
