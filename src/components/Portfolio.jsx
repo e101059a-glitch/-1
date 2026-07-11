@@ -109,8 +109,9 @@ function Portfolio({ lang }) {
   const [showAll, setShowAll] = useState(false)
   const scrollRef = useRef(null)
   const hasItems = portfolioItems.length > 0
-  const hasMore = portfolioItems.length > VISIBLE_COUNT
-  const isSingle = portfolioItems.length === 1
+  const otherItems = hasItems ? portfolioItems.slice(1) : []
+  const hasOthers = otherItems.length > 0
+  const hasMore = otherItems.length > VISIBLE_COUNT
 
   const scroll = (dir) => {
     if (!scrollRef.current) return
@@ -149,8 +150,8 @@ function Portfolio({ lang }) {
           />
         )}
 
-        {/* Single project: 3D rotating gallery of its images */}
-        {isSingle && (
+        {/* Featured project's gallery: always the 3D rotating carousel */}
+        {hasItems && (
           <ThreeDCarousel
             item={portfolioItems[0]}
             lang={lang}
@@ -158,8 +159,8 @@ function Portfolio({ lang }) {
           />
         )}
 
-        {/* Carousel view (multiple projects, or placeholders) */}
-        {!isSingle && !showAll && (
+        {/* Other projects (everything besides the featured one) */}
+        {hasOthers && !showAll && (
           <div className={styles.carouselWrapper}>
             {hasMore && (
               <button type="button" className={`${styles.navArrow} ${styles.navLeft}`} onClick={() => scroll(-1)} aria-label={lang === 'zh' ? '上一個作品' : 'Previous project'}>
@@ -167,23 +168,16 @@ function Portfolio({ lang }) {
               </button>
             )}
             <div className={styles.carousel} ref={scrollRef}>
-              {hasItems
-                ? portfolioItems.map((item, i) => (
-                    <div className={styles.carouselSlide} key={i}>
-                      <ProjectCard
-                        item={item}
-                        lang={lang}
-                        index={i}
-                        onClick={() => setSelectedIndex(i)}
-                      />
-                    </div>
-                  ))
-                : [1, 2, 3].map((id, i) => (
-                    <div className={styles.carouselSlide} key={id}>
-                      <PlaceholderCard lang={lang} index={i} />
-                    </div>
-                  ))
-              }
+              {otherItems.map((item, i) => (
+                <div className={styles.carouselSlide} key={i + 1}>
+                  <ProjectCard
+                    item={item}
+                    lang={lang}
+                    index={i}
+                    onClick={() => setSelectedIndex(i + 1)}
+                  />
+                </div>
+              ))}
             </div>
             {hasMore && (
               <button type="button" className={`${styles.navArrow} ${styles.navRight}`} onClick={() => scroll(1)} aria-label={lang === 'zh' ? '下一個作品' : 'Next project'}>
@@ -193,21 +187,30 @@ function Portfolio({ lang }) {
           </div>
         )}
 
-        {/* Grid view (see all) */}
-        {!isSingle && showAll && (
+        {/* No projects yet: placeholder cards */}
+        {!hasItems && (
+          <div className={styles.grid}>
+            {[1, 2, 3].map((id, i) => (
+              <PlaceholderCard key={id} lang={lang} index={i} />
+            ))}
+          </div>
+        )}
+
+        {/* Grid view (see all other projects) */}
+        {hasOthers && showAll && (
           <motion.div
             className={styles.grid}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: duration.fast, ease }}
           >
-            {portfolioItems.map((item, i) => (
+            {otherItems.map((item, i) => (
               <ProjectCard
-                key={i}
+                key={i + 1}
                 item={item}
                 lang={lang}
                 index={i}
-                onClick={() => setSelectedIndex(i)}
+                onClick={() => setSelectedIndex(i + 1)}
               />
             ))}
           </motion.div>
