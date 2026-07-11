@@ -26,13 +26,13 @@ function GithubIcon(props) {
 const content = {
   zh: {
     heading: '聯絡',
-    intro: '正在尋找設計或商業領域的暑期實習機會——歡迎與我聯繫，一起探討設計與商業的可能性！',
+    intro: '正在尋找設計或商業領域的實習機會——歡迎與我聯繫，一起探討設計與商業的可能性！',
     cta: '寫信給我',
     ctaHint: '通常會在 24 小時內回覆',
   },
   en: {
     heading: 'Contact',
-    intro: "Currently looking for summer internships in design or business — let's connect and explore opportunities together!",
+    intro: "Currently looking for internships in design or business — let's connect and explore opportunities together!",
     cta: 'Email Me',
     ctaHint: 'I usually reply within 24 hours',
   },

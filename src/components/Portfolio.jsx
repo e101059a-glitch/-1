@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import portfolioItems from '../portfolioData.js'
 import FeaturedShowcase from './FeaturedShowcase.jsx'
-import BentoGallery from './BentoGallery.jsx'
+import ThreeDCarousel from './ThreeDCarousel.jsx'
 import { fadeUpItem, flipIn, ease, duration } from '../motion.js'
 import styles from './Portfolio.module.css'
 
@@ -149,9 +149,9 @@ function Portfolio({ lang }) {
           />
         )}
 
-        {/* Single project: bento gallery of its images */}
+        {/* Single project: 3D rotating gallery of its images */}
         {isSingle && (
-          <BentoGallery
+          <ThreeDCarousel
             item={portfolioItems[0]}
             lang={lang}
             onOpen={() => setSelectedIndex(0)}

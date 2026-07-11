@@ -8,7 +8,7 @@ const content = {
     title: '謝耀緯',
     subtitle: '工業設計 × 事業經營',
     description:
-      '國立高雄師範大學工業設計系二年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業暑期實習機會。',
+      '國立高雄師範大學工業設計系二年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業實習機會。',
     primary: '查看作品集',
     secondary: '聯絡我',
     scrollHint: '往下探索',
@@ -17,15 +17,12 @@ const content = {
     title: 'Yao-Wei Hsieh',
     subtitle: 'Industrial Design × Business',
     description:
-      "2nd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with business strategy, seeking summer internship opportunities.",
+      "2nd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with business strategy, seeking internship opportunities.",
     primary: 'View Portfolio',
     secondary: 'Get in Touch',
     scrollHint: 'Scroll',
-    pill: 'Open to summer internships',
   },
 }
-
-const pillText = { zh: '正在尋找暑期實習機會', en: 'Open to summer internships' }
 
 const titleContainer = {
   hidden: {},
@@ -61,16 +58,6 @@ function Hero({ lang }) {
       <PixelTrail />
 
       <div className={`section-container ${styles.inner}`}>
-        <motion.span
-          className={`pill ${styles.heroPill}`}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: duration.base, ease }}
-        >
-          <span className={styles.pillDot} />
-          {pillText[lang]}
-        </motion.span>
-
         <motion.h1
           key={`title-${lang}`}
           className={styles.title}

@@ -6,6 +6,15 @@ const heading = { zh: '經歷', en: 'Experience' }
 
 const experiences = [
   {
+    org: '國立高雄師範大學 工業設計系學會',
+    role: { zh: '公關', en: 'Public Relations Officer' },
+    period: '2026.05 —',
+    description: {
+      zh: '負責與廠商接洽、洽談合作，並為系上活動爭取贊助，累積對外溝通與商務談判的實務經驗。',
+      en: 'Liaising with vendors and negotiating partnerships, securing sponsorships for department events — hands-on experience in outreach and business negotiation.',
+    },
+  },
+  {
     org: '國立高雄師範大學 事業經營學系',
     role: { zh: '輔系修習中', en: 'Minor in Business Administration' },
     period: '2025 —',
