@@ -25,11 +25,15 @@ function GithubIcon(props) {
 const content = {
   zh: {
     heading: '聯絡',
-    intro: '歡迎與我聯繫，一起探討設計與商業的可能性！',
+    intro: '正在尋找設計或商業領域的暑期實習機會——歡迎與我聯繫，一起探討設計與商業的可能性！',
+    cta: '寫信給我',
+    ctaHint: '通常會在 24 小時內回覆',
   },
   en: {
     heading: 'Contact',
-    intro: "Let's connect and explore opportunities together!",
+    intro: "Currently looking for summer internships in design or business — let's connect and explore opportunities together!",
+    cta: 'Email Me',
+    ctaHint: 'I usually reply within 24 hours',
   },
 }
 
@@ -66,6 +70,21 @@ function Contact({ lang }) {
         >
           {t.intro}
         </motion.p>
+
+        <motion.div
+          className={styles.ctaRow}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
+        >
+          <a href="mailto:e101059a@gmail.com" className={styles.ctaButton}>
+            <Mail width={18} height={18} strokeWidth={1.8} />
+            {t.cta}
+            <span aria-hidden="true" className={styles.ctaArrow}>→</span>
+          </a>
+          <span className={styles.ctaHint}>{t.ctaHint}</span>
+        </motion.div>
 
         <div className={styles.list}>
           {contacts.map((c, i) => (

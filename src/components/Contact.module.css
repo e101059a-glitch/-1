@@ -25,7 +25,52 @@
 .intro {
   color: var(--color-muted);
   font-size: 16px;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 主要行動：寫信給我 */
+.ctaRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 44px;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 34px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 6px;
+  background: var(--color-accent-deep);
+  border: 1px solid var(--color-accent-deep);
+  color: #fff;
+  transition: background 0.25s, color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(150, 96, 28, 0.25);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.ctaButton:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+.ctaHint {
+  font-size: 12px;
+  color: var(--color-muted);
 }
 
 .list {

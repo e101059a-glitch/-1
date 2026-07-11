@@ -57,6 +57,51 @@
   color: var(--color-muted);
 }
 
+/* 設計流程步驟 */
+.steps {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.stepNum {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--color-accent);
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.stepTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.stepText {
+  font-size: 13px;
+  color: var(--color-muted);
+  line-height: 1.7;
+  margin-top: 2px;
+}
+
+.ctaArrow {
+  display: inline-block;
+  margin-left: 8px;
+  transition: transform 0.25s ease;
+}
+
+.cta:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
 .cta {
   margin-top: 24px;
   padding: 12px 26px;

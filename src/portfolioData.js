@@ -21,6 +21,29 @@ const portfolioItems = [
       'Solidworks',
       'Claude Code'
     ],
+    process: [
+      {
+        title: { zh: '痛點研究', en: 'Insight' },
+        text: {
+          zh: '從日常備料的施力痛點出發，分析拇指、食指、中指的自然夾持姿勢，鎖定削皮動作的人體工學問題。',
+          en: 'Started from the strain of daily meal prep — analyzing the natural pinch grip to pinpoint the ergonomic problem in peeling.'
+        }
+      },
+      {
+        title: { zh: '草模驗證', en: 'Prototyping' },
+        text: {
+          zh: '以多輪草模快速測試夾持姿勢與施力角度，反覆修正握把型態，讓施力方向與手部肌肉走向一致。',
+          en: 'Rapid mockups tested grip posture and force angles, iterating the handle form until force aligned with hand anatomy.'
+        }
+      },
+      {
+        title: { zh: '建模與成品', en: 'Build & Deliver' },
+        text: {
+          zh: '以 SolidWorks 完成 3D 建模與快拆刀盤機構，產出實體成品，並以簡報表板完整呈現設計論述。',
+          en: 'Modeled in SolidWorks with a quick-release blade mechanism, delivered the physical product and presentation boards.'
+        }
+      }
+    ],
     gallery: [
       {
         src: 'portfolio/IMG_6015.webp',

@@ -60,8 +60,22 @@ function FeaturedShowcase({ item, lang, onOpen }) {
             ))}
           </div>
         )}
+        {item.process && item.process.length > 0 && (
+          <ol className={styles.steps}>
+            {item.process.map((step, i) => (
+              <li key={i} className={styles.step}>
+                <span className={styles.stepNum}>{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <p className={styles.stepTitle}>{step.title[lang]}</p>
+                  <p className={styles.stepText}>{step.text[lang]}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
         <button type="button" className={styles.cta} onClick={onOpen}>
           {ctaText[lang]}
+          <span aria-hidden="true" className={styles.ctaArrow}>→</span>
         </button>
       </div>
 
