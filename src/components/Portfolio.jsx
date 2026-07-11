@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import portfolioItems from '../portfolioData.js'
 import FeaturedShowcase from './FeaturedShowcase.jsx'
+import { fadeUp, fadeUpItem, ease, duration } from '../motion.js'
 import styles from './Portfolio.module.css'
 
 const ProjectModal = lazy(() => import('./ProjectModal.jsx'))
@@ -34,13 +35,7 @@ function PlaceholderIcon() {
 
 function PlaceholderCard({ lang, index }) {
   return (
-    <motion.div
-      className={styles.placeholderCard}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
-    >
+    <motion.div className={styles.placeholderCard} {...fadeUpItem(index)}>
       <PlaceholderIcon />
       <h3 className={styles.cardTitle}>{placeholderTitle[lang]}</h3>
       <p className={styles.cardDescription}>{placeholderDesc[lang]}</p>
@@ -56,10 +51,7 @@ function ProjectCard({ item, lang, index, onClick }) {
   return (
     <motion.div
       className={styles.projectCard}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
+      {...fadeUpItem(index)}
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -130,13 +122,7 @@ function Portfolio({ lang }) {
       <div className={`section-container ${styles.inner}`}>
         <div className={styles.headingRow}>
           <div>
-            <motion.h2
-              className={styles.heading}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-            >
+            <motion.h2 className={styles.heading} {...fadeUp}>
               {heading[lang]}
             </motion.h2>
             <div className={styles.headingLine} />
@@ -203,7 +189,7 @@ function Portfolio({ lang }) {
             className={styles.grid}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            transition={{ duration: duration.fast, ease }}
           >
             {portfolioItems.map((item, i) => (
               <ProjectCard

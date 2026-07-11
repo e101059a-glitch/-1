@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, FileText, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ease, duration, viewport } from '../motion.js'
 import styles from './ProjectModal.module.css'
 
 function ProjectModal({ item, lang, onClose }) {
@@ -47,7 +48,7 @@ function ProjectModal({ item, lang, onClose }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 40 }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
+          transition={{ duration: duration.fast, ease }}
           onClick={(e) => e.stopPropagation()}
           role="dialog"
           aria-modal="true"
@@ -66,7 +67,7 @@ function ProjectModal({ item, lang, onClose }) {
                 className={styles.coverImage}
                 initial={{ scale: 1.08 }}
                 animate={{ scale: 1 }}
-                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: duration.slow, ease }}
               />
             </div>
           )}
@@ -105,10 +106,10 @@ function ProjectModal({ item, lang, onClose }) {
                     <motion.div
                       key={i}
                       className={styles.galleryItem}
-                      initial={{ opacity: 0, y: 16 }}
+                      initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.45, delay: (i % 2) * 0.08, ease: 'easeOut' }}
+                      viewport={viewport}
+                      transition={{ duration: duration.base, delay: (i % 2) * 0.09, ease }}
                       onClick={() => setLightbox(i)}
                       role="button"
                       tabIndex={0}
@@ -208,7 +209,7 @@ function ProjectModal({ item, lang, onClose }) {
             onClick={(e) => e.stopPropagation()}
             initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.28, ease: 'easeOut' }}
+            transition={{ duration: duration.fast, ease }}
           />
 
           {item.gallery[lightbox].caption && (

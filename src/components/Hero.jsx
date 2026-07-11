@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import PixelTrail from './PixelTrail.jsx'
+import { ease, duration } from '../motion.js'
 import styles from './Hero.module.css'
 
 const content = {
@@ -31,12 +32,12 @@ const titleContainer = {
 }
 
 const titleChar = {
-  hidden: { opacity: 0, y: 24, rotate: 6 },
+  hidden: { opacity: 0, y: 20, rotate: 5 },
   visible: {
     opacity: 1,
     y: 0,
     rotate: 0,
-    transition: { type: 'spring', stiffness: 280, damping: 20 },
+    transition: { duration: duration.base, ease },
   },
 }
 
@@ -81,15 +82,15 @@ function Hero({ lang }) {
           className={styles.line}
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.6, delay: 0.35, ease: 'easeOut' }}
+          transition={{ duration: duration.base, delay: 0.35, ease }}
         />
 
         <motion.div
           key={`subtitle-${lang}`}
           className={styles.subtitleWrap}
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
+          transition={{ duration: duration.base, delay: 0.45, ease }}
         >
           <motion.svg
             className={styles.subtitleCircle}
@@ -110,8 +111,8 @@ function Hero({ lang }) {
                   pathLength: 1,
                   opacity: 0.85,
                   transition: {
-                    pathLength: { duration: 1.6, delay: 0.8, ease: [0.43, 0.13, 0.23, 0.96] },
-                    opacity: { duration: 0.3, delay: 0.8 },
+                    pathLength: { duration: 1.5, delay: 0.85, ease },
+                    opacity: { duration: duration.fast, delay: 0.85 },
                   },
                 },
               }}
@@ -123,26 +124,26 @@ function Hero({ lang }) {
         <motion.p
           key={`desc-${lang}`}
           className={styles.description}
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5, ease: 'easeOut' }}
+          transition={{ duration: duration.base, delay: 0.55, ease }}
         >
           {t.description}
         </motion.p>
 
         <motion.div
           className={styles.actions}
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+          transition={{ duration: duration.base, delay: 0.65, ease }}
         >
           <motion.button
             type="button"
             className={styles.primaryButton}
             onClick={() => scrollTo('portfolio')}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: duration.fast, ease }}
           >
             {t.primary}
           </motion.button>
@@ -150,9 +151,9 @@ function Hero({ lang }) {
             type="button"
             className={styles.secondaryButton}
             onClick={() => scrollTo('contact')}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: duration.fast, ease }}
           >
             {t.secondary}
           </motion.button>
@@ -165,7 +166,7 @@ function Hero({ lang }) {
         onClick={() => scrollTo('about')}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
+        transition={{ duration: duration.slow, delay: 1.3, ease }}
         aria-label={t.scrollHint}
       >
         <span className={styles.scrollHintText}>{t.scrollHint}</span>

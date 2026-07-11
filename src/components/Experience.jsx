@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { fadeUp, fadeUpItem } from '../motion.js'
 import styles from './Experience.module.css'
 
 const heading = { zh: '經歷', en: 'Experience' }
@@ -37,13 +38,7 @@ function Experience({ lang }) {
   return (
     <section id="experience" className={styles.experience}>
       <div className={`section-container ${styles.inner}`}>
-        <motion.h2
-          className={styles.heading}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
+        <motion.h2 className={styles.heading} {...fadeUp}>
           {heading[lang]}
         </motion.h2>
         <div className={styles.headingLine} />
@@ -53,10 +48,7 @@ function Experience({ lang }) {
             <motion.div
               key={exp.org}
               className={styles.item}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
+              {...fadeUpItem(i)}
             >
               <div className={styles.marker}>
                 <span className={styles.dot} />

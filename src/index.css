@@ -12,6 +12,11 @@
   --font-display: 'Playfair Display', 'Noto Serif TC', serif;
   --font-body: 'DM Sans', 'Noto Sans TC', sans-serif;
 
+  /* 動態系統 —— 與 src/motion.js 對齊，讓 CSS hover 和 JS 進場同一種手感 */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 0.3s;
+  --dur-base: 0.55s;
+
   color-scheme: light;
 }
 

@@ -111,7 +111,7 @@
   border: 1px solid var(--color-accent-deep);
   background: var(--color-accent-deep);
   color: #fff;
-  transition: background 0.25s, color 0.25s;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 
 .cta:hover {
@@ -139,7 +139,7 @@
   background: transparent;
   color: var(--color-muted);
   white-space: nowrap;
-  transition: background 0.2s, color 0.2s;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 
 .tab:hover {

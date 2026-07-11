@@ -51,11 +51,11 @@
   background: var(--color-accent-deep);
   border: 1px solid var(--color-accent-deep);
   color: #fff;
-  transition: background 0.25s, color 0.25s, transform 0.25s, box-shadow 0.25s;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
 }
 
 .ctaButton:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: 0 10px 24px rgba(150, 96, 28, 0.25);
 }
 

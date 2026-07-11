@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import LetterSwap from './LetterSwap.jsx'
+import { fadeUp, fadeUpItem } from '../motion.js'
 import styles from './Skills.module.css'
 
 const categories = [
@@ -34,13 +35,7 @@ function Skills({ lang }) {
   return (
     <section id="skills" className={styles.skills}>
       <div className={`section-container ${styles.inner}`}>
-        <motion.h2
-          className={styles.heading}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
+        <motion.h2 className={styles.heading} {...fadeUp}>
           {heading[lang]}
         </motion.h2>
         <div className={styles.line} />
@@ -50,10 +45,7 @@ function Skills({ lang }) {
             <motion.div
               key={category.en}
               className={styles.card}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
+              {...fadeUpItem(i)}
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
             >

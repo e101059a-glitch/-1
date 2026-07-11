@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { fadeUp, ease, duration } from '../motion.js'
 import styles from './FeaturedShowcase.module.css'
 
 const eyebrowText = { zh: '精選作品', en: 'Featured Work' }
@@ -39,13 +40,7 @@ function FeaturedShowcase({ item, lang, onOpen }) {
   const cover = current.images[0]
 
   return (
-    <motion.div
-      className={styles.showcase}
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-    >
+    <motion.div className={styles.showcase} {...fadeUp}>
       <div className={styles.textCol}>
         <p className={styles.eyebrow}>{eyebrowText[lang]}</p>
         <h3 className={styles.title}>{item.title[lang]}</h3>
@@ -106,7 +101,7 @@ function FeaturedShowcase({ item, lang, onOpen }) {
               initial={{ opacity: 0, scale: 0.985 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              transition={{ duration: duration.fast, ease }}
             />
           </AnimatePresence>
           {current.images.length > 1 && (

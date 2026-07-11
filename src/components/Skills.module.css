@@ -36,13 +36,13 @@
   border-radius: 6px;
   padding: 28px 24px;
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+    transform var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
 }
 
 .card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-4px);
   box-shadow: 0 12px 28px rgba(193, 127, 59, 0.12);
   border-color: var(--color-accent);
 }

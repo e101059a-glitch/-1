@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Mail } from 'lucide-react'
+import { fadeUp, fadeUpDelay, fadeUpItem } from '../motion.js'
 import styles from './Contact.module.css'
 
 function LinkedinIcon(props) {
@@ -49,35 +50,16 @@ function Contact({ lang }) {
   return (
     <section id="contact" className={styles.contact}>
       <div className={`section-container ${styles.inner}`}>
-        <motion.h2
-          className={styles.heading}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
+        <motion.h2 className={styles.heading} {...fadeUp}>
           {t.heading}
         </motion.h2>
         <div className={styles.headingLine} />
 
-        <motion.p
-          key={lang}
-          className={styles.intro}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-        >
+        <motion.p key={lang} className={styles.intro} {...fadeUpDelay(1)}>
           {t.intro}
         </motion.p>
 
-        <motion.div
-          className={styles.ctaRow}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
-        >
+        <motion.div className={styles.ctaRow} {...fadeUpDelay(2)}>
           <a href="mailto:e101059a@gmail.com" className={styles.ctaButton}>
             <Mail width={18} height={18} strokeWidth={1.8} />
             {t.cta}
@@ -94,10 +76,7 @@ function Contact({ lang }) {
               target="_blank"
               rel="noreferrer"
               className={styles.item}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
+              {...fadeUpItem(i)}
             >
               <c.icon className={styles.icon} width={20} height={20} strokeWidth={1.5} />
               <div className={styles.textGroup}>
