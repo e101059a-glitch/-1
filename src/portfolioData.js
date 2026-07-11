@@ -19,7 +19,8 @@ const portfolioItems = [
     },
     tags: [
       'Solidworks',
-      'Claude Code'
+      'Claude Code',
+      'Gemini'
     ],
     process: [
       {
@@ -137,6 +138,46 @@ const portfolioItems = [
         en: 'ERGO PEEL'
       }
     }
+  },
+  {
+    // 封面圖片檔案尚未上傳（34dd687e-2150-4638-adc2-8b03979c17f1-clean.png），
+    // 收到檔案後補上 cover 欄位
+    title: {
+      zh: 'Lumina 發光邊桌設計',
+      en: 'Lumina Illuminated Side Table Design'
+    },
+    description: {
+      zh: '秉持「形隨機能」的精神，Lumina剝離冗餘修飾，將家具精煉為純粹的幾何體塊。透過玻璃的透、鋼材的剛、混凝的重，在理性構中尋求平衡。幾何發光核心不僅是視覺焦點，更是溫暖空與功能的匯集點。',
+      en: 'Upholding the spirit of "form follows function," Lumina strips away redundant ornamentation, refining the furniture into pure geometric volumes. Through the transparency of glass, the rigidity of steel, and the gravity of concrete, it seeks a harmonious balance within a rational structure. The geometric illuminating core is not only a visual focal point, but also a convergence point where warmth and functionality meet.'
+    },
+    reflection: {
+      zh: '在 Lumina 的模型製作過程中，最大的工藝挑戰在於材料與製程的限制。原本計畫將幾何燈罩以 3D 列印進行全透明輸出，但在實際打磨時，發現內部的支撐材痕跡與層紋極難完全消除。為了克服這項工藝瓶頸，我轉而將挑戰轉化為設計機會——將燈罩表面改為特殊的幾何花紋設計。這個調整不僅完美隱蔽了製程瑕疵，更在光線穿透時，意外創造出層次豐富的光影紋理。這次經驗讓我深刻體會到，設計不只是追求理想中的完美，更是在 CMF（色彩、材質、工藝）與製造限制之間，靈活尋求最佳解的高效過程。',
+      en: 'The biggest manufacturing challenge in this project lay in the limitations of materials and prototyping. Initially, I planned to 3D-print the geometric lampshade in full transparency. However, during the post-processing phase, I realized that the internal support marks and print lines were nearly impossible to eliminate completely. Instead of compromising, I turned this technical bottleneck into a design opportunity by introducing a patterned texture to the lampshade surface. This pivot not only effectively concealed the fabrication flaws but also unexpectedly created rich, textured light-and-shadow patterns when illuminated. This experience taught me that design is not just about pursuing theoretical perfection, but about agile problem-solving within the constraints of CMF and manufacturing realities.'
+    },
+    tags: [
+      'Solidworks',
+      'Gemini'
+    ],
+    gallery: [
+      {
+        src: 'portfolio/S__27705355_0.jpg',
+        caption: {
+          zh: '成品-1',
+          en: 'Final product-1'
+        }
+      },
+      {
+        src: 'portfolio/S__27705357_0.jpg',
+        caption: {
+          zh: '成品-2',
+          en: 'Final product-2'
+        }
+      }
+      // 以下 3 張圖片檔案尚未上傳，收到後補上：
+      // { src: 'portfolio/e5121e85-c003-4e54-861b-7fa82bf83292.jpg', caption: { zh: '展示', en: 'Showcase' } },
+      // { src: 'portfolio/04a4afc0-75b1-4b49-8a3c-ecf7900aa8b1.jpg', caption: { zh: '3D建模', en: '3D model' } },
+      // { src: 'portfolio/形隨機能的純粹展現：包浩斯與工業美學的交會 (1)_page-0001.jpg', caption: { zh: '表板', en: 'Presentation Board' } },
+    ]
   }
 ]
 

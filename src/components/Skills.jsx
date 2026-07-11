@@ -22,7 +22,7 @@ const categories = [
     zh: '攝影',
     en: 'Photography',
     icon: Camera,
-    items: [{ zh: '攝影棚架設', en: 'Studio Setup' }],
+    items: [{ zh: '攝影棚架設', en: 'Studio Setup' }, { zh: '室內攝影', en: 'Interior Photography' }],
   },
   {
     zh: 'AI 工具',
