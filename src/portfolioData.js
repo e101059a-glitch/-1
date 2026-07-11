@@ -140,8 +140,7 @@ const portfolioItems = [
     }
   },
   {
-    // 封面圖片檔案尚未上傳（34dd687e-2150-4638-adc2-8b03979c17f1-clean.png），
-    // 收到檔案後補上 cover 欄位
+    cover: 'portfolio/lumina-cover.webp',
     title: {
       zh: 'Lumina 發光邊桌設計',
       en: 'Lumina Illuminated Side Table Design'
@@ -172,11 +171,28 @@ const portfolioItems = [
           zh: '成品-2',
           en: 'Final product-2'
         }
+      },
+      {
+        src: 'portfolio/lumina-3d-model.jpg',
+        caption: {
+          zh: '3D建模',
+          en: '3D model'
+        }
+      },
+      {
+        src: 'portfolio/lumina-showcase.jpg',
+        caption: {
+          zh: '展示',
+          en: 'Showcase'
+        }
+      },
+      {
+        src: 'portfolio/lumina-board.jpg',
+        caption: {
+          zh: '表板',
+          en: 'Presentation Board'
+        }
       }
-      // 以下 3 張圖片檔案尚未上傳，收到後補上：
-      // { src: 'portfolio/e5121e85-c003-4e54-861b-7fa82bf83292.jpg', caption: { zh: '展示', en: 'Showcase' } },
-      // { src: 'portfolio/04a4afc0-75b1-4b49-8a3c-ecf7900aa8b1.jpg', caption: { zh: '3D建模', en: '3D model' } },
-      // { src: 'portfolio/形隨機能的純粹展現：包浩斯與工業美學的交會 (1)_page-0001.jpg', caption: { zh: '表板', en: 'Presentation Board' } },
     ]
   }
 ]
