@@ -54,3 +54,11 @@ export const hoverLift = {
   whileTap: { scale: 0.98 },
   transition: { duration: duration.fast, ease },
 }
+
+// 翻頁式進場：區塊卡片捲入時像書頁翻開（沿 X 軸微傾轉正）
+export const flipIn = {
+  initial: { opacity: 0, y: 28, rotateX: 8 },
+  whileInView: { opacity: 1, y: 0, rotateX: 0 },
+  viewport,
+  transition: { duration: duration.slow, ease },
+}

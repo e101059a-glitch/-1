@@ -21,8 +21,11 @@ const content = {
     primary: 'View Portfolio',
     secondary: 'Get in Touch',
     scrollHint: 'Scroll',
+    pill: 'Open to summer internships',
   },
 }
+
+const pillText = { zh: '正在尋找暑期實習機會', en: 'Open to summer internships' }
 
 const titleContainer = {
   hidden: {},
@@ -58,6 +61,16 @@ function Hero({ lang }) {
       <PixelTrail />
 
       <div className={`section-container ${styles.inner}`}>
+        <motion.span
+          className={`pill ${styles.heroPill}`}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: duration.base, ease }}
+        >
+          <span className={styles.pillDot} />
+          {pillText[lang]}
+        </motion.span>
+
         <motion.h1
           key={`title-${lang}`}
           className={styles.title}
@@ -118,7 +131,7 @@ function Hero({ lang }) {
               }}
             />
           </motion.svg>
-          <p className={styles.subtitle}>{t.subtitle}</p>
+          <p className={`gradient-text ${styles.subtitle}`}>{t.subtitle}</p>
         </motion.div>
 
         <motion.p

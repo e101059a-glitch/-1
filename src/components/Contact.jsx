@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Mail } from 'lucide-react'
-import { fadeUp, fadeUpDelay, fadeUpItem } from '../motion.js'
+import { fadeUpDelay, fadeUpItem, flipIn } from '../motion.js'
 import styles from './Contact.module.css'
 
 function LinkedinIcon(props) {
@@ -49,11 +49,10 @@ function Contact({ lang }) {
 
   return (
     <section id="contact" className={styles.contact}>
-      <div className={`section-container ${styles.inner}`}>
-        <motion.h2 className={styles.heading} {...fadeUp}>
-          {t.heading}
-        </motion.h2>
-        <div className={styles.headingLine} />
+      <div className="section-container" style={{ perspective: '1200px' }}>
+        <motion.div className={`section-card ${styles.inner}`} {...flipIn}>
+          <h2 className={styles.heading}>{t.heading}</h2>
+          <div className={styles.headingLine} />
 
         <motion.p key={lang} className={styles.intro} {...fadeUpDelay(1)}>
           {t.intro}
@@ -85,7 +84,8 @@ function Contact({ lang }) {
               </div>
             </motion.a>
           ))}
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   )

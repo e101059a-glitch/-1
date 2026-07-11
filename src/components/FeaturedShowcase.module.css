@@ -3,11 +3,11 @@
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   gap: 48px;
   align-items: center;
-  margin-bottom: 64px;
-  padding: 36px;
-  background: var(--color-card);
+  margin-bottom: 48px;
+  padding: 32px;
+  background: var(--color-bg);
   border: 0.5px solid var(--color-divider);
-  border-radius: 10px;
+  border-radius: 18px;
 }
 
 .textCol {

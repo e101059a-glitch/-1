@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { fadeUp, fadeUpItem } from '../motion.js'
+import { fadeUpItem, flipIn } from '../motion.js'
 import styles from './Experience.module.css'
 
 const heading = { zh: '經歷', en: 'Experience' }
@@ -37,13 +37,12 @@ const experiences = [
 function Experience({ lang }) {
   return (
     <section id="experience" className={styles.experience}>
-      <div className={`section-container ${styles.inner}`}>
-        <motion.h2 className={styles.heading} {...fadeUp}>
-          {heading[lang]}
-        </motion.h2>
-        <div className={styles.headingLine} />
+      <div className="section-container" style={{ perspective: '1200px' }}>
+        <motion.div className={`section-card ${styles.inner}`} {...flipIn}>
+          <h2 className={styles.heading}>{heading[lang]}</h2>
+          <div className={styles.headingLine} />
 
-        <div className={styles.timeline}>
+          <div className={styles.timeline}>
           {experiences.map((exp, i) => (
             <motion.div
               key={exp.org}
@@ -64,7 +63,8 @@ function Experience({ lang }) {
               </div>
             </motion.div>
           ))}
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   )

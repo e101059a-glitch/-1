@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { fadeUp, fadeUpDelay, drawLine } from '../motion.js'
+import { fadeUpDelay, drawLine, flipIn } from '../motion.js'
 import styles from './About.module.css'
 
 const content = {
@@ -18,14 +18,14 @@ function About({ lang }) {
 
   return (
     <section id="about" className={styles.about}>
-      <div className={`section-container ${styles.inner}`}>
-        <motion.h2 className={styles.heading} {...fadeUp}>
-          {t.heading}
-        </motion.h2>
-        <motion.div className={styles.line} {...drawLine} />
-        <motion.p key={lang} className={styles.body} {...fadeUpDelay(2)}>
-          {t.body}
-        </motion.p>
+      <div className="section-container" style={{ perspective: '1200px' }}>
+        <motion.div className={`section-card ${styles.inner}`} {...flipIn}>
+          <h2 className={styles.heading}>{t.heading}</h2>
+          <motion.div className={styles.line} {...drawLine} />
+          <motion.p key={lang} className={styles.body} {...fadeUpDelay(2)}>
+            {t.body}
+          </motion.p>
+        </motion.div>
       </div>
     </section>
   )

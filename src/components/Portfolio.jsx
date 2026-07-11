@@ -3,7 +3,8 @@ import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import portfolioItems from '../portfolioData.js'
 import FeaturedShowcase from './FeaturedShowcase.jsx'
-import { fadeUp, fadeUpItem, ease, duration } from '../motion.js'
+import BentoGallery from './BentoGallery.jsx'
+import { fadeUpItem, flipIn, ease, duration } from '../motion.js'
 import styles from './Portfolio.module.css'
 
 const ProjectModal = lazy(() => import('./ProjectModal.jsx'))
@@ -109,6 +110,7 @@ function Portfolio({ lang }) {
   const scrollRef = useRef(null)
   const hasItems = portfolioItems.length > 0
   const hasMore = portfolioItems.length > VISIBLE_COUNT
+  const isSingle = portfolioItems.length === 1
 
   const scroll = (dir) => {
     if (!scrollRef.current) return
@@ -119,12 +121,11 @@ function Portfolio({ lang }) {
 
   return (
     <section id="portfolio" className={styles.portfolio}>
-      <div className={`section-container ${styles.inner}`}>
+      <div className="section-container" style={{ perspective: '1200px' }}>
+        <motion.div className={`section-card ${styles.inner}`} {...flipIn}>
         <div className={styles.headingRow}>
           <div>
-            <motion.h2 className={styles.heading} {...fadeUp}>
-              {heading[lang]}
-            </motion.h2>
+            <h2 className={styles.heading}>{heading[lang]}</h2>
             <div className={styles.headingLine} />
           </div>
           {hasMore && (
@@ -148,8 +149,17 @@ function Portfolio({ lang }) {
           />
         )}
 
-        {/* Carousel view */}
-        {!showAll && (
+        {/* Single project: bento gallery of its images */}
+        {isSingle && (
+          <BentoGallery
+            item={portfolioItems[0]}
+            lang={lang}
+            onOpen={() => setSelectedIndex(0)}
+          />
+        )}
+
+        {/* Carousel view (multiple projects, or placeholders) */}
+        {!isSingle && !showAll && (
           <div className={styles.carouselWrapper}>
             {hasMore && (
               <button type="button" className={`${styles.navArrow} ${styles.navLeft}`} onClick={() => scroll(-1)} aria-label={lang === 'zh' ? '上一個作品' : 'Previous project'}>
@@ -184,7 +194,7 @@ function Portfolio({ lang }) {
         )}
 
         {/* Grid view (see all) */}
-        {showAll && (
+        {!isSingle && showAll && (
           <motion.div
             className={styles.grid}
             initial={{ opacity: 0, y: 16 }}
@@ -202,6 +212,7 @@ function Portfolio({ lang }) {
             ))}
           </motion.div>
         )}
+        </motion.div>
       </div>
 
       {selectedIndex !== null && (
