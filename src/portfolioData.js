@@ -145,8 +145,12 @@ const portfolioItems = [
       zh: 'Lumina 發光邊桌設計',
       en: 'Lumina Illuminated Side Table Design'
     },
+    subtitle: {
+      zh: '家具設計',
+      en: 'Furniture Design'
+    },
     description: {
-      zh: '秉持「形隨機能」的精神，Lumina剝離冗餘修飾，將家具精煉為純粹的幾何體塊。透過玻璃的透、鋼材的剛、混凝的重，在理性構中尋求平衡。幾何發光核心不僅是視覺焦點，更是溫暖空與功能的匯集點。',
+      zh: '秉持「形隨機能」的精神，Lumina 剝離冗餘修飾，將家具精煉為純粹的幾何體塊。透過玻璃的透、鋼材的剛、混凝土的重，在理性結構中尋求平衡。幾何發光核心不僅是視覺焦點，更是溫暖空間與功能的匯集點。',
       en: 'Upholding the spirit of "form follows function," Lumina strips away redundant ornamentation, refining the furniture into pure geometric volumes. Through the transparency of glass, the rigidity of steel, and the gravity of concrete, it seeks a harmonious balance within a rational structure. The geometric illuminating core is not only a visual focal point, but also a convergence point where warmth and functionality meet.'
     },
     reflection: {
