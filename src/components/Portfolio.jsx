@@ -2,6 +2,9 @@ import { useState, useRef, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import portfolioItems from '../portfolioData.js'
+import FeaturedShowcase from './FeaturedShowcase.jsx'
+import ThreeDCarousel from './ThreeDCarousel.jsx'
+import { fadeUpItem, flipIn, ease, duration } from '../motion.js'
 import styles from './Portfolio.module.css'
 
 const ProjectModal = lazy(() => import('./ProjectModal.jsx'))
@@ -33,13 +36,7 @@ function PlaceholderIcon() {
 
 function PlaceholderCard({ lang, index }) {
   return (
-    <motion.div
-      className={styles.placeholderCard}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
-    >
+    <motion.div className={styles.placeholderCard} {...fadeUpItem(index)}>
       <PlaceholderIcon />
       <h3 className={styles.cardTitle}>{placeholderTitle[lang]}</h3>
       <p className={styles.cardDescription}>{placeholderDesc[lang]}</p>
@@ -55,11 +52,17 @@ function ProjectCard({ item, lang, index, onClick }) {
   return (
     <motion.div
       className={styles.projectCard}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
+      {...fadeUpItem(index)}
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      aria-label={`${viewText[lang]}: ${item.title[lang]}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick()
+        }
+      }}
     >
       <div className={styles.imageWrapper}>
         {hasCover ? (
@@ -106,7 +109,9 @@ function Portfolio({ lang }) {
   const [showAll, setShowAll] = useState(false)
   const scrollRef = useRef(null)
   const hasItems = portfolioItems.length > 0
-  const hasMore = portfolioItems.length > VISIBLE_COUNT
+  const otherItems = hasItems ? portfolioItems.slice(1) : []
+  const hasOthers = otherItems.length > 0
+  const hasMore = otherItems.length > VISIBLE_COUNT
 
   const scroll = (dir) => {
     if (!scrollRef.current) return
@@ -117,18 +122,11 @@ function Portfolio({ lang }) {
 
   return (
     <section id="portfolio" className={styles.portfolio}>
-      <div className={`section-container ${styles.inner}`}>
+      <div className="section-container" style={{ perspective: '1200px' }}>
+        <motion.div className={`section-card ${styles.inner}`} {...flipIn}>
         <div className={styles.headingRow}>
           <div>
-            <motion.h2
-              className={styles.heading}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-            >
-              {heading[lang]}
-            </motion.h2>
+            <h2 className={styles.heading}>{heading[lang]}</h2>
             <div className={styles.headingLine} />
           </div>
           {hasMore && (
@@ -143,60 +141,81 @@ function Portfolio({ lang }) {
           )}
         </div>
 
-        {/* Carousel view */}
-        {!showAll && (
+        {/* Featured project showcase */}
+        {hasItems && (
+          <FeaturedShowcase
+            item={portfolioItems[0]}
+            lang={lang}
+            onOpen={() => setSelectedIndex(0)}
+          />
+        )}
+
+        {/* Featured project's gallery: always the 3D rotating carousel */}
+        {hasItems && (
+          <ThreeDCarousel
+            item={portfolioItems[0]}
+            lang={lang}
+            onOpen={() => setSelectedIndex(0)}
+          />
+        )}
+
+        {/* Other projects (everything besides the featured one) */}
+        {hasOthers && !showAll && (
           <div className={styles.carouselWrapper}>
             {hasMore && (
-              <button type="button" className={`${styles.navArrow} ${styles.navLeft}`} onClick={() => scroll(-1)}>
+              <button type="button" className={`${styles.navArrow} ${styles.navLeft}`} onClick={() => scroll(-1)} aria-label={lang === 'zh' ? '上一個作品' : 'Previous project'}>
                 <ChevronLeft size={20} strokeWidth={2} />
               </button>
             )}
             <div className={styles.carousel} ref={scrollRef}>
-              {hasItems
-                ? portfolioItems.map((item, i) => (
-                    <div className={styles.carouselSlide} key={i}>
-                      <ProjectCard
-                        item={item}
-                        lang={lang}
-                        index={i}
-                        onClick={() => setSelectedIndex(i)}
-                      />
-                    </div>
-                  ))
-                : [1, 2, 3].map((id, i) => (
-                    <div className={styles.carouselSlide} key={id}>
-                      <PlaceholderCard lang={lang} index={i} />
-                    </div>
-                  ))
-              }
+              {otherItems.map((item, i) => (
+                <div className={styles.carouselSlide} key={i + 1}>
+                  <ProjectCard
+                    item={item}
+                    lang={lang}
+                    index={i}
+                    onClick={() => setSelectedIndex(i + 1)}
+                  />
+                </div>
+              ))}
             </div>
             {hasMore && (
-              <button type="button" className={`${styles.navArrow} ${styles.navRight}`} onClick={() => scroll(1)}>
+              <button type="button" className={`${styles.navArrow} ${styles.navRight}`} onClick={() => scroll(1)} aria-label={lang === 'zh' ? '下一個作品' : 'Next project'}>
                 <ChevronRight size={20} strokeWidth={2} />
               </button>
             )}
           </div>
         )}
 
-        {/* Grid view (see all) */}
-        {showAll && (
+        {/* No projects yet: placeholder cards */}
+        {!hasItems && (
+          <div className={styles.grid}>
+            {[1, 2, 3].map((id, i) => (
+              <PlaceholderCard key={id} lang={lang} index={i} />
+            ))}
+          </div>
+        )}
+
+        {/* Grid view (see all other projects) */}
+        {hasOthers && showAll && (
           <motion.div
             className={styles.grid}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            transition={{ duration: duration.fast, ease }}
           >
-            {portfolioItems.map((item, i) => (
+            {otherItems.map((item, i) => (
               <ProjectCard
-                key={i}
+                key={i + 1}
                 item={item}
                 lang={lang}
                 index={i}
-                onClick={() => setSelectedIndex(i)}
+                onClick={() => setSelectedIndex(i + 1)}
               />
             ))}
           </motion.div>
         )}
+        </motion.div>
       </div>
 
       {selectedIndex !== null && (

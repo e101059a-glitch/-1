@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MotionConfig } from 'framer-motion'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
@@ -12,12 +12,18 @@ import SideNav from './components/SideNav.jsx'
 import SocialFloat from './components/SocialFloat.jsx'
 import Decorations from './components/Decorations.jsx'
 import ScrollProgress from './components/ScrollProgress.jsx'
+import PixelTrail from './components/PixelTrail.jsx'
 
 function App() {
   const [lang, setLang] = useState('zh')
 
+  useEffect(() => {
+    document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : 'en'
+  }, [lang])
+
   return (
     <MotionConfig reducedMotion="user">
+      <PixelTrail />
       <ScrollProgress />
       <Decorations />
       <SocialFloat />

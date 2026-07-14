@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Mail } from 'lucide-react'
+import { fadeUpDelay, fadeUpItem, flipIn } from '../motion.js'
 import styles from './Contact.module.css'
 
 function LinkedinIcon(props) {
@@ -25,11 +26,15 @@ function GithubIcon(props) {
 const content = {
   zh: {
     heading: '聯絡',
-    intro: '歡迎與我聯繫，一起探討設計與商業的可能性！',
+    intro: '正在尋找設計或商業領域的實習機會——歡迎與我聯繫，一起探討設計與商業的可能性！',
+    cta: '寫信給我',
+    ctaHint: '通常會在 24 小時內回覆',
   },
   en: {
     heading: 'Contact',
-    intro: "Let's connect and explore opportunities together!",
+    intro: "Currently looking for internships in design or business — let's connect and explore opportunities together!",
+    cta: 'Email Me',
+    ctaHint: 'I usually reply within 24 hours',
   },
 }
 
@@ -44,28 +49,23 @@ function Contact({ lang }) {
 
   return (
     <section id="contact" className={styles.contact}>
-      <div className={`section-container ${styles.inner}`}>
-        <motion.h2
-          className={styles.heading}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          {t.heading}
-        </motion.h2>
-        <div className={styles.headingLine} />
+      <div className="section-container" style={{ perspective: '1200px' }}>
+        <motion.div className={`section-card ${styles.inner}`} {...flipIn}>
+          <h2 className={styles.heading}>{t.heading}</h2>
+          <div className={styles.headingLine} />
 
-        <motion.p
-          key={lang}
-          className={styles.intro}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-        >
+        <motion.p key={lang} className={styles.intro} {...fadeUpDelay(1)}>
           {t.intro}
         </motion.p>
+
+        <motion.div className={styles.ctaRow} {...fadeUpDelay(2)}>
+          <a href="mailto:e101059a@gmail.com" className={styles.ctaButton}>
+            <Mail width={18} height={18} strokeWidth={1.8} />
+            {t.cta}
+            <span aria-hidden="true" className={styles.ctaArrow}>→</span>
+          </a>
+          <span className={styles.ctaHint}>{t.ctaHint}</span>
+        </motion.div>
 
         <div className={styles.list}>
           {contacts.map((c, i) => (
@@ -75,10 +75,7 @@ function Contact({ lang }) {
               target="_blank"
               rel="noreferrer"
               className={styles.item}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
+              {...fadeUpItem(i)}
             >
               <c.icon className={styles.icon} width={20} height={20} strokeWidth={1.5} />
               <div className={styles.textGroup}>
@@ -87,7 +84,8 @@ function Contact({ lang }) {
               </div>
             </motion.a>
           ))}
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   )

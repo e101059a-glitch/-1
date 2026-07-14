@@ -65,9 +65,10 @@
 
 .title {
   font-family: var(--font-display);
-  font-size: 64px;
+  font-size: clamp(44px, 9vw, 68px);
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
   color: var(--color-text);
 }
 
@@ -84,11 +85,45 @@
   transform-origin: center;
 }
 
+/* 手繪圈題：副標文字外圍有一筆手繪橢圓描邊動畫 */
+.subtitleWrap {
+  position: relative;
+  display: inline-block;
+  padding: 22px 56px;
+  margin-bottom: 20px;
+}
+
+.subtitleCircle {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.subtitleCircle path {
+  stroke: var(--color-accent);
+}
+
 .subtitle {
-  font-size: 20px;
-  color: var(--color-accent);
-  margin-bottom: 24px;
-  letter-spacing: 0.3px;
+  position: relative;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 4.2vw, 34px);
+  font-weight: 500;
+  color: var(--color-accent-deep);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .subtitleWrap {
+    padding: 16px 24px;
+  }
+
+  .subtitle {
+    white-space: normal;
+  }
 }
 
 .description {
@@ -119,14 +154,14 @@
 }
 
 .primaryButton {
-  background: var(--color-accent);
+  background: var(--color-accent-deep);
   color: #fff;
-  border: 1px solid var(--color-accent);
+  border: 1px solid var(--color-accent-deep);
 }
 
 .primaryButton:hover {
   background: transparent;
-  color: var(--color-accent);
+  color: var(--color-accent-deep);
 }
 
 .secondaryButton {
@@ -136,9 +171,9 @@
 }
 
 .secondaryButton:hover {
-  background: var(--color-accent);
+  background: var(--color-accent-deep);
   color: #fff;
-  border-color: var(--color-accent);
+  border-color: var(--color-accent-deep);
 }
 
 .scrollHint {
@@ -173,10 +208,6 @@
 }
 
 @media (max-width: 600px) {
-  .title {
-    font-size: 44px;
-  }
-
   .glow {
     width: 300px;
     height: 300px;

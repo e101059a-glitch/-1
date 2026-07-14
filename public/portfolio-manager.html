@@ -367,12 +367,12 @@ function fileToThumb(file, maxDim = 480) {
   })
 }
 
-// 沒有縮圖時，先試本機 public/portfolio/，再試線上網站，最後顯示檔名
+// 沒有縮圖時，先試同資料夾的 portfolio/（本機開啟或放上網站都適用），再試線上網站，最後顯示檔名
 function imgHtml(dataUrl, name, attrs = '') {
   if (dataUrl) return `<img src="${dataUrl}" ${attrs} />`
   if (!name) return `<div class="img-name-fallback">無圖片</div>`
   const rel = encodeURI(name.startsWith('portfolio/') ? name : 'portfolio/' + name)
-  return `<img src="public/${rel}" loading="lazy" data-fallback="${SITE_BASE}${rel}" data-name="${name}" onerror="imgFallback(this)" ${attrs} />`
+  return `<img src="${rel}" loading="lazy" data-fallback="${SITE_BASE}${rel}" data-name="${name}" onerror="imgFallback(this)" ${attrs} />`
 }
 
 function imgFallback(el) {
@@ -592,7 +592,7 @@ function editItem(index) {
       else { pv.style.display = 'none'; $('cover-text').style.display = '' }
     }
     pv.dataset.fallback = SITE_BASE + rel
-    pv.src = 'public/' + rel
+    pv.src = rel
     pv.style.display = 'block'
     $('cover-text').style.display = 'none'
   }

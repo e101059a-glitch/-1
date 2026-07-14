@@ -4,6 +4,12 @@
   z-index: 100;
   background: var(--color-bg);
   border-bottom: 0.5px solid var(--color-divider);
+  transition: box-shadow 0.3s ease;
+}
+
+/* 捲動後浮起一層淡淡的陰影，區隔內容 */
+.scrolled {
+  box-shadow: 0 6px 24px rgba(28, 28, 30, 0.07);
 }
 
 .inner {

@@ -1,0 +1,31 @@
+.swap {
+  display: inline-flex;
+}
+
+.char {
+  display: inline-block;
+  height: 1.4em;
+  overflow: hidden;
+}
+
+.roll {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rolled {
+  transform: translateY(-50%);
+}
+
+.glyph {
+  display: block;
+  height: 1.4em;
+  line-height: 1.4em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roll {
+    transition: none;
+  }
+}

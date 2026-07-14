@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { fadeUpDelay, drawLine, flipIn } from '../motion.js'
 import styles from './About.module.css'
 
 const content = {
@@ -17,33 +18,14 @@ function About({ lang }) {
 
   return (
     <section id="about" className={styles.about}>
-      <div className={`section-container ${styles.inner}`}>
-        <motion.h2
-          className={styles.heading}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          {t.heading}
-        </motion.h2>
-        <motion.div
-          className={styles.line}
-          initial={{ opacity: 0, scaleX: 0 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
-        />
-        <motion.p
-          key={lang}
-          className={styles.body}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
-        >
-          {t.body}
-        </motion.p>
+      <div className="section-container" style={{ perspective: '1200px' }}>
+        <motion.div className={`section-card ${styles.inner}`} {...flipIn}>
+          <h2 className={styles.heading}>{t.heading}</h2>
+          <motion.div className={styles.line} {...drawLine} />
+          <motion.p key={lang} className={styles.body} {...fadeUpDelay(2)}>
+            {t.body}
+          </motion.p>
+        </motion.div>
       </div>
     </section>
   )

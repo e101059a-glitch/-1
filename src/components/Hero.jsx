@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { ease, duration } from '../motion.js'
 import styles from './Hero.module.css'
 
 const content = {
@@ -6,7 +7,7 @@ const content = {
     title: '謝耀緯',
     subtitle: '工業設計 × 事業經營',
     description:
-      '國立高雄師範大學工業設計系二年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業暑期實習機會。',
+      '國立高雄師範大學工業設計系二年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業實習機會。',
     primary: '查看作品集',
     secondary: '聯絡我',
     scrollHint: '往下探索',
@@ -15,7 +16,7 @@ const content = {
     title: 'Yao-Wei Hsieh',
     subtitle: 'Industrial Design × Business',
     description:
-      "2nd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with business strategy, seeking summer internship opportunities.",
+      "2nd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with business strategy, seeking internship opportunities.",
     primary: 'View Portfolio',
     secondary: 'Get in Touch',
     scrollHint: 'Scroll',
@@ -30,12 +31,12 @@ const titleContainer = {
 }
 
 const titleChar = {
-  hidden: { opacity: 0, y: 24, rotate: 6 },
+  hidden: { opacity: 0, y: 20, rotate: 5 },
   visible: {
     opacity: 1,
     y: 0,
     rotate: 0,
-    transition: { type: 'spring', stiffness: 280, damping: 20 },
+    transition: { duration: duration.base, ease },
   },
 }
 
@@ -78,42 +79,68 @@ function Hero({ lang }) {
           className={styles.line}
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.6, delay: 0.35, ease: 'easeOut' }}
+          transition={{ duration: duration.base, delay: 0.35, ease }}
         />
 
-        <motion.p
+        <motion.div
           key={`subtitle-${lang}`}
-          className={styles.subtitle}
-          initial={{ opacity: 0, y: 12 }}
+          className={styles.subtitleWrap}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
+          transition={{ duration: duration.base, delay: 0.45, ease }}
         >
-          {t.subtitle}
-        </motion.p>
+          <motion.svg
+            className={styles.subtitleCircle}
+            viewBox="0 0 320 120"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.path
+              d="M 253 22 C 333 64 280 100 160 106 C 67 106 38 96 38 62 C 38 26 93 16 160 16 C 227 16 255 34 257 42"
+              fill="none"
+              strokeWidth="2.6"
+              strokeLinecap="round"
+              variants={{
+                hidden: { pathLength: 0, opacity: 0 },
+                visible: {
+                  pathLength: 1,
+                  opacity: 0.85,
+                  transition: {
+                    pathLength: { duration: 1.5, delay: 0.85, ease },
+                    opacity: { duration: duration.fast, delay: 0.85 },
+                  },
+                },
+              }}
+            />
+          </motion.svg>
+          <p className={`gradient-text ${styles.subtitle}`}>{t.subtitle}</p>
+        </motion.div>
 
         <motion.p
           key={`desc-${lang}`}
           className={styles.description}
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5, ease: 'easeOut' }}
+          transition={{ duration: duration.base, delay: 0.55, ease }}
         >
           {t.description}
         </motion.p>
 
         <motion.div
           className={styles.actions}
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+          transition={{ duration: duration.base, delay: 0.65, ease }}
         >
           <motion.button
             type="button"
             className={styles.primaryButton}
             onClick={() => scrollTo('portfolio')}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: duration.fast, ease }}
           >
             {t.primary}
           </motion.button>
@@ -121,9 +148,9 @@ function Hero({ lang }) {
             type="button"
             className={styles.secondaryButton}
             onClick={() => scrollTo('contact')}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: duration.fast, ease }}
           >
             {t.secondary}
           </motion.button>
@@ -136,7 +163,7 @@ function Hero({ lang }) {
         onClick={() => scrollTo('about')}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
+        transition={{ duration: duration.slow, delay: 1.3, ease }}
         aria-label={t.scrollHint}
       >
         <span className={styles.scrollHintText}>{t.scrollHint}</span>

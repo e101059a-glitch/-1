@@ -1,11 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, FileText, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ease, duration, viewport } from '../motion.js'
 import styles from './ProjectModal.module.css'
 
 function ProjectModal({ item, lang, onClose }) {
   const [lightbox, setLightbox] = useState(null)
   const basePath = import.meta.env.BASE_URL
+  const closeRef = useRef(null)
+
+  useEffect(() => {
+    closeRef.current?.focus()
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -42,20 +48,26 @@ function ProjectModal({ item, lang, onClose }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 40 }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
+          transition={{ duration: duration.fast, ease }}
           onClick={(e) => e.stopPropagation()}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t(item.title)}
         >
-          <button type="button" className={styles.closeBtn} onClick={onClose}>
+          <button type="button" className={styles.closeBtn} onClick={onClose} ref={closeRef} aria-label={lang === 'zh' ? '關閉' : 'Close'}>
             <X size={22} strokeWidth={1.5} />
           </button>
 
           {/* Hero cover */}
           {item.cover && (
             <div className={styles.coverWrapper}>
-              <img
+              <motion.img
                 src={`${basePath}${item.cover}`}
                 alt={t(item.title)}
                 className={styles.coverImage}
+                initial={{ scale: 1.08 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: duration.slow, ease }}
               />
             </div>
           )}
@@ -91,10 +103,23 @@ function ProjectModal({ item, lang, onClose }) {
                 <div className={styles.divider} />
                 <div className={styles.gallery}>
                   {item.gallery.map((img, i) => (
-                    <div
+                    <motion.div
                       key={i}
                       className={styles.galleryItem}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={viewport}
+                      transition={{ duration: duration.base, delay: (i % 2) * 0.09, ease }}
                       onClick={() => setLightbox(i)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={t(img.caption) || `${lang === 'zh' ? '放大圖片' : 'Enlarge image'} ${i + 1}`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          setLightbox(i)
+                        }
+                      }}
                     >
                       <div className={styles.galleryImageWrapper}>
                         <img
@@ -108,9 +133,20 @@ function ProjectModal({ item, lang, onClose }) {
                       {img.caption && t(img.caption) && (
                         <p className={styles.galleryCaption}>{t(img.caption)}</p>
                       )}
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* Reflection */}
+            {item.reflection && t(item.reflection) && (
+              <div className={styles.reflectionSection}>
+                <h3 className={styles.sectionTitle}>
+                  {lang === 'zh' ? '作品反思' : 'Reflection'}
+                </h3>
+                <div className={styles.divider} />
+                <p className={styles.reflection}>{t(item.reflection)}</p>
               </div>
             )}
 
@@ -149,6 +185,7 @@ function ProjectModal({ item, lang, onClose }) {
             type="button"
             className={styles.lightboxClose}
             onClick={() => setLightbox(null)}
+            aria-label={lang === 'zh' ? '關閉圖片' : 'Close image'}
           >
             <X size={24} strokeWidth={1.5} />
           </button>
@@ -158,16 +195,21 @@ function ProjectModal({ item, lang, onClose }) {
               type="button"
               className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
               onClick={(e) => { e.stopPropagation(); setLightbox(lightbox - 1) }}
+              aria-label={lang === 'zh' ? '上一張' : 'Previous image'}
             >
               <ChevronLeft size={32} strokeWidth={1.5} />
             </button>
           )}
 
-          <img
+          <motion.img
+            key={lightbox}
             src={`${basePath}${item.gallery[lightbox].src}`}
             alt={t(item.gallery[lightbox].caption)}
             className={styles.lightboxImage}
             onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: duration.fast, ease }}
           />
 
           {item.gallery[lightbox].caption && (
@@ -184,6 +226,7 @@ function ProjectModal({ item, lang, onClose }) {
               type="button"
               className={`${styles.lightboxNav} ${styles.lightboxNext}`}
               onClick={(e) => { e.stopPropagation(); setLightbox(lightbox + 1) }}
+              aria-label={lang === 'zh' ? '下一張' : 'Next image'}
             >
               <ChevronRight size={32} strokeWidth={1.5} />
             </button>

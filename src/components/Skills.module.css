@@ -1,5 +1,5 @@
 .skills {
-  padding: 100px 0;
+  padding: clamp(72px, 9vw, 120px) 0;
   background: var(--color-surface);
   border-top: 0.5px solid var(--color-divider);
 }
@@ -8,9 +8,52 @@
   text-align: center;
 }
 
+.card {
+  position: relative;
+  overflow: hidden;
+}
+
+.cardGlow {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(193, 127, 59, 0.16), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease);
+  pointer-events: none;
+}
+
+.card:hover .cardGlow {
+  opacity: 1;
+}
+
+.cardIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: var(--color-bg);
+  border: 0.5px solid var(--color-divider);
+  color: var(--color-accent-deep);
+  margin-bottom: 16px;
+  transition: transform var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.card:hover .cardIcon {
+  transform: scale(1.08) rotate(-4deg);
+  color: var(--color-accent);
+}
+
 .heading {
   font-family: var(--font-display);
-  font-size: 36px;
+  font-size: clamp(28px, 5.5vw, 38px);
+  letter-spacing: 0.02em;
+  text-wrap: balance;
   color: var(--color-text);
 }
 
@@ -29,18 +72,18 @@
 }
 
 .card {
-  background: var(--color-card);
+  background: var(--color-bg);
   border: 0.5px solid var(--color-divider);
-  border-radius: 6px;
+  border-radius: 14px;
   padding: 28px 24px;
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+    transform var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
 }
 
 .card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-4px);
   box-shadow: 0 12px 28px rgba(193, 127, 59, 0.12);
   border-color: var(--color-accent);
 }

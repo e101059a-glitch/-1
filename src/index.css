@@ -2,13 +2,20 @@
   --color-bg: #faf8f5;
   --color-text: #1c1c1e;
   --color-accent: #c17f3b;
-  --color-muted: #9b8e7e;
+  /* 深一階的主色：小字級的金棕色文字與按鈕底色用，對淺底可達 WCAG AA (4.5:1)+ */
+  --color-accent-deep: #96601c;
+  --color-muted: #766a58;
   --color-surface: #ede8e0;
   --color-card: #f4efe8;
   --color-divider: #e8e0d5;
 
   --font-display: 'Playfair Display', 'Noto Serif TC', serif;
   --font-body: 'DM Sans', 'Noto Sans TC', sans-serif;
+
+  /* 動態系統 —— 與 src/motion.js 對齊，讓 CSS hover 和 JS 進場同一種手感 */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 0.3s;
+  --dur-base: 0.55s;
 
   color-scheme: light;
 }
@@ -19,6 +26,18 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* 錨點捲動時預留 sticky 導覽列的高度，段落標題不會被遮住 */
+section[id] {
+  scroll-margin-top: 84px;
+}
+
+/* 鍵盤操作時的可見焦點框 */
+:focus-visible {
+  outline: 2px solid var(--color-accent-deep);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 body {
@@ -70,6 +89,45 @@ img {
   max-width: 960px;
   margin: 0 auto;
   padding: 0 32px;
+}
+
+/* 圓角卡片區塊框 —— 把每個區塊包成 Bento 風格的卡片，全站統一 */
+.section-card {
+  border: 0.5px solid var(--color-divider);
+  border-radius: 28px;
+  background: linear-gradient(160deg, var(--color-card), rgba(244, 239, 232, 0.35));
+  padding: clamp(32px, 5vw, 60px);
+  box-shadow: 0 1px 2px rgba(28, 28, 30, 0.02);
+}
+
+/* 關鍵字漸層高亮 */
+.gradient-text {
+  background: linear-gradient(100deg, var(--color-accent-deep), var(--color-accent) 55%, #d99a52);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* 標籤藥丸 */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 0.5px solid var(--color-divider);
+  background: var(--color-card);
+  font-size: 13px;
+  color: var(--color-accent-deep);
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .section-card {
+    border-radius: 20px;
+    padding: 28px 20px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
