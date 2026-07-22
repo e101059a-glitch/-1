@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import SplitText from './SplitText.jsx'
 import styles from './Skills.module.css'
 
 const categories = [
@@ -15,7 +16,7 @@ const categories = [
   {
     zh: '攝影',
     en: 'Photography',
-    items: [{ zh: '攝影棚架設', en: 'Studio Setup' }],
+    items: [{ zh: '攝影棚架設', en: 'Studio Setup' }, { zh: '室內攝影', en: 'Interior Photography' }],
   },
   {
     zh: 'AI 工具',
@@ -37,7 +38,7 @@ function Skills({ lang }) {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          {heading[lang]}
+          <SplitText text={heading[lang]} />
         </motion.h2>
         <div className={styles.line} />
 
@@ -46,10 +47,10 @@ function Skills({ lang }) {
             <motion.div
               key={category.en}
               className={styles.card}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
+              transition={{ type: 'spring', stiffness: 260, damping: 22, delay: i * 0.09 }}
             >
               <h3 className={styles.cardTitle}>
                 {category[lang]}

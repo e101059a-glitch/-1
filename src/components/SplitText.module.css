@@ -1,0 +1,15 @@
+.split {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.char {
+  display: inline-block;
+  white-space: pre;
+}

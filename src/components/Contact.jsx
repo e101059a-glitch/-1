@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Mail } from 'lucide-react'
+import SplitText from './SplitText.jsx'
 import styles from './Contact.module.css'
 
 function LinkedinIcon(props) {
@@ -25,7 +26,7 @@ function GithubIcon(props) {
 const content = {
   zh: {
     heading: '聯絡',
-    intro: '歡迎與我聯繫，一起探討設計與商業的可能性！',
+    intro: '正在尋找設計或商業領域的實習機會——歡迎與我聯繫，一起探討設計與商業的可能性！',
   },
   en: {
     heading: 'Contact',
@@ -52,7 +53,7 @@ function Contact({ lang }) {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          {t.heading}
+          <SplitText text={t.heading} />
         </motion.h2>
         <div className={styles.headingLine} />
 

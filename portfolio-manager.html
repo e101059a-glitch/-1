@@ -72,7 +72,14 @@
 
   .items-section { margin-bottom: 32px; }
   .items-section h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 20px; }
-  .item-card { display: flex; gap: 20px; background: #f4efe8; border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 20px; margin-bottom: 12px; align-items: center; transition: border-color 0.2s; }
+  .item-card { display: flex; gap: 20px; background: #f4efe8; border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 20px; margin-bottom: 12px; align-items: center; transition: border-color 0.2s, opacity 0.2s; cursor: grab; }
+  .item-card.dragging { opacity: 0.4; border-color: #c17f3b; }
+  .item-card.drag-over-item { border: 2px solid #c17f3b; background: #ede8e0; }
+  .item-order { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+  .item-order button { width: 30px; height: 30px; border-radius: 4px; border: 1px solid #e8e0d5; background: #faf8f5; color: #9b8e7e; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .item-order button:hover { border-color: #c17f3b; color: #c17f3b; }
+  .item-order button:disabled { opacity: 0.3; cursor: default; }
+  .item-order-num { font-size: 12px; color: #9b8e7e; text-align: center; font-weight: 600; }
   .item-card:hover { border-color: #c17f3b; }
   .item-thumb { width: 140px; height: 88px; border-radius: 6px; object-fit: cover; background: #ede8e0; flex-shrink: 0; }
   .item-thumb-placeholder { width: 140px; height: 88px; border-radius: 6px; background: #ede8e0; display: flex; align-items: center; justify-content: center; color: #9b8e7e; font-size: 12px; flex-shrink: 0; }
@@ -324,7 +331,14 @@ function renderList() {
     const galleryBadge = item.gallery && item.gallery.length > 0
       ? '<span class="item-badge">' + item.gallery.length + ' 張圖片</span>' : '';
     const pdfBadge = item.pdf && item.pdf.src ? '<span class="item-badge">PDF</span>' : '';
-    return '<div class="item-card">' + thumbHtml +
+    const upDisabled = i === 0 ? ' disabled' : '';
+    const downDisabled = i === items.length - 1 ? ' disabled' : '';
+    return '<div class="item-card" draggable="true" data-idx="' + i + '">' +
+      '<div class="item-order">' +
+      '<button onclick="moveItem(' + i + ',-1)" title="上移"' + upDisabled + '>&#x25B2;</button>' +
+      '<span class="item-order-num">' + (i + 1) + '</span>' +
+      '<button onclick="moveItem(' + i + ',1)" title="下移"' + downDisabled + '>&#x25BC;</button>' +
+      '</div>' + thumbHtml +
       '<div class="item-info"><h3>' + esc(item.title.zh) + '</h3>' +
       (item.subtitle ? '<div class="item-sub">' + esc(item.subtitle.zh) + '</div>' : '') +
       '<p>' + esc((item.description && item.description.zh || '').substring(0, 60)) + '...</p>' +
@@ -334,6 +348,44 @@ function renderList() {
       '<button class="btn btn-danger" onclick="confirmDelete(' + i + ')">&#x1F5D1; 刪除</button>' +
       '</div></div>';
   }).join('');
+
+  var itemDragSrc = null;
+  container.querySelectorAll('.item-card').forEach(function(card) {
+    card.addEventListener('dragstart', function(e) {
+      itemDragSrc = +card.dataset.idx;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', function() {
+      card.classList.remove('dragging');
+      itemDragSrc = null;
+    });
+    card.addEventListener('dragover', function(e) { e.preventDefault(); card.classList.add('drag-over-item'); });
+    card.addEventListener('dragleave', function() { card.classList.remove('drag-over-item'); });
+    card.addEventListener('drop', function(e) {
+      e.preventDefault();
+      card.classList.remove('drag-over-item');
+      var to = +card.dataset.idx;
+      if (itemDragSrc !== null && itemDragSrc !== to) {
+        var moved = items.splice(itemDragSrc, 1)[0];
+        items.splice(to, 0, moved);
+        persist();
+        renderList();
+        toast('作品順序已更新');
+      }
+    });
+  });
+}
+
+function moveItem(i, dir) {
+  var j = i + dir;
+  if (j < 0 || j >= items.length) return;
+  var temp = items[i];
+  items[i] = items[j];
+  items[j] = temp;
+  persist();
+  renderList();
+  toast('作品順序已更新');
 }
 
 function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : ''; }

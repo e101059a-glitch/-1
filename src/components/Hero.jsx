@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import MagneticButton from './MagneticButton.jsx'
 import styles from './Hero.module.css'
 
 const content = {
@@ -6,10 +7,10 @@ const content = {
     title: '謝耀緯',
     subtitle: '工業設計 × 事業經營',
     description:
-      '國立高雄師範大學工業設計系二年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業暑期實習機會。',
+      '國立高雄師範大學工業設計系二年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業實習機會。',
     primary: '查看作品集',
     secondary: '聯絡我',
-    scrollHint: '往下探索',
+    scrollHint: 'Scroll',
   },
   en: {
     title: 'Yao-Wei Hsieh',
@@ -25,17 +26,16 @@ const content = {
 const titleContainer = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.06, delayChildren: 0.2 },
   },
 }
 
 const titleChar = {
-  hidden: { opacity: 0, y: 24, rotate: 6 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    rotate: 0,
-    transition: { type: 'spring', stiffness: 280, damping: 20 },
+    transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
   },
 }
 
@@ -48,12 +48,17 @@ function Hero({ lang }) {
 
   return (
     <section id="hero" className={styles.hero}>
-      <div className={styles.glows} aria-hidden="true">
-        <div className={`${styles.glow} ${styles.glowLeft}`} />
-        <div className={`${styles.glow} ${styles.glowRight}`} />
-      </div>
-
       <div className={`section-container ${styles.inner}`}>
+        <motion.p
+          key={`subtitle-${lang}`}
+          className={styles.subtitle}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
+        >
+          {t.subtitle}
+        </motion.p>
+
         <motion.h1
           key={`title-${lang}`}
           className={styles.title}
@@ -78,55 +83,37 @@ function Hero({ lang }) {
           className={styles.line}
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.6, delay: 0.35, ease: 'easeOut' }}
+          transition={{ duration: 0.5, delay: 0.5, ease: 'easeOut' }}
         />
-
-        <motion.p
-          key={`subtitle-${lang}`}
-          className={styles.subtitle}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
-        >
-          {t.subtitle}
-        </motion.p>
 
         <motion.p
           key={`desc-${lang}`}
           className={styles.description}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5, ease: 'easeOut' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
         >
           {t.description}
         </motion.p>
 
         <motion.div
           className={styles.actions}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.7, ease: 'easeOut' }}
         >
-          <motion.button
-            type="button"
+          <MagneticButton
             className={styles.primaryButton}
             onClick={() => scrollTo('portfolio')}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             {t.primary}
-          </motion.button>
-          <motion.button
-            type="button"
+          </MagneticButton>
+          <MagneticButton
             className={styles.secondaryButton}
             onClick={() => scrollTo('contact')}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             {t.secondary}
-          </motion.button>
+          </MagneticButton>
         </motion.div>
       </div>
 
@@ -142,11 +129,11 @@ function Hero({ lang }) {
         <span className={styles.scrollHintText}>{t.scrollHint}</span>
         <motion.span
           className={styles.scrollHintArrow}
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 6 L8 11 L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M3 6 L8 11 L13 6" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </motion.span>
       </motion.button>

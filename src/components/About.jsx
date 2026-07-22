@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import SplitText from './SplitText.jsx'
 import styles from './About.module.css'
 
 const content = {
@@ -25,15 +26,9 @@ function About({ lang }) {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          {t.heading}
+          <SplitText text={t.heading} />
         </motion.h2>
-        <motion.div
-          className={styles.line}
-          initial={{ opacity: 0, scaleX: 0 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
-        />
+        <div className={styles.line} />
         <motion.p
           key={lang}
           className={styles.body}

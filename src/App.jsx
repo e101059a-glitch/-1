@@ -10,16 +10,16 @@ import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
 import SideNav from './components/SideNav.jsx'
 import SocialFloat from './components/SocialFloat.jsx'
-import Decorations from './components/Decorations.jsx'
 import ScrollProgress from './components/ScrollProgress.jsx'
+import ShaderBackground from './components/ShaderBackground.jsx'
 
 function App() {
   const [lang, setLang] = useState('zh')
 
   return (
     <MotionConfig reducedMotion="user">
+      <ShaderBackground />
       <ScrollProgress />
-      <Decorations />
       <SocialFloat />
       <SideNav />
       <Navbar lang={lang} setLang={setLang} />

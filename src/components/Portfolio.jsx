@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import staticItems from '../portfolioData.js'
 import ProjectModal from './ProjectModal.jsx'
+import SplitText from './SplitText.jsx'
 import styles from './Portfolio.module.css'
 
 const heading = { zh: '作品集', en: 'Portfolio' }
@@ -54,10 +55,10 @@ function ProjectCard({ item, lang, index, onClick }) {
   return (
     <motion.div
       className={styles.projectCard}
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
+      transition={{ type: 'spring', stiffness: 260, damping: 22, delay: index * 0.1 }}
       onClick={onClick}
     >
       <div className={styles.imageWrapper}>
@@ -134,7 +135,7 @@ function Portfolio({ lang }) {
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
             >
-              {heading[lang]}
+              <SplitText text={heading[lang]} />
             </motion.h2>
             <div className={styles.headingLine} />
           </div>
