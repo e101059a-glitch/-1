@@ -4,7 +4,7 @@ const year = new Date().getFullYear()
 
 const content = {
   zh: `© ${year} 謝耀緯 · 工業設計系`,
-  en: `© ${year} Yao-Wei Hsieh · Industrial Design`,
+  en: `© ${year} Travis · Industrial Design`,
 }
 
 function Footer({ lang }) {

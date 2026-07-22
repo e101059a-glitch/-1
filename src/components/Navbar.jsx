@@ -25,7 +25,7 @@ function Navbar({ lang, setLang }) {
           className={styles.logo}
           onClick={() => scrollTo('hero')}
         >
-          {lang === 'zh' ? '謝耀緯' : 'YW Hsieh'}
+          {lang === 'zh' ? '謝耀緯' : 'Travis'}
         </button>
 
         <nav className={styles.links}>

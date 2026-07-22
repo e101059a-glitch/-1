@@ -7,16 +7,16 @@ const content = {
     title: '謝耀緯',
     subtitle: '工業設計 × 事業經營',
     description:
-      '國立高雄師範大學工業設計系二年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業實習機會。',
+      '國立高雄師範大學工業設計系三年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業實習機會。',
     primary: '查看作品集',
     secondary: '聯絡我',
     scrollHint: 'Scroll',
   },
   en: {
-    title: 'Yao-Wei Hsieh',
+    title: 'Travis',
     subtitle: 'Industrial Design × Business',
     description:
-      "2nd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with business strategy, seeking summer internship opportunities.",
+      "3rd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with business strategy, seeking summer internship opportunities.",
     primary: 'View Portfolio',
     secondary: 'Get in Touch',
     scrollHint: 'Scroll',
