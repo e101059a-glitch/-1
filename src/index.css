@@ -1,13 +1,14 @@
 :root {
-  --color-bg: #faf8f5;
+  --color-bg: #ffffff;
   --color-text: #1c1c1e;
   --color-accent: #c17f3b;
   /* 深一階的主色：小字級的金棕色文字與按鈕底色用，對淺底可達 WCAG AA (4.5:1)+ */
   --color-accent-deep: #96601c;
   --color-muted: #766a58;
-  --color-surface: #ede8e0;
-  --color-card: #f4efe8;
-  --color-divider: #e8e0d5;
+  /* 全站統一純白背景，不做色塊區隔 */
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
+  --color-divider: #ebe6dd;
 
   --font-display: 'Playfair Display', 'Noto Serif TC', serif;
   --font-body: 'DM Sans', 'Noto Sans TC', sans-serif;
@@ -43,7 +44,6 @@ section[id] {
 body {
   margin: 0;
   background: var(--color-bg);
-  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h1v1H0z' fill='%239b8e7e' fill-opacity='0.04'/%3E%3C/svg%3E");
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: 16px;

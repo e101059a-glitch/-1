@@ -1,7 +1,6 @@
 .footer {
   padding: 32px 0;
   text-align: center;
-  border-top: 0.5px solid var(--color-divider);
 }
 
 .text {
