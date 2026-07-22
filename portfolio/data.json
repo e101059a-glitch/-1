@@ -1,0 +1,47 @@
+[
+  {
+    "cover": "portfolio/S__4628507.jpg",
+    "title": { "zh": "ERGO PEEL", "en": "ERGO PEEL" },
+    "subtitle": { "zh": "居家產品設計", "en": "Home Product Design" },
+    "description": {
+      "zh": "將人體工學融入最日常的備料動作，以拇指、食指、中指的自然夾持姿勢為核心，讓施力方向與手部肌肉走向一致。底部快拆式刀盤可自由切換削皮刀片或磨板，一個握把應對多種廚房需求。",
+      "en": "Seamlessly blending ergonomics into daily meal prep, ERGO PEEL centers on the natural pinch grip of the thumb, index, and middle fingers, aligning applying force with hand anatomy. Featuring a quick-release base, it easily switches between a peeler and a grater—handling diverse kitchen tasks with just one handle."
+    },
+    "tags": ["Solidworks", "Claude Code", "Gemini"],
+    "gallery": [
+      { "src": "portfolio/IMG_6015.png", "caption": { "zh": "主題表板", "en": "Display Board" } },
+      { "src": "portfolio/1.png", "caption": { "zh": "產品表板-1", "en": "Presentation Board-1" } },
+      { "src": "portfolio/2.png", "caption": { "zh": "產品表板-2", "en": "Presentation Board-2" } },
+      { "src": "portfolio/S__27705349_0.jpg", "caption": { "zh": "草模-1", "en": "Mockup-1" } },
+      { "src": "portfolio/S__27705350_0.jpg", "caption": { "zh": "草模-2", "en": "Mockup-2" } },
+      { "src": "portfolio/S__27705351_0.jpg", "caption": { "zh": "草模-3", "en": "Mockup-3" } },
+      { "src": "portfolio/S__27705368_0.jpg", "caption": { "zh": "3D模型", "en": "3D model" } },
+      { "src": "portfolio/S__27705371_0.jpg", "caption": { "zh": "3D模型", "en": "3D model" } },
+      { "src": "portfolio/S__27705369_0.jpg", "caption": { "zh": "3D模型", "en": "3D model" } },
+      { "src": "portfolio/S__27705366_0.jpg", "caption": { "zh": "成品-1", "en": "Final product-1" } },
+      { "src": "portfolio/S__27705367_0.jpg", "caption": { "zh": "成品-2", "en": "Final product-2" } },
+      { "src": "portfolio/S__27729924_0.jpg", "caption": { "zh": "展示", "en": "Showcase" } }
+    ],
+    "pdf": {
+      "src": "portfolio/ERGO PEEL 簡報.pdf.pdf",
+      "label": { "zh": "ERGO PEEL", "en": "ERGO PEEL" }
+    }
+  },
+  {
+    "cover": "portfolio/lumina-cover.webp",
+    "title": { "zh": "Lumina 發光邊桌設計", "en": "Lumina Illuminated Side Table Design" },
+    "subtitle": { "zh": "家具設計", "en": "Furniture Design" },
+    "description": {
+      "zh": "秉持「形隨機能」的精神，Lumina 剝離冗餘修飾，將家具精煉為純粹的幾何體塊。透過玻璃的透、鋼材的剛、混凝土的重，在理性結構中尋求平衡。幾何發光核心不僅是視覺焦點，更是溫暖空間與功能的匯集點。",
+      "en": "Upholding the spirit of \"form follows function,\" Lumina strips away redundant ornamentation, refining the furniture into pure geometric volumes. Through the transparency of glass, the rigidity of steel, and the gravity of concrete, it seeks a harmonious balance within a rational structure. The geometric illuminating core is not only a visual focal point, but also a convergence point where warmth and functionality meet."
+    },
+    "tags": ["Solidworks", "Gemini"],
+    "gallery": [
+      { "src": "portfolio/S__27705355_0.jpg", "caption": { "zh": "成品-1", "en": "Final product-1" } },
+      { "src": "portfolio/S__27705357_0.jpg", "caption": { "zh": "成品-2", "en": "Final product-2" } },
+      { "src": "portfolio/lumina-3d-model.jpg", "caption": { "zh": "3D建模", "en": "3D model" } },
+      { "src": "portfolio/lumina-showcase.jpg", "caption": { "zh": "展示", "en": "Showcase" } },
+      { "src": "portfolio/lumina-board.jpg", "caption": { "zh": "表板", "en": "Presentation Board" } }
+    ]
+  }
+]
