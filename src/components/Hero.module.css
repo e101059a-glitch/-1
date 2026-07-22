@@ -24,14 +24,14 @@
 }
 
 .glowLeft {
-  background: radial-gradient(circle, rgba(193, 127, 59, 0.45), transparent 70%);
+  background: radial-gradient(circle, rgba(213, 179, 112, 0.4), transparent 70%);
   top: 5%;
   left: -10%;
   animation: driftLeft 14s ease-in-out infinite alternate;
 }
 
 .glowRight {
-  background: radial-gradient(circle, rgba(224, 167, 99, 0.4), transparent 70%);
+  background: radial-gradient(circle, rgba(38, 75, 111, 0.6), transparent 70%);
   bottom: -5%;
   right: -12%;
   animation: driftRight 18s ease-in-out infinite alternate;
@@ -155,7 +155,7 @@
 
 .primaryButton {
   background: var(--color-accent-deep);
-  color: #fff;
+  color: var(--color-bg);
   border: 1px solid var(--color-accent-deep);
 }
 
@@ -172,7 +172,7 @@
 
 .secondaryButton:hover {
   background: var(--color-accent-deep);
-  color: #fff;
+  color: var(--color-bg);
   border-color: var(--color-accent-deep);
 }
 

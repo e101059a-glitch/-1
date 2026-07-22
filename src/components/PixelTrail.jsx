@@ -4,7 +4,7 @@ import styles from './PixelTrail.module.css'
 // 滑鼠掃過時在身後留下一格格淡出的像素軌跡。
 // 為了效能以原生 CSS transition 實作（格子數以千計，不適合每格掛一個 motion 元件），
 // 只在有滑鼠的裝置啟用，並尊重 prefers-reduced-motion。
-function PixelTrail({ pixelSize = 24, fadeDuration = 700, color = 'rgba(193, 127, 59, 0.3)' }) {
+function PixelTrail({ pixelSize = 24, fadeDuration = 700, color = 'rgba(213, 179, 112, 0.35)' }) {
   const containerRef = useRef(null)
   const [dims, setDims] = useState({ width: 0, height: 0 })
   const [enabled, setEnabled] = useState(false)

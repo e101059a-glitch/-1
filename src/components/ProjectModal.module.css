@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(28, 28, 30, 0.5);
+  background: rgba(8, 14, 26, 0.72);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: flex-start;
@@ -19,7 +19,7 @@
   width: 100%;
   margin: 20px auto 60px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
 }
 
 .closeBtn {
@@ -36,13 +36,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   transition: background 0.2s, color 0.2s;
 }
 
 .closeBtn:hover {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-bg);
 }
 
 /* Cover */

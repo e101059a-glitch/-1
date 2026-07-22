@@ -97,14 +97,14 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: all 0.25s ease;
 }
 
 .navArrow:hover {
   border-color: var(--color-accent);
   color: var(--color-accent);
-  box-shadow: 0 4px 12px rgba(193, 127, 59, 0.15);
+  box-shadow: 0 4px 12px rgba(213, 179, 112, 0.2);
 }
 
 .navLeft {
@@ -162,7 +162,7 @@
 
 .projectCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 32px rgba(193, 127, 59, 0.14);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
   border-color: var(--color-accent);
 }
 
@@ -188,7 +188,7 @@
 .imageOverlay {
   position: absolute;
   inset: 0;
-  background: rgba(28, 28, 30, 0.4);
+  background: rgba(16, 26, 44, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,7 +203,7 @@
 .viewBtn {
   padding: 10px 24px;
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-bg);
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;

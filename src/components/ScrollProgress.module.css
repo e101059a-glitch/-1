@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-accent), #e0a763);
+  background: linear-gradient(90deg, var(--color-accent), #ebd199);
   transform-origin: left;
   z-index: 200;
   pointer-events: none;

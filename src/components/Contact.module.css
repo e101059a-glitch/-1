@@ -50,13 +50,13 @@
   border-radius: 6px;
   background: var(--color-accent-deep);
   border: 1px solid var(--color-accent-deep);
-  color: #fff;
+  color: var(--color-bg);
   transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
 }
 
 .ctaButton:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(150, 96, 28, 0.25);
+  box-shadow: 0 10px 24px rgba(213, 179, 112, 0.28);
 }
 
 .ctaArrow {
