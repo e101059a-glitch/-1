@@ -1,7 +1,6 @@
 .skills {
   padding: clamp(72px, 9vw, 120px) 0;
   background: var(--color-surface);
-  border-top: 0.5px solid var(--color-divider);
 }
 
 .inner {

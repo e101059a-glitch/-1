@@ -1,6 +1,5 @@
 .experience {
   padding: clamp(72px, 9vw, 120px) 0;
-  border-top: 0.5px solid var(--color-divider);
 }
 
 .inner {
