@@ -1,19 +1,14 @@
 :root {
-  /* 金浪 · Gilded Wave —— 深藍漆器底 × 金箔青海波，日式海浪美學 */
-  --color-bg: #101a2c;
-  /* 奶油白：主要文字，對深藍底 ≈ 15:1 對比 */
-  --color-text: #f4efdf;
-  --color-accent: #d5b370;
-  /* 亮一階的金：深底上的小字、連結、按鈕底色，對 #101a2c ≈ 9:1 對比 */
-  --color-accent-deep: #e4c583;
-  /* 藍灰次要文字，對深藍底 ≈ 7:1 對比 */
-  --color-muted: #a2aec2;
-  /* 中藍表層：hover / 提升層 */
-  --color-surface: #234061;
-  /* 卡片底：略亮於頁面的深藍 */
-  --color-card: #16294a;
-  /* 金箔髮絲分隔線 */
-  --color-divider: rgba(213, 179, 112, 0.24);
+  --color-bg: #ffffff;
+  --color-text: #1c1c1e;
+  --color-accent: #c17f3b;
+  /* 深一階的主色：小字級的金棕色文字與按鈕底色用，對淺底可達 WCAG AA (4.5:1)+ */
+  --color-accent-deep: #96601c;
+  --color-muted: #766a58;
+  /* 全站統一純白背景，不做色塊區隔 */
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
+  --color-divider: #ebe6dd;
 
   --font-display: 'Playfair Display', 'Noto Serif TC', serif;
   --font-body: 'DM Sans', 'Noto Sans TC', sans-serif;
@@ -23,7 +18,7 @@
   --dur-fast: 0.3s;
   --dur-base: 0.55s;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * {
@@ -48,16 +43,7 @@ section[id] {
 
 body {
   margin: 0;
-  background-color: var(--color-bg);
-  /* 深藍漆器底：頂部一抹中藍暈光、右下一團更深的藍，再疊上金箔青海波海浪紋 */
-  background-image:
-    radial-gradient(1200px 780px at 50% -12%, rgba(38, 75, 111, 0.5), transparent 60%),
-    radial-gradient(900px 700px at 108% 108%, rgba(17, 40, 77, 0.55), transparent 55%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23d5b370' stroke-opacity='0.11' stroke-width='1.1'%3E%3Cpath d='M2 30 a28 28 0 0 1 56 0 M10 30 a20 20 0 0 1 40 0 M18 30 a12 12 0 0 1 24 0 M26 30 a4 4 0 0 1 8 0'/%3E%3Cpath d='M-28 60 a28 28 0 0 1 56 0 M-20 60 a20 20 0 0 1 40 0 M-12 60 a12 12 0 0 1 24 0 M-4 60 a4 4 0 0 1 8 0'/%3E%3Cpath d='M32 60 a28 28 0 0 1 56 0 M40 60 a20 20 0 0 1 40 0 M48 60 a12 12 0 0 1 24 0 M56 60 a4 4 0 0 1 8 0'/%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: no-repeat, no-repeat, repeat;
-  background-position: center top, right bottom, center;
-  background-attachment: fixed, fixed, fixed;
-  background-size: auto, auto, 60px 60px;
+  background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: 16px;
@@ -109,16 +95,14 @@ img {
 .section-card {
   border: 0.5px solid var(--color-divider);
   border-radius: 28px;
-  /* 半透明藍層，讓底下的金箔海浪紋隱約透出 */
-  background: linear-gradient(160deg, rgba(38, 75, 111, 0.34), rgba(17, 40, 77, 0.52));
+  background: linear-gradient(160deg, var(--color-card), rgba(244, 239, 232, 0.35));
   padding: clamp(32px, 5vw, 60px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(2px);
+  box-shadow: 0 1px 2px rgba(28, 28, 30, 0.02);
 }
 
-/* 關鍵字漸層高亮 —— 金到奶油白的箔光 */
+/* 關鍵字漸層高亮 */
 .gradient-text {
-  background: linear-gradient(100deg, var(--color-accent), #ebd199 55%, #f4efdf);
+  background: linear-gradient(100deg, var(--color-accent-deep), var(--color-accent) 55%, #d99a52);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -133,7 +117,7 @@ img {
   padding: 7px 16px;
   border-radius: 999px;
   border: 0.5px solid var(--color-divider);
-  background: rgba(38, 75, 111, 0.32);
+  background: var(--color-card);
   font-size: 13px;
   color: var(--color-accent-deep);
   font-weight: 500;

@@ -110,7 +110,7 @@
   border-radius: 4px;
   border: 1px solid var(--color-accent-deep);
   background: var(--color-accent-deep);
-  color: var(--color-bg);
+  color: #fff;
   transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 
