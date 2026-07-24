@@ -32,15 +32,6 @@ const experiences = [
       en: 'Worked the kitchen line in a fast-paced restaurant — observing prep flow and expo rhythm at peak hours, spotting bottlenecks with a process-design mindset, and executing consistently under pressure.',
     },
   },
-  {
-    org: '國立高雄師範大學羽球隊 / NKNU Badminton Team',
-    role: { zh: '校隊成員', en: 'Varsity Team Member' },
-    period: '2024 —',
-    description: {
-      zh: '擔任校羽球隊成員，代表學校參加全國大專運動會（全大運），長期訓練養成自律與團隊合作習慣。',
-      en: 'Member of the university varsity badminton team, represented NKNU at the National Collegiate Athletic Games. Developed discipline and teamwork through long-term training.',
-    },
-  },
 ]
 
 function Experience({ lang }) {
