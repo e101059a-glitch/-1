@@ -83,11 +83,46 @@ function ProjectModal({ item, lang, onClose }) {
               </div>
             )}
 
+            {/* Process narrative */}
+            {item.process && item.process.length > 0 && (
+              <div className={styles.processSection}>
+                <h3 className={styles.sectionTitle}>
+                  {lang === 'zh' ? '設計過程' : 'Process'}
+                </h3>
+                <div className={styles.divider} />
+                <div className={styles.processList}>
+                  {item.process.map((step, i) => (
+                    <div key={i} className={styles.processStep}>
+                      <div className={styles.processMarker}>
+                        <span className={styles.processNum}>{String(i + 1).padStart(2, '0')}</span>
+                        {i !== item.process.length - 1 && <span className={styles.processConnector} />}
+                      </div>
+                      <div className={styles.processContent}>
+                        <h4 className={styles.processTitle}>{t(step.title)}</h4>
+                        <p className={styles.processText}>{t(step.text)}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Reflection */}
+            {item.reflection && t(item.reflection) && (
+              <div className={styles.reflectionSection}>
+                <h3 className={styles.sectionTitle}>
+                  {lang === 'zh' ? '設計反思' : 'Reflection'}
+                </h3>
+                <div className={styles.divider} />
+                <p className={styles.reflectionText}>{t(item.reflection)}</p>
+              </div>
+            )}
+
             {/* Gallery */}
             {item.gallery && item.gallery.length > 0 && (
               <div className={styles.gallerySection}>
                 <h3 className={styles.sectionTitle}>
-                  {lang === 'zh' ? '製作流程' : 'Process'}
+                  {lang === 'zh' ? '製作紀錄' : 'Gallery'}
                 </h3>
                 <div className={styles.divider} />
                 <div className={styles.gallery}>

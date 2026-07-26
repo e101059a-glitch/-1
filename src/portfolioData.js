@@ -1,75 +1,102 @@
 const portfolioItems = [
   {
     cover: 'portfolio/S__4628507.jpg',
-    title: {
-      zh: 'ERGO PEEL',
-      en: 'ERGO PEEL'
-    },
-    subtitle: {
-      zh: '居家產品設計',
-      en: 'Home Product Design'
-    },
+    title: { zh: 'ERGO PEEL', en: 'ERGO PEEL' },
+    subtitle: { zh: '居家產品設計', en: 'Home Product Design' },
     description: {
       zh: '將人體工學融入最日常的備料動作，以拇指、食指、中指的自然夾持姿勢為核心，讓施力方向與手部肌肉走向一致。底部快拆式刀盤可自由切換削皮刀片或磨板，一個握把應對多種廚房需求。',
       en: 'Seamlessly blending ergonomics into daily meal prep, ERGO PEEL centers on the natural pinch grip of the thumb, index, and middle fingers, aligning applying force with hand anatomy. Featuring a quick-release base, it easily switches between a peeler and a grater—handling diverse kitchen tasks with just one handle.'
     },
-    tags: [
-      'Solidworks', 'Claude Code'
-    ],
-    gallery: [
+    tags: ['Solidworks', 'Claude Code', 'Gemini'],
+    process: [
       {
-        src: 'portfolio/IMG_6015.png',
-        caption: { zh: '主題表板', en: 'Display Board' }
+        title: { zh: '痛點研究', en: 'Insight' },
+        text: {
+          zh: '從日常備料的施力痛點出發，分析拇指、食指、中指的自然夾持姿勢，鎖定削皮動作的人體工學問題。',
+          en: 'Started from the strain of daily meal prep — analyzing the natural pinch grip to pinpoint the ergonomic problem in peeling.'
+        }
       },
       {
-        src: 'portfolio/1.png',
-        caption: { zh: '產品表板-1', en: 'Presentation Board-1' }
+        title: { zh: '草模驗證', en: 'Prototyping' },
+        text: {
+          zh: '以多輪草模快速測試夾持姿勢與施力角度，反覆修正握把型態，讓施力方向與手部肌肉走向一致。',
+          en: 'Rapid mockups tested grip posture and force angles, iterating the handle form until force aligned with hand anatomy.'
+        }
       },
       {
-        src: 'portfolio/2.png',
-        caption: { zh: '產品表板-2', en: 'Presentation Board-2' }
-      },
-      {
-        src: 'portfolio/S__27705349_0.jpg',
-        caption: { zh: '草模-1', en: 'Mockup-1' }
-      },
-      {
-        src: 'portfolio/S__27705350_0.jpg',
-        caption: { zh: '草模-2', en: 'Mockup-2' }
-      },
-      {
-        src: 'portfolio/S__27705351_0.jpg',
-        caption: { zh: '草模-3', en: 'Mockup-3' }
-      },
-      {
-        src: 'portfolio/S__27705368_0.jpg',
-        caption: { zh: '3D模型', en: '3D model' }
-      },
-      {
-        src: 'portfolio/S__27705371_0.jpg',
-        caption: { zh: '3D模型', en: '3D model' }
-      },
-      {
-        src: 'portfolio/S__27705369_0.jpg',
-        caption: { zh: '3D模型', en: '3D model' }
-      },
-      {
-        src: 'portfolio/S__27705366_0.jpg',
-        caption: { zh: '成品-1', en: 'Final product-1' }
-      },
-      {
-        src: 'portfolio/S__27705367_0.jpg',
-        caption: { zh: '成品-2', en: 'Final product-2' }
-      },
-      {
-        src: 'portfolio/S__27729924_0.jpg',
-        caption: { zh: '展示', en: 'Showcase' }
+        title: { zh: '建模與成品', en: 'Build & Deliver' },
+        text: {
+          zh: '以 SolidWorks 完成 3D 建模與快拆刀盤機構，產出實體成品，並以簡報表板完整呈現設計論述。',
+          en: 'Modeled in SolidWorks with a quick-release blade mechanism, delivered the physical product and presentation boards.'
+        }
       }
+    ],
+    reflection: {
+      zh: '人體工學的部分研究還不夠深入，產品表達也不夠清楚——造型應該要讓人看一眼就懂、就會用。',
+      en: "The ergonomic research needs more depth, and the product isn't communicating itself clearly enough. The form should be intuitive — understandable and usable at first glance."
+    },
+    gallery: [
+      { src: 'portfolio/IMG_6015.png', caption: { zh: '主題表板', en: 'Display Board' } },
+      { src: 'portfolio/1.png', caption: { zh: '產品表板-1', en: 'Presentation Board-1' } },
+      { src: 'portfolio/2.png', caption: { zh: '產品表板-2', en: 'Presentation Board-2' } },
+      { src: 'portfolio/S__27705349_0.jpg', caption: { zh: '草模-1', en: 'Mockup-1' } },
+      { src: 'portfolio/S__27705350_0.jpg', caption: { zh: '草模-2', en: 'Mockup-2' } },
+      { src: 'portfolio/S__27705351_0.jpg', caption: { zh: '草模-3', en: 'Mockup-3' } },
+      { src: 'portfolio/S__27705368_0.jpg', caption: { zh: '3D模型', en: '3D model' } },
+      { src: 'portfolio/S__27705371_0.jpg', caption: { zh: '3D模型', en: '3D model' } },
+      { src: 'portfolio/S__27705369_0.jpg', caption: { zh: '3D模型', en: '3D model' } },
+      { src: 'portfolio/S__27705366_0.jpg', caption: { zh: '成品-1', en: 'Final product-1' } },
+      { src: 'portfolio/S__27705367_0.jpg', caption: { zh: '成品-2', en: 'Final product-2' } },
+      { src: 'portfolio/S__27729924_0.jpg', caption: { zh: '展示', en: 'Showcase' } }
     ],
     pdf: {
       src: 'portfolio/ERGO PEEL 簡報.pdf.pdf',
       label: { zh: 'ERGO PEEL', en: 'ERGO PEEL' }
     }
+  },
+  {
+    cover: 'portfolio/lumina-cover.webp',
+    title: { zh: 'Lumina 發光邊桌設計', en: 'Lumina Illuminated Side Table Design' },
+    subtitle: { zh: '家具設計', en: 'Furniture Design' },
+    description: {
+      zh: '秉持「形隨機能」的精神，Lumina 剝離冗餘修飾，將家具精煉為純粹的幾何體塊。透過玻璃的透、鋼材的剛、混凝土的重，在理性結構中尋求平衡。幾何發光核心不僅是視覺焦點，更是溫暖空間與功能的匯集點。',
+      en: 'Upholding the spirit of "form follows function," Lumina strips away redundant ornamentation, refining the furniture into pure geometric volumes. Through the transparency of glass, the rigidity of steel, and the gravity of concrete, it seeks a harmonious balance within a rational structure. The geometric illuminating core is not only a visual focal point, but also a convergence point where warmth and functionality meet.'
+    },
+    tags: ['Solidworks', 'Gemini'],
+    process: [
+      {
+        title: { zh: '概念發想', en: 'Concept' },
+        text: {
+          zh: '從玻璃、鋼材、混凝土三種材料的物理特性出發，尋找幾何體塊之間理性而溫暖的平衡，讓發光核心成為視覺與功能的匯集點。',
+          en: 'Started from the physical character of glass, steel, and concrete, seeking a rational yet warm balance between geometric volumes with the light core as the focal point.'
+        }
+      },
+      {
+        title: { zh: '工藝挑戰與轉化', en: 'Fabrication' },
+        text: {
+          zh: '原訂以 3D 列印製作全透明燈罩，但支撐材痕跡難以打磨消除。將限制轉化為設計機會，改以幾何花紋紋理呈現，光線穿透後意外創造出層次豐富的光影效果。',
+          en: 'Originally planned a fully transparent 3D-printed shade, but support-material marks proved impossible to fully polish out. Turned the constraint into an opportunity — a geometric pattern texture that creates rich light-and-shadow layering instead.'
+        }
+      },
+      {
+        title: { zh: '成品與呈現', en: 'Final' },
+        text: {
+          zh: '完成鋼材、玻璃、混凝土的組裝與發光核心整合，並以表板與實體拍攝呈現最終設計論述。',
+          en: 'Assembled the steel, glass, and concrete elements with the integrated light core, and presented the final design through boards and product photography.'
+        }
+      }
+    ],
+    reflection: {
+      zh: '最大的工藝挑戰在於材料與製程的限制。這次經驗讓我體會到，設計不只是追求理想中的完美，更是在色彩、材質、工藝與製造限制之間，靈活尋求最佳解的過程。',
+      en: "The biggest challenge lay in the limits of materials and fabrication. This taught me that design isn't just about pursuing theoretical perfection — it's about agile problem-solving within the real constraints of color, material, craft, and manufacturing."
+    },
+    gallery: [
+      { src: 'portfolio/S__27705355_0.jpg', caption: { zh: '成品-1', en: 'Final product-1' } },
+      { src: 'portfolio/S__27705357_0.jpg', caption: { zh: '成品-2', en: 'Final product-2' } },
+      { src: 'portfolio/lumina-3d-model.jpg', caption: { zh: '3D建模', en: '3D model' } },
+      { src: 'portfolio/lumina-showcase.jpg', caption: { zh: '展示', en: 'Showcase' } },
+      { src: 'portfolio/lumina-board.jpg', caption: { zh: '表板', en: 'Presentation Board' } }
+    ]
   }
 ]
 

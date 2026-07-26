@@ -9,6 +9,7 @@
   --color-divider: #e5e5e5;
   --color-nav: rgba(255, 255, 255, 0.55);
   --color-glass-border: rgba(255, 255, 255, 0.6);
+  --color-portfolio-bg: rgba(255, 255, 255, 0.94);
 
   --font-display: 'Playfair Display', 'Noto Serif TC', serif;
   --font-body: 'DM Sans', 'Noto Sans TC', sans-serif;
@@ -29,6 +30,7 @@
     --color-divider: #333333;
     --color-nav: rgba(10, 10, 10, 0.5);
     --color-glass-border: rgba(255, 255, 255, 0.1);
+    --color-portfolio-bg: rgba(10, 10, 10, 0.92);
 
     color-scheme: dark;
   }

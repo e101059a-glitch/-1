@@ -112,6 +112,73 @@
   margin: 12px 0 24px;
 }
 
+.processSection {
+  margin-top: 48px;
+}
+
+.processList {
+  display: flex;
+  flex-direction: column;
+}
+
+.processStep {
+  display: flex;
+  gap: 20px;
+}
+
+.processMarker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.processNum {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--color-accent);
+  letter-spacing: 0.5px;
+}
+
+.processConnector {
+  flex: 1;
+  width: 1px;
+  min-height: 24px;
+  background: var(--color-divider);
+  margin: 8px 0;
+}
+
+.processContent {
+  padding-bottom: 24px;
+}
+
+.processTitle {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.processText {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--color-muted);
+  line-height: 1.8;
+}
+
+.reflectionSection {
+  margin-top: 48px;
+}
+
+.reflectionText {
+  font-size: 14px;
+  color: var(--color-muted);
+  line-height: 1.9;
+  font-style: italic;
+  border-left: 2px solid var(--color-divider);
+  padding-left: 16px;
+}
+
 .gallerySection {
   margin-top: 48px;
 }
