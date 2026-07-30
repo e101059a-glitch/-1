@@ -13,7 +13,7 @@
 
 .modal {
   position: relative;
-  background: #fff;
+  background: var(--color-portfolio-bg);
   max-width: 800px;
   width: 100%;
   margin: 20px auto 60px;
@@ -29,7 +29,7 @@
   height: 36px;
   border-radius: 50%;
   border: none;
-  background: #fff;
+  background: var(--color-portfolio-bg);
   color: var(--color-text);
   display: flex;
   align-items: center;

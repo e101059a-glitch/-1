@@ -1,0 +1,41 @@
+.flipWrap {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  line-height: 1;
+}
+
+.layerTop {
+  display: block;
+}
+
+.layerBottom {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.char {
+  display: inline-block;
+  transition: transform 0.3s ease-in-out;
+}
+
+.layerBottom .char {
+  transform: translateY(110%);
+}
+
+.flipWrap:hover .layerTop .char {
+  transform: translateY(-110%);
+}
+
+.flipWrap:hover .layerBottom .char {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char {
+    transition: none;
+  }
+}

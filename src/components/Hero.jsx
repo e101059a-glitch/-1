@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import MagneticButton from './MagneticButton.jsx'
+import FlipText from './FlipText.jsx'
 import styles from './Hero.module.css'
 
 const content = {
@@ -23,22 +24,6 @@ const content = {
   },
 }
 
-const titleContainer = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.2 },
-  },
-}
-
-const titleChar = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
-  },
-}
-
 function Hero({ lang }) {
   const t = content[lang]
 
@@ -56,27 +41,17 @@ function Hero({ lang }) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
         >
-          {t.subtitle}
+          <FlipText text={t.subtitle} />
         </motion.p>
 
         <motion.h1
           key={`title-${lang}`}
           className={styles.title}
-          variants={titleContainer}
-          initial="hidden"
-          animate="visible"
-          aria-label={t.title}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          {Array.from(t.title).map((char, i) => (
-            <motion.span
-              key={`${char}-${i}`}
-              className={styles.titleChar}
-              variants={titleChar}
-              aria-hidden="true"
-            >
-              {char === ' ' ? ' ' : char}
-            </motion.span>
-          ))}
+          <FlipText text={t.title} />
         </motion.h1>
 
         <motion.div
@@ -106,13 +81,13 @@ function Hero({ lang }) {
             className={styles.primaryButton}
             onClick={() => scrollTo('portfolio')}
           >
-            {t.primary}
+            <FlipText text={t.primary} />
           </MagneticButton>
           <MagneticButton
             className={styles.secondaryButton}
             onClick={() => scrollTo('contact')}
           >
-            {t.secondary}
+            <FlipText text={t.secondary} />
           </MagneticButton>
         </motion.div>
       </div>
