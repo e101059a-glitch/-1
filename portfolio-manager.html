@@ -49,6 +49,9 @@
   .gallery-card.drag-over { border: 2px solid #c17f3b; }
   .gallery-img-wrap { aspect-ratio: 4/3; overflow: hidden; background: #ede8e0; position: relative; }
   .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .img-fallback { width: 100%; height: 100%; min-height: 60px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #9b8e7e; padding: 8px; text-align: center; word-break: break-all; background: #ede8e0; }
+  .cover-preview-box { width: 240px; max-width: 100%; aspect-ratio: 16/10; margin-top: 10px; border-radius: 4px; overflow: hidden; background: #ede8e0; display: flex; }
+  .cover-preview-box img { width: 100%; height: 100%; object-fit: cover; }
   .gallery-controls { position: absolute; top: 4px; right: 4px; display: flex; gap: 2px; }
   .gallery-controls button { width: 26px; height: 26px; border-radius: 50%; border: none; background: rgba(0,0,0,0.55); color: #fff; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
   .gallery-controls button:hover { background: #c17f3b; }
@@ -81,7 +84,8 @@
   .item-order button:disabled { opacity: 0.3; cursor: default; }
   .item-order-num { font-size: 12px; color: #9b8e7e; text-align: center; font-weight: 600; }
   .item-card:hover { border-color: #c17f3b; }
-  .item-thumb { width: 140px; height: 88px; border-radius: 6px; object-fit: cover; background: #ede8e0; flex-shrink: 0; }
+  .item-thumb { width: 140px; height: 88px; border-radius: 6px; background: #ede8e0; flex-shrink: 0; overflow: hidden; display: flex; }
+  .item-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .item-thumb-placeholder { width: 140px; height: 88px; border-radius: 6px; background: #ede8e0; display: flex; align-items: center; justify-content: center; color: #9b8e7e; font-size: 12px; flex-shrink: 0; }
   .item-info { flex: 1; }
   .item-info h3 { font-family: 'Playfair Display', serif; font-size: 17px; margin-bottom: 2px; }
@@ -434,6 +438,40 @@ function persist() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 }
 
+// 部署後的網站網址，本機找不到圖片時改從這裡載入預覽
+const SITE_BASE = 'https://e101059a-glitch.github.io/-1/';
+
+// 依序嘗試：同資料夾的 portfolio/（本地伺服器與網站都適用）、
+// public/portfolio/（用檔案總管直接打開這個檔時）、最後才連線上網站
+function imgCandidates(name) {
+  const rel = encodeURI(name.startsWith('portfolio/') ? name : 'portfolio/' + name);
+  return [rel, 'public/' + rel, SITE_BASE + rel];
+}
+
+function imgHtml(name, dataUrl) {
+  if (dataUrl) return '<img src="' + dataUrl + '" alt="" />';
+  if (!name) return '<div class="img-fallback">無圖片</div>';
+  const list = imgCandidates(name);
+  return '<img src="' + list[0] + '" loading="lazy" alt=""' +
+    ' data-fallbacks="' + esc(list.slice(1).join('|')) + '"' +
+    ' data-name="' + esc(name.replace('portfolio/', '')) + '"' +
+    ' onerror="imgFallback(this)" />';
+}
+
+function imgFallback(el) {
+  const rest = (el.dataset.fallbacks || '').split('|').filter(Boolean);
+  if (rest.length) {
+    el.dataset.fallbacks = rest.slice(1).join('|');
+    el.src = rest[0];
+    return;
+  }
+  // 都找不到就顯示檔名，至少知道少了哪個檔
+  const div = document.createElement('div');
+  div.className = 'img-fallback';
+  div.textContent = el.dataset.name || '無圖片';
+  el.replaceWith(div);
+}
+
 // ---- 照片自動壓縮 ----
 const IMG_MAX_DIM = 1800;
 const IMG_QUALITY = 0.82;
@@ -559,7 +597,7 @@ function renderList() {
   }
   container.innerHTML = items.map((item, i) => {
     const thumbHtml = item.cover
-      ? '<img class="item-thumb" src="" alt="" onerror="this.style.display=\'none\'" />'
+      ? '<div class="item-thumb">' + imgHtml(item.cover) + '</div>'
       : '<div class="item-thumb-placeholder">No Cover</div>';
     const tagsHtml = (item.tags || []).map(t => '<span class="item-tag">' + esc(t) + '</span>').join('');
     const galleryBadge = item.gallery && item.gallery.length > 0
@@ -650,7 +688,8 @@ function editItem(i) {
   document.getElementById('desc-en').value = item.description ? item.description.en : '';
   document.getElementById('tags').value = (item.tags || []).join(', ');
   document.getElementById('cover-file').value = item.cover ? item.cover.replace('portfolio/', '') : '';
-  document.getElementById('cover-preview-area').innerHTML = '';
+  document.getElementById('cover-preview-area').innerHTML = item.cover
+    ? '<div class="cover-preview-box">' + imgHtml(item.cover) + '</div>' : '';
   if (item.pdf) {
     document.getElementById('pdf-file').value = item.pdf.src ? item.pdf.src.replace('portfolio/', '') : '';
     document.getElementById('pdf-label-zh').value = item.pdf.label ? item.pdf.label.zh : '';
@@ -781,10 +820,9 @@ function renderGallery() {
   }
   hint.style.display = 'block';
   grid.innerHTML = galleryImages.map((img, i) => {
-    const fname = img.src.replace('portfolio/', '');
     return '<div class="gallery-card" draggable="true" data-idx="' + i + '">' +
       '<div class="gallery-img-wrap">' +
-      '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:11px;color:#9b8e7e;padding:8px;word-break:break-all;">' + esc(fname) + '</div>' +
+      imgHtml(img.src) +
       '<span class="gallery-order">#' + (i + 1) + '</span>' +
       '<div class="gallery-controls">' +
       '<button title="刪除" onclick="removeGalleryImage(' + i + ')">&#x2715;</button>' +
@@ -982,7 +1020,7 @@ document.getElementById('pdf-input').addEventListener('change', async function (
 
 function renderCoverPreview(dataUrl) {
   document.getElementById('cover-preview-area').innerHTML =
-    '<img src="' + dataUrl + '" style="max-width:240px;max-height:150px;border-radius:4px;margin-top:10px;" />';
+    '<div class="cover-preview-box">' + imgHtml('', dataUrl) + '</div>';
 }
 
 // ---- 本地模式：直接寫回專案檔案 ----
