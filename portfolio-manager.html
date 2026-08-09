@@ -263,8 +263,12 @@
         <label>流程 / 系列圖片 <span class="hint">（點進作品後的多張照片，可拖曳調整順序）</span></label>
         <div class="upload-area">
           <input type="file" accept="image/*" multiple id="gallery-input" />
-          <div class="upload-text"><strong>點擊上傳多張圖片</strong>（可一次選多張）</div>
+          <div class="upload-text">
+            <strong>點擊上傳多張圖片</strong>（可一次選多張）<br />
+            <span style="font-size:12px;opacity:0.75">上傳時會自動壓縮成 WebP，長邊最多 1800px</span>
+          </div>
         </div>
+        <div id="compress-summary" style="display:none;margin-top:8px;font-size:12px;color:#3d6b3d;background:#f0f7f0;border:1px solid #b9d9b9;border-radius:5px;padding:8px 12px;"></div>
 
         <div style="margin-top:8px;">
           <label>或手動新增圖片檔名</label>
@@ -310,8 +314,13 @@
 
       <div class="steps offline-only">
         <h3>更新網站步驟</h3>
+        <p style="margin-bottom:12px;color:#c44;font-size:13px;">
+          注意：照片壓縮後副檔名會變成 <code>.webp</code>，請用下方按鈕下載壓好的檔案，
+          不要直接搬原始照片，否則網站會找不到圖。
+        </p>
+        <button class="btn btn-primary btn-sm" id="download-zip-btn" onclick="downloadZip()" style="display:none;margin-bottom:14px;">下載壓縮後的照片</button>
         <ol>
-          <li>把圖片和 PDF 放到 <code>public/portfolio/</code> 資料夾</li>
+          <li>解壓縮下載的檔案，把圖片和 PDF 放到 <code>public/portfolio/</code> 資料夾</li>
           <li>複製上方程式碼，貼到 <code>src/portfolioData.js</code> 取代全部內容</li>
           <li>開啟 PowerShell，依序輸入：</li>
         </ol>
@@ -470,7 +479,6 @@ function switchTab(name) {
   if (name === 'code') generateCode()
 }
 
-// 本地模式：把原始檔案讀成 data URL 排隊，按「儲存到網站」時才真正寫進 public/portfolio/
 function fileToDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -480,26 +488,194 @@ function fileToDataUrl(file) {
   })
 }
 
-async function queueUpload(file) {
-  if (!LOCAL) return
-  pendingUploads.set(file.name, await fileToDataUrl(file))
+// 上傳的照片自動壓縮：長邊上限與品質，兼顧畫質與網站載入速度
+const IMG_MAX_DIM = 1800
+const IMG_QUALITY = 0.82
+
+function formatSize(bytes) {
+  if (bytes >= 1024 * 1024) return (bytes / 1024 / 1024).toFixed(1) + ' MB'
+  return Math.max(1, Math.round(bytes / 1024)) + ' KB'
+}
+
+/** data URL 的 base64 還原成位元組，供 ZIP 打包使用 */
+function dataUrlToBytes(dataUrl) {
+  const bin = atob(dataUrl.slice(dataUrl.indexOf(',') + 1))
+  const bytes = new Uint8Array(bin.length)
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
+  return bytes
+}
+
+/**
+ * 把照片縮到 IMG_MAX_DIM 以內並轉成 WebP。
+ * 回傳的檔名副檔名會跟著改，資料裡存的檔名才會跟實際檔案一致。
+ */
+async function compressImage(file) {
+  const orig = file.size
+  const asIs = async (reason) => ({
+    name: file.name, dataUrl: await fileToDataUrl(file), orig, size: orig, skipped: reason,
+  })
+
+  // GIF 可能是動畫，壓過會只剩一張，原樣保留
+  if (!file.type.startsWith('image/') || file.type === 'image/gif') return asIs('非照片')
+
+  const url = URL.createObjectURL(file)
+  try {
+    const img = await new Promise((resolve, reject) => {
+      const im = new Image()
+      im.onload = () => resolve(im)
+      im.onerror = () => reject(new Error('圖片讀取失敗'))
+      im.src = url
+    })
+    const scale = Math.min(1, IMG_MAX_DIM / Math.max(img.width, img.height))
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.max(1, Math.round(img.width * scale))
+    canvas.height = Math.max(1, Math.round(img.height * scale))
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+
+    let out = canvas.toDataURL('image/webp', IMG_QUALITY)
+    let ext = '.webp'
+    // 少數瀏覽器不支援輸出 WebP，退回 JPEG
+    if (!out.startsWith('data:image/webp')) {
+      out = canvas.toDataURL('image/jpeg', IMG_QUALITY)
+      ext = '.jpg'
+    }
+    const size = Math.round((out.length - out.indexOf(',') - 1) * 3 / 4)
+    // 本來就壓得很好的圖，壓完反而變大就別換
+    if (size >= orig) return asIs('原檔已夠小')
+
+    return { name: file.name.replace(/\.[^.]+$/, '') + ext, dataUrl: out, orig, size }
+  } catch {
+    return asIs('無法壓縮')
+  } finally {
+    URL.revokeObjectURL(url)
+  }
+}
+
+/** 壓好（或原樣）的檔案排隊，本地模式按儲存時寫檔，離線模式可打包下載 */
+function queueFile(result) {
+  pendingUploads.set(result.name, result.dataUrl)
   updateSaveBtn()
 }
 
 function updateSaveBtn() {
-  const btn = $('save-site-btn')
-  if (!btn) return
   const n = pendingUploads.size
-  btn.textContent = n > 0 ? `儲存到網站（含 ${n} 個檔案）` : '儲存到網站'
+  const btn = $('save-site-btn')
+  if (btn) btn.textContent = n > 0 ? `儲存到網站（含 ${n} 個檔案）` : '儲存到網站'
+  const dl = $('download-zip-btn')
+  if (dl) {
+    dl.style.display = n > 0 ? '' : 'none'
+    dl.textContent = `下載壓縮後的照片（${n} 個）`
+  }
+}
+
+/** 顯示這次壓縮省了多少 */
+function reportCompression(results) {
+  const done = results.filter(r => !r.skipped)
+  if (done.length === 0) return
+  const before = done.reduce((s, r) => s + r.orig, 0)
+  const after = done.reduce((s, r) => s + r.size, 0)
+  const saved = Math.round((1 - after / before) * 100)
+  const el = $('compress-summary')
+  if (el) {
+    el.style.display = ''
+    el.textContent = `已壓縮 ${done.length} 張：${formatSize(before)} → ${formatSize(after)}（省下 ${saved}%）`
+  }
+}
+
+// ---- 最小 ZIP 打包（僅儲存不壓縮，照片本身已是壓縮格式）----
+const CRC_TABLE = (() => {
+  const table = new Uint32Array(256)
+  for (let i = 0; i < 256; i++) {
+    let c = i
+    for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1
+    table[i] = c >>> 0
+  }
+  return table
+})()
+
+function crc32(bytes) {
+  let c = 0xFFFFFFFF
+  for (let i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8)
+  return (c ^ 0xFFFFFFFF) >>> 0
+}
+
+function zipFiles(files) {
+  const enc = new TextEncoder()
+  const parts = []
+  const central = []
+  let offset = 0
+
+  for (const file of files) {
+    const nameBytes = enc.encode(file.name)
+    const crc = crc32(file.bytes)
+    const size = file.bytes.length
+
+    const local = new Uint8Array(30 + nameBytes.length)
+    const lv = new DataView(local.buffer)
+    lv.setUint32(0, 0x04034b50, true)
+    lv.setUint16(4, 20, true)
+    lv.setUint16(6, 0x0800, true) // 檔名用 UTF-8
+    lv.setUint16(8, 0, true)      // 不壓縮，直接存
+    lv.setUint16(12, 0x2821, true)
+    lv.setUint32(14, crc, true)
+    lv.setUint32(18, size, true)
+    lv.setUint32(22, size, true)
+    lv.setUint16(26, nameBytes.length, true)
+    local.set(nameBytes, 30)
+    parts.push(local, file.bytes)
+
+    const dir = new Uint8Array(46 + nameBytes.length)
+    const dv = new DataView(dir.buffer)
+    dv.setUint32(0, 0x02014b50, true)
+    dv.setUint16(4, 20, true)
+    dv.setUint16(6, 20, true)
+    dv.setUint16(8, 0x0800, true)
+    dv.setUint16(10, 0, true)
+    dv.setUint16(14, 0x2821, true)
+    dv.setUint32(16, crc, true)
+    dv.setUint32(20, size, true)
+    dv.setUint32(24, size, true)
+    dv.setUint16(28, nameBytes.length, true)
+    dv.setUint32(42, offset, true)
+    dir.set(nameBytes, 46)
+    central.push(dir)
+
+    offset += local.length + size
+  }
+
+  const centralSize = central.reduce((sum, c) => sum + c.length, 0)
+  const end = new Uint8Array(22)
+  const ev = new DataView(end.buffer)
+  ev.setUint32(0, 0x06054b50, true)
+  ev.setUint16(8, files.length, true)
+  ev.setUint16(10, files.length, true)
+  ev.setUint32(12, centralSize, true)
+  ev.setUint32(16, offset, true)
+
+  return new Blob([...parts, ...central, end], { type: 'application/zip' })
+}
+
+function downloadZip() {
+  if (pendingUploads.size === 0) return
+  const files = [...pendingUploads].map(([name, dataUrl]) => ({ name, bytes: dataUrlToBytes(dataUrl) }))
+  const url = URL.createObjectURL(zipFiles(files))
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'portfolio-images.zip'
+  a.click()
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+  showToast('已下載，解壓縮後放進 public/portfolio/')
 }
 
 // Cover
 $('cover-input').addEventListener('change', async function(e) {
   const file = e.target.files[0]
   if (!file) return
-  coverFileName = file.name
-  $('cover-filename').value = file.name
-  queueUpload(file)
+  const result = await compressImage(file)
+  coverFileName = result.name
+  $('cover-filename').value = result.name
+  queueFile(result)
+  reportCompression([result])
   coverDataUrl = await fileToThumb(file)
   $('cover-preview').src = coverDataUrl
   $('cover-preview').style.display = 'block'
@@ -514,22 +690,24 @@ $('cover-filename').addEventListener('input', function() {
 $('gallery-input').addEventListener('change', async function(e) {
   const files = Array.from(e.target.files)
   e.target.value = ''
-  await Promise.all(files.map(f => queueUpload(f)))
+  const results = await Promise.all(files.map(f => compressImage(f)))
+  results.forEach(r => queueFile(r))
+  reportCompression(results)
   const thumbs = await Promise.all(files.map(f => fileToThumb(f)))
-  files.forEach((file, i) => {
-    galleryFiles.push({ name: file.name, dataUrl: thumbs[i], captionZh: '', captionEn: '' })
+  results.forEach((result, i) => {
+    galleryFiles.push({ name: result.name, dataUrl: thumbs[i], captionZh: '', captionEn: '' })
   })
   renderGalleryPreview()
 })
 
 // PDF 上傳：填好檔名，本地模式下一併存進 public/portfolio/
-$('pdf-input').addEventListener('change', function(e) {
+$('pdf-input').addEventListener('change', async function(e) {
   const file = e.target.files[0]
   e.target.value = ''
   if (!file) return
   $('pdf').value = file.name
-  queueUpload(file)
-  showToast(LOCAL ? `已加入待存檔案：${file.name}` : `檔名已填入，請自行把 ${file.name} 放到 public/portfolio/`)
+  queueFile({ name: file.name, dataUrl: await fileToDataUrl(file), orig: file.size, size: file.size, skipped: 'PDF' })
+  showToast(LOCAL ? `已加入待存檔案：${file.name}` : `已加入打包清單：${file.name}`)
 })
 
 // 設計流程步驟
@@ -704,6 +882,7 @@ function clearForm() {
   coverDataUrl = ''
   galleryFiles = []
   processSteps = []
+  $('compress-summary').style.display = 'none'
   renderGalleryPreview()
   renderProcess()
   editIndex = -1
