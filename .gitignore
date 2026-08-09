@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# npm run manage 覆寫 data.json 前的自動備份
+.manage-backups

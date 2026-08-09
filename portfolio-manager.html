@@ -98,6 +98,28 @@
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1c1c1e; color: #fff; padding: 12px 28px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
   .toast.show { opacity: 1; }
 
+  /* 設計流程（作品頁上的 01 / 02 / 03 步驟） */
+  .process-card { border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 16px; margin-bottom: 12px; background: #fff; }
+  .process-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .process-num { font-family: 'Playfair Display', serif; font-size: 18px; color: #c17f3b; font-weight: 600; }
+  .process-head button { border: 0.5px solid #e8e0d5; background: #faf8f5; border-radius: 4px; width: 26px; height: 26px; cursor: pointer; margin-left: 4px; color: #9b8e7e; }
+  .process-head button:hover { border-color: #c17f3b; color: #c17f3b; }
+  .process-card input, .process-card textarea { width: 100%; padding: 9px 12px; border: 0.5px solid #e8e0d5; border-radius: 5px; font-family: inherit; font-size: 13px; background: #faf8f5; }
+  .process-card textarea { min-height: 68px; resize: vertical; line-height: 1.7; }
+  .process-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+
+  /* 本地模式（npm run manage）才會出現的存檔列 */
+  .local-bar { display: none; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 32px; padding: 14px 20px; background: #f0f7f0; border: 1px solid #b9d9b9; border-radius: 8px; }
+  .local-bar.on { display: flex; }
+  .local-bar .lb-text { font-size: 13px; color: #3d6b3d; line-height: 1.6; }
+  .local-bar .lb-text strong { color: #2c552c; }
+  body.local-mode .offline-only { display: none; }
+
+  @media (max-width: 700px) {
+    .process-row { grid-template-columns: 1fr; }
+    .local-bar { flex-direction: column; align-items: stretch; }
+  }
+
   .how-to { background: #f4efe8; border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 24px 32px; margin-bottom: 32px; }
   .how-to h3 { font-size: 16px; margin-bottom: 12px; color: #c17f3b; }
   .how-to ol { padding-left: 20px; font-size: 14px; line-height: 2.2; color: #1c1c1e; }
@@ -114,22 +136,52 @@
 
 <div class="container">
   <h1>作品集管理工具</h1>
-  <p class="subtitle">新增、編輯作品後，按「下載 data.json」更新網站資料</p>
-  <div class="save-notice">
+  <p class="subtitle" id="page-subtitle">新增、編輯作品後，按「下載 data.json」更新網站資料</p>
+
+  <!-- 用 npm run manage 開啟時才出現：可以直接寫回專案檔案 -->
+  <div class="local-bar" id="local-bar">
+    <div class="lb-text">
+      <strong>本地模式</strong> — 資料直接讀自 <code>public/portfolio/data.json</code>。<br />
+      編輯完按右邊按鈕，就會寫回檔案並把照片存進 <code>public/portfolio/</code>，不用下載也不用搬檔案。
+    </div>
+    <button class="btn btn-primary" onclick="saveToSite()" id="save-site-btn">儲存到網站</button>
+  </div>
+
+  <div class="save-notice offline-only">
     <strong>自動儲存</strong> — 資料會存在瀏覽器裡，關掉再打開不會消失
   </div>
 
-  <div class="sync-bar">
+  <div class="sync-bar offline-only">
     <button class="btn btn-sync" onclick="downloadJson()">&#x2B07; 下載 data.json</button>
+    <button class="btn btn-primary" id="download-zip-btn" onclick="downloadZip()" style="display:none;margin-left:8px;">下載壓縮後的照片</button>
   </div>
 
-  <div class="how-to">
+  <!-- 本地模式（npm run manage）：前兩步都由工具代勞 -->
+  <div class="how-to" id="how-to-local" style="display:none;">
+    <h3>如何更新網站？（本地模式，只要 2 步）</h3>
+    <ol>
+      <li>在這裡新增或編輯作品</li>
+      <li>按上方「<strong>儲存到網站</strong>」，再到終端機輸入 <code>npm run deploy</code></li>
+    </ol>
+    <p style="font-size:13px;color:#9b8e7e;margin-top:8px;">
+      資料與照片都會自動寫進專案，覆蓋前會備份到 <code>.manage-backups/</code>。
+    </p>
+  </div>
+
+  <div class="how-to offline-only">
     <h3>如何更新網站？（只要 3 步）</h3>
     <ol>
       <li>在這裡新增或編輯作品</li>
       <li>按上方「<strong>下載 data.json</strong>」，把下載的檔案拖進<br/><code>Desktop\portfolio\public\portfolio\</code> 資料夾取代舊檔案</li>
       <li>開終端機，輸入 <code>cd C:\Users\calvi\Desktop\portfolio</code> 再輸入 <code>cmd /c "npm run deploy"</code></li>
     </ol>
+    <p style="font-size:13px;color:#c44;margin-top:8px;">
+      有上傳照片的話，副檔名會變成 <code>.webp</code>，請一併按「下載壓縮後的照片」，
+      解壓縮後放進 <code>public/portfolio/</code>，不要直接搬原始照片。
+    </p>
+    <p style="font-size:13px;color:#9b8e7e;margin-top:8px;">
+      想省掉搬檔案的步驟，可以改用 <code>npm run manage</code> 開啟這個工具。
+    </p>
   </div>
 
   <!-- Tabs -->
@@ -193,6 +245,17 @@
       </div>
 
       <div class="form-row">
+        <div class="form-group">
+          <label>中文反思 <span class="hint">(選填，完成後的心得與檢討)</span></label>
+          <textarea id="refl-zh" rows="3" placeholder="學到什麼、遇到什麼困難、下次可以怎麼做得更好..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>英文反思 <span class="hint">(選填)</span></label>
+          <textarea id="refl-en" rows="3" placeholder="What you learned, challenges faced..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
         <div class="form-group full">
           <label>標籤 <span class="hint">(逗號分隔)</span></label>
           <input type="text" id="tags" placeholder="例：Solidworks, Rhino, 3D Printing" />
@@ -201,8 +264,22 @@
     </div>
 
     <div class="form-section">
+      <h2>設計流程</h2>
+      <p style="font-size:13px;color:#9b8e7e;margin-bottom:12px;">選填，作品頁上的 01 / 02 / 03 步驟</p>
+      <div id="process-list"></div>
+      <button class="btn btn-secondary btn-sm" onclick="addProcessStep()">＋ 新增一個步驟</button>
+    </div>
+
+    <div class="form-section">
       <h2>封面圖片</h2>
-      <div class="form-group">
+      <div class="upload-area">
+        <input type="file" accept="image/*" id="cover-input" />
+        <div class="upload-text">
+          <strong>點擊上傳封面</strong><br />
+          <span style="font-size:12px;opacity:0.75">會自動壓縮成 WebP，長邊最多 1800px</span>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:12px;">
         <label>檔案名稱 <span class="hint">(放在 public/portfolio/ 裡的檔名)</span></label>
         <input type="text" id="cover-file" placeholder="例：my-project-cover.jpg" />
       </div>
@@ -211,9 +288,17 @@
 
     <div class="form-section">
       <h2>作品圖片集</h2>
-      <p style="font-size:13px;color:#9b8e7e;margin-bottom:12px;">輸入檔名新增圖片，可拖曳排序</p>
+      <p style="font-size:13px;color:#9b8e7e;margin-bottom:12px;">上傳照片或輸入檔名新增圖片，可拖曳排序</p>
+      <div class="upload-area" style="margin-bottom:12px;">
+        <input type="file" accept="image/*" multiple id="gallery-input" />
+        <div class="upload-text">
+          <strong>點擊上傳多張圖片</strong>（可一次選多張）<br />
+          <span style="font-size:12px;opacity:0.75">會自動壓縮成 WebP，長邊最多 1800px</span>
+        </div>
+      </div>
+      <div id="compress-summary" style="display:none;margin-bottom:12px;font-size:12px;color:#3d6b3d;background:#f0f7f0;border:1px solid #b9d9b9;border-radius:5px;padding:8px 12px;"></div>
       <div style="display:flex;gap:8px;margin-bottom:12px;">
-        <input type="text" id="gallery-file-input" placeholder="檔案名稱，例：process-1.jpg" style="flex:1;" />
+        <input type="text" id="gallery-file-input" placeholder="或直接輸入檔名，例：process-1.jpg" style="flex:1;" />
         <button class="btn btn-primary btn-sm" onclick="addGalleryByFilename()">新增</button>
       </div>
       <div class="gallery-grid" id="gallery-grid"></div>
@@ -226,6 +311,7 @@
         <div class="form-group">
           <label>PDF 檔案名稱</label>
           <input type="text" id="pdf-file" placeholder="例：report.pdf" />
+          <input type="file" accept="application/pdf" id="pdf-input" style="margin-top:6px;font-size:12px;" />
         </div>
         <div class="form-group">
           <label>PDF 顯示名稱 (中文)</label>
@@ -255,16 +341,61 @@
 let items = [];
 let editIndex = -1;
 let galleryImages = [];
+let processSteps = [];
 let dragSrc = null;
+
+// 用 npm run manage 開啟時為 true：資料讀寫真正的專案檔案，不走 localStorage
+let LOCAL = false;
+// 待寫入的檔案（檔名 → data URL）：本地模式按儲存時送出，離線模式可打包下載
+const pendingFiles = new Map();
 
 
 const STORAGE_KEY = 'portfolio-manager-items';
 
-function init() {
+async function init() {
+  // 1. 本地伺服器（npm run manage）：直接讀寫專案檔案
+  try {
+    const res = await fetch('/api/data');
+    if (res.ok) {
+      const data = await res.json();
+      LOCAL = true;
+      document.body.classList.add('local-mode');
+      document.getElementById('local-bar').classList.add('on');
+      document.getElementById('page-subtitle').textContent = '本地模式：編輯完按「儲存到網站」，直接寫回專案檔案';
+      document.getElementById('how-to-local').style.display = '';
+      items = data.items || [];
+      renderList();
+      renderProcess();
+      return;
+    }
+  } catch (e) {
+    // 沒有本地伺服器，往下走離線模式
+  }
+
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) {
     try { items = JSON.parse(saved); } catch(e) { items = []; }
   }
+
+  // 2. 瀏覽器沒存過資料時，先抓網站上真正的 data.json，避免用到過期的內建資料
+  if (items.length === 0) {
+    try {
+      const res = await fetch('portfolio/data.json');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          items = data;
+          persist();
+          renderList();
+          renderProcess();
+          return;
+        }
+      }
+    } catch (e) {
+      // 抓不到就退回下面的內建資料
+    }
+  }
+
   if (items.length === 0) {
     items = [{
       cover: 'portfolio/S__4628507.jpg',
@@ -294,10 +425,113 @@ function init() {
     persist();
   }
   renderList();
+  renderProcess();
 }
 
 function persist() {
+  // 本地模式的真正儲存位置是 data.json，不需要也不該寫進瀏覽器
+  if (LOCAL) return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+
+// ---- 照片自動壓縮 ----
+const IMG_MAX_DIM = 1800;
+const IMG_QUALITY = 0.82;
+
+function formatSize(bytes) {
+  if (bytes >= 1024 * 1024) return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+  return Math.max(1, Math.round(bytes / 1024)) + ' KB';
+}
+
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function dataUrlToBytes(dataUrl) {
+  const bin = atob(dataUrl.slice(dataUrl.indexOf(',') + 1));
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+
+/**
+ * 把照片縮到 IMG_MAX_DIM 以內並轉成 WebP。
+ * 回傳的檔名副檔名會跟著改，資料裡存的檔名才會跟實際檔案一致。
+ */
+async function compressImage(file) {
+  const orig = file.size;
+  const asIs = async (reason) => ({
+    name: file.name, dataUrl: await fileToDataUrl(file), orig, size: orig, skipped: reason
+  });
+
+  // GIF 可能是動畫，壓過會只剩一張，原樣保留
+  if (!file.type.startsWith('image/') || file.type === 'image/gif') return asIs('非照片');
+
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((resolve, reject) => {
+      const im = new Image();
+      im.onload = () => resolve(im);
+      im.onerror = () => reject(new Error('圖片讀取失敗'));
+      im.src = url;
+    });
+    const scale = Math.min(1, IMG_MAX_DIM / Math.max(img.width, img.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(img.width * scale));
+    canvas.height = Math.max(1, Math.round(img.height * scale));
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    let out = canvas.toDataURL('image/webp', IMG_QUALITY);
+    let ext = '.webp';
+    // 少數瀏覽器不支援輸出 WebP，退回 JPEG
+    if (!out.startsWith('data:image/webp')) {
+      out = canvas.toDataURL('image/jpeg', IMG_QUALITY);
+      ext = '.jpg';
+    }
+    const size = Math.round((out.length - out.indexOf(',') - 1) * 3 / 4);
+    // 本來就壓得很好的圖，壓完反而變大就別換
+    if (size >= orig) return asIs('原檔已夠小');
+
+    return { name: file.name.replace(/\.[^.]+$/, '') + ext, dataUrl: out, orig, size };
+  } catch (e) {
+    return asIs('無法壓縮');
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+function queueFile(result) {
+  pendingFiles.set(result.name, result.dataUrl);
+  updateFileButtons();
+}
+
+function updateFileButtons() {
+  const n = pendingFiles.size;
+  const save = document.getElementById('save-site-btn');
+  if (save) save.textContent = n > 0 ? '儲存到網站（含 ' + n + ' 個檔案）' : '儲存到網站';
+  const zip = document.getElementById('download-zip-btn');
+  if (zip) {
+    zip.style.display = n > 0 ? '' : 'none';
+    zip.textContent = '下載壓縮後的照片（' + n + ' 個）';
+  }
+}
+
+function reportCompression(results) {
+  const done = results.filter(r => !r.skipped);
+  if (done.length === 0) return;
+  const before = done.reduce((s, r) => s + r.orig, 0);
+  const after = done.reduce((s, r) => s + r.size, 0);
+  const el = document.getElementById('compress-summary');
+  if (el) {
+    el.style.display = '';
+    el.textContent = '已壓縮 ' + done.length + ' 張：' + formatSize(before) + ' → ' + formatSize(after)
+      + '（省下 ' + Math.round((1 - after / before) * 100) + '%）';
+  }
 }
 
 function toast(msg) {
@@ -393,11 +627,14 @@ function esc(s) { return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 function clearForm() {
   editIndex = -1;
   galleryImages = [];
+  processSteps = [];
   document.getElementById('form-title').textContent = '新增作品';
   document.getElementById('delete-btn').style.display = 'none';
-  ['title-zh','title-en','subtitle-zh','subtitle-en','desc-zh','desc-en','tags','cover-file','pdf-file','pdf-label-zh','pdf-label-en'].forEach(id => document.getElementById(id).value = '');
+  ['title-zh','title-en','subtitle-zh','subtitle-en','desc-zh','desc-en','refl-zh','refl-en','tags','cover-file','pdf-file','pdf-label-zh','pdf-label-en'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('cover-preview-area').innerHTML = '';
+  document.getElementById('compress-summary').style.display = 'none';
   renderGallery();
+  renderProcess();
 }
 
 function editItem(i) {
@@ -423,12 +660,21 @@ function editItem(i) {
     document.getElementById('pdf-label-zh').value = '';
     document.getElementById('pdf-label-en').value = '';
   }
+  document.getElementById('refl-zh').value = item.reflection ? (item.reflection.zh || '') : '';
+  document.getElementById('refl-en').value = item.reflection ? (item.reflection.en || '') : '';
   galleryImages = (item.gallery || []).map(g => ({
     src: g.src,
     captionZh: g.caption ? g.caption.zh : '',
     captionEn: g.caption ? g.caption.en : ''
   }));
+  processSteps = (item.process || []).map(p => ({
+    titleZh: p.title ? (p.title.zh || '') : '',
+    titleEn: p.title ? (p.title.en || '') : '',
+    textZh: p.text ? (p.text.zh || '') : '',
+    textEn: p.text ? (p.text.en || '') : ''
+  }));
   renderGallery();
+  renderProcess();
   switchTab('add');
 }
 
@@ -457,6 +703,16 @@ function saveItem() {
       caption: { zh: g.captionZh || '', en: g.captionEn || '' }
     }))
   };
+
+  // 反思與設計流程：沒填就不寫進去，填了才留，避免整段被吃掉
+  const reflZh = document.getElementById('refl-zh').value.trim();
+  const reflEn = document.getElementById('refl-en').value.trim();
+  if (reflZh || reflEn) item.reflection = { zh: reflZh, en: reflEn };
+
+  const steps = processSteps
+    .filter(p => p.titleZh || p.titleEn || p.textZh || p.textEn)
+    .map(p => ({ title: { zh: p.titleZh, en: p.titleEn }, text: { zh: p.textZh, en: p.textEn } }));
+  if (steps.length > 0) item.process = steps;
 
   if (pdfFile) {
     item.pdf = {
@@ -562,6 +818,203 @@ function renderGallery() {
       }
     });
   });
+}
+
+// ---- 最小 ZIP 打包（僅儲存不壓縮，照片本身已是壓縮格式）----
+const CRC_TABLE = (function () {
+  const table = new Uint32Array(256);
+  for (let i = 0; i < 256; i++) {
+    let c = i;
+    for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1;
+    table[i] = c >>> 0;
+  }
+  return table;
+})();
+
+function crc32(bytes) {
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+
+function zipFiles(files) {
+  const enc = new TextEncoder();
+  const parts = [], central = [];
+  let offset = 0;
+
+  for (const file of files) {
+    const nameBytes = enc.encode(file.name);
+    const crc = crc32(file.bytes);
+    const size = file.bytes.length;
+
+    const local = new Uint8Array(30 + nameBytes.length);
+    const lv = new DataView(local.buffer);
+    lv.setUint32(0, 0x04034b50, true);
+    lv.setUint16(4, 20, true);
+    lv.setUint16(6, 0x0800, true); // 檔名用 UTF-8
+    lv.setUint16(8, 0, true);      // 不壓縮，直接存
+    lv.setUint16(12, 0x2821, true);
+    lv.setUint32(14, crc, true);
+    lv.setUint32(18, size, true);
+    lv.setUint32(22, size, true);
+    lv.setUint16(26, nameBytes.length, true);
+    local.set(nameBytes, 30);
+    parts.push(local, file.bytes);
+
+    const dir = new Uint8Array(46 + nameBytes.length);
+    const dv = new DataView(dir.buffer);
+    dv.setUint32(0, 0x02014b50, true);
+    dv.setUint16(4, 20, true);
+    dv.setUint16(6, 20, true);
+    dv.setUint16(8, 0x0800, true);
+    dv.setUint16(10, 0, true);
+    dv.setUint16(14, 0x2821, true);
+    dv.setUint32(16, crc, true);
+    dv.setUint32(20, size, true);
+    dv.setUint32(24, size, true);
+    dv.setUint16(28, nameBytes.length, true);
+    dv.setUint32(42, offset, true);
+    dir.set(nameBytes, 46);
+    central.push(dir);
+
+    offset += local.length + size;
+  }
+
+  const centralSize = central.reduce((sum, c) => sum + c.length, 0);
+  const end = new Uint8Array(22);
+  const ev = new DataView(end.buffer);
+  ev.setUint32(0, 0x06054b50, true);
+  ev.setUint16(8, files.length, true);
+  ev.setUint16(10, files.length, true);
+  ev.setUint32(12, centralSize, true);
+  ev.setUint32(16, offset, true);
+
+  return new Blob(parts.concat(central, [end]), { type: 'application/zip' });
+}
+
+function downloadZip() {
+  if (pendingFiles.size === 0) return;
+  const files = Array.from(pendingFiles, ([name, dataUrl]) => ({ name, bytes: dataUrlToBytes(dataUrl) }));
+  const url = URL.createObjectURL(zipFiles(files));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'portfolio-images.zip';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('已下載，解壓縮後放進 public/portfolio/');
+}
+
+// ---- 設計流程步驟 ----
+function addProcessStep() {
+  processSteps.push({ titleZh: '', titleEn: '', textZh: '', textEn: '' });
+  renderProcess();
+}
+
+function removeProcessStep(i) {
+  processSteps.splice(i, 1);
+  renderProcess();
+}
+
+function moveProcessStep(i, dir) {
+  const n = i + dir;
+  if (n < 0 || n >= processSteps.length) return;
+  const tmp = processSteps[i];
+  processSteps[i] = processSteps[n];
+  processSteps[n] = tmp;
+  renderProcess();
+}
+
+function renderProcess() {
+  document.getElementById('process-list').innerHTML = processSteps.map((p, i) =>
+    '<div class="process-card">' +
+      '<div class="process-head">' +
+        '<span class="process-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+        '<div>' +
+          (i > 0 ? '<button onclick="moveProcessStep(' + i + ',-1)" title="上移">&#8593;</button>' : '') +
+          (i < processSteps.length - 1 ? '<button onclick="moveProcessStep(' + i + ',1)" title="下移">&#8595;</button>' : '') +
+          '<button onclick="removeProcessStep(' + i + ')" title="刪除">&times;</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="process-row">' +
+        '<input placeholder="中文標題，例：痛點研究" value="' + esc(p.titleZh) + '" onchange="processSteps[' + i + '].titleZh=this.value" />' +
+        '<input placeholder="English title, e.g. Insight" value="' + esc(p.titleEn) + '" onchange="processSteps[' + i + '].titleEn=this.value" />' +
+      '</div>' +
+      '<div class="process-row">' +
+        '<textarea placeholder="中文說明" onchange="processSteps[' + i + '].textZh=this.value">' + esc(p.textZh) + '</textarea>' +
+        '<textarea placeholder="English description" onchange="processSteps[' + i + '].textEn=this.value">' + esc(p.textEn) + '</textarea>' +
+      '</div>' +
+    '</div>'
+  ).join('');
+}
+
+// ---- 上傳（自動壓縮）----
+document.getElementById('cover-input').addEventListener('change', async function (e) {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  const result = await compressImage(file);
+  document.getElementById('cover-file').value = result.name;
+  queueFile(result);
+  reportCompression([result]);
+  renderCoverPreview(result.dataUrl);
+});
+
+document.getElementById('gallery-input').addEventListener('change', async function (e) {
+  const files = Array.from(e.target.files);
+  e.target.value = '';
+  const results = await Promise.all(files.map(f => compressImage(f)));
+  results.forEach(r => {
+    queueFile(r);
+    galleryImages.push({ src: 'portfolio/' + r.name, captionZh: '', captionEn: '' });
+  });
+  reportCompression(results);
+  renderGallery();
+});
+
+document.getElementById('pdf-input').addEventListener('change', async function (e) {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  document.getElementById('pdf-file').value = file.name;
+  queueFile({ name: file.name, dataUrl: await fileToDataUrl(file), orig: file.size, size: file.size, skipped: 'PDF' });
+  toast(LOCAL ? '已加入待存檔案：' + file.name : '已加入打包清單：' + file.name);
+});
+
+function renderCoverPreview(dataUrl) {
+  document.getElementById('cover-preview-area').innerHTML =
+    '<img src="' + dataUrl + '" style="max-width:240px;max-height:150px;border-radius:4px;margin-top:10px;" />';
+}
+
+// ---- 本地模式：直接寫回專案檔案 ----
+async function saveToSite() {
+  const btn = document.getElementById('save-site-btn');
+  btn.disabled = true;
+  btn.textContent = '儲存中…';
+  try {
+    for (const [name, data] of pendingFiles) {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, data: data })
+      });
+      if (!res.ok) throw new Error(name + ' 存檔失敗');
+    }
+    pendingFiles.clear();
+
+    const res = await fetch('/api/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: items })
+    });
+    const info = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(info.error || '寫入失敗');
+    toast('已寫入 data.json（' + info.count + ' 個作品）');
+  } catch (err) {
+    alert('儲存失敗：' + err.message);
+  } finally {
+    btn.disabled = false;
+    updateFileButtons();
+  }
 }
 
 function buildJsonData() {
