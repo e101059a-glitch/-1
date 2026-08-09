@@ -100,6 +100,22 @@
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1c1c1e; color: #fff; padding: 12px 28px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
   .toast.show { opacity: 1; }
 
+  /* 設計流程（作品頁上的 01 / 02 / 03 步驟） */
+  .process-card { border: 0.5px solid #e8e0d5; border-radius: 8px; padding: 16px; margin-bottom: 12px; background: #fff; }
+  .process-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .process-num { font-family: 'Playfair Display', serif; font-size: 18px; color: #c17f3b; font-weight: 600; }
+  .process-head button { border: 0.5px solid #e8e0d5; background: #faf8f5; border-radius: 4px; width: 26px; height: 26px; cursor: pointer; margin-left: 4px; color: #9b8e7e; }
+  .process-head button:hover { border-color: #c17f3b; color: #c17f3b; }
+  .process-card input, .process-card textarea { width: 100%; padding: 9px 12px; border: 0.5px solid #e8e0d5; border-radius: 5px; font-family: inherit; font-size: 13px; background: #faf8f5; }
+  .process-card textarea { min-height: 68px; resize: vertical; line-height: 1.7; }
+
+  /* 本地模式（npm run manage）才會出現的存檔列 */
+  .local-bar { display: none; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 32px; padding: 14px 20px; background: #f0f7f0; border: 1px solid #b9d9b9; border-radius: 8px; }
+  .local-bar.on { display: flex; }
+  .local-bar .lb-text { font-size: 13px; color: #3d6b3d; line-height: 1.6; }
+  .local-bar .lb-text strong { color: #2c552c; }
+  body.local-mode .offline-only { display: none; }
+
   @media (max-width: 700px) {
     .form-row { grid-template-columns: 1fr; }
     .item-card { flex-direction: column; align-items: flex-start; }
@@ -111,8 +127,18 @@
 
 <div class="container">
   <h1>作品集管理工具</h1>
-  <p class="subtitle">新增、編輯作品，調整照片順序，產生程式碼後貼到專案即可更新</p>
-  <div class="save-notice">
+  <p class="subtitle" id="page-subtitle">新增、編輯作品，調整照片順序，產生程式碼後貼到專案即可更新</p>
+
+  <!-- 用 npm run manage 開啟時才出現：可以直接寫回專案檔案 -->
+  <div class="local-bar" id="local-bar">
+    <div class="lb-text">
+      <strong>本地模式</strong> — 資料直接讀自 <code>src/portfolioData.js</code>。<br />
+      編輯完按右邊按鈕，就會寫回檔案並把照片存進 <code>public/portfolio/</code>，不用複製貼上。
+    </div>
+    <button class="btn btn-primary" onclick="saveToSite()" id="save-site-btn">儲存到網站</button>
+  </div>
+
+  <div class="save-notice offline-only">
     <strong>自動儲存</strong> — 資料會存在瀏覽器裡，關掉再打開不會消失
   </div>
 
@@ -186,6 +212,13 @@
         </div>
       </div>
 
+      <!-- 設計流程：作品頁左側的 01 / 02 / 03 步驟 -->
+      <div class="form-group full" style="margin-bottom:16px">
+        <label>設計流程 <span class="hint">（選填，精選作品頁上的 01 / 02 / 03 步驟）</span></label>
+        <div id="process-list"></div>
+        <button class="btn btn-secondary btn-sm" onclick="addProcessStep()">＋ 新增一個步驟</button>
+      </div>
+
       <div class="form-row">
         <div class="form-group">
           <label>標籤（用逗號分隔）</label>
@@ -194,6 +227,7 @@
         <div class="form-group">
           <label>PDF 檔名 <span class="hint">（選填，放在 public/portfolio/）</span></label>
           <input type="text" id="pdf" placeholder="例：fan-report.pdf" />
+          <input type="file" accept="application/pdf" id="pdf-input" style="margin-top:6px;font-size:12px;" />
         </div>
       </div>
 
@@ -255,13 +289,26 @@
   <div class="tab-panel" id="panel-code">
     <div class="code-section">
       <h2>產生的程式碼</h2>
-      <p>複製下方程式碼，貼到 <code>src/portfolioData.js</code> 取代全部內容</p>
+      <p class="offline-only">複製下方程式碼，貼到 <code>src/portfolioData.js</code> 取代全部內容</p>
+      <p id="code-note-local" style="display:none">本地模式不需要複製貼上，按上面的「儲存到網站」就會直接寫檔。這裡只是讓你確認即將寫入的內容。</p>
       <div class="code-block" id="code-output">
         <button class="copy-btn" onclick="copyCode()">複製</button>
         <span id="code-content">// 新增作品後這裡會自動產生程式碼</span>
       </div>
 
-      <div class="steps">
+      <!-- 本地模式（npm run manage）：前三步都由工具代勞 -->
+      <div class="steps" id="steps-local" style="display:none">
+        <h3>更新網站步驟（本地模式）</h3>
+        <ol>
+          <li>按上方的「儲存到網站」 — 資料與照片都會自動寫入專案</li>
+          <li>在終端機輸入 <code>npm run deploy</code> 上傳網站</li>
+        </ol>
+        <p style="font-size:13px;color:#9b8e7e;margin-top:10px;">
+          覆蓋前會自動備份到 <code>.manage-backups/</code>，改壞了可以復原。
+        </p>
+      </div>
+
+      <div class="steps offline-only">
         <h3>更新網站步驟</h3>
         <ol>
           <li>把圖片和 PDF 放到 <code>public/portfolio/</code> 資料夾</li>
@@ -289,12 +336,21 @@ let editIndex = -1
 let coverFileName = ''
 let coverDataUrl = ''
 let galleryFiles = []
+let processSteps = []
 let dragIndex = null
+
+// 用 npm run manage 開啟時為 true：資料讀寫真正的專案檔案，不走 localStorage
+let LOCAL = false
+// 待上傳的原始檔案（檔名 → data URL），按「儲存到網站」時一次送出
+const pendingUploads = new Map()
 
 const $ = id => document.getElementById(id)
 const STORAGE_KEY = 'portfolio-manager-data'
+const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
 function saveToStorage() {
+  // 本地模式的真正儲存位置是 src/portfolioData.js，不需要也不該寫進瀏覽器
+  if (LOCAL) return
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
   } catch(e) {
@@ -368,17 +424,28 @@ function fileToThumb(file, maxDim = 480) {
   })
 }
 
-// 沒有縮圖時，先試本機 public/portfolio/，再試線上網站，最後顯示檔名
+// 沒有縮圖時依序嘗試：同資料夾的 portfolio/（本地伺服器與網站都適用）、
+// public/portfolio/（用檔案總管直接打開這個檔時）、最後才連線上網站。
+// 三種開啟方式共用同一份程式碼，兩份副本才能保持完全一致。
+function imgCandidates(name) {
+  const rel = encodeURI(name.startsWith('portfolio/') ? name : 'portfolio/' + name)
+  return [rel, 'public/' + rel, SITE_BASE + rel]
+}
+
 function imgHtml(dataUrl, name, attrs = '') {
   if (dataUrl) return `<img src="${dataUrl}" ${attrs} />`
   if (!name) return `<div class="img-name-fallback">無圖片</div>`
-  const rel = encodeURI(name.startsWith('portfolio/') ? name : 'portfolio/' + name)
-  return `<img src="public/${rel}" loading="lazy" data-fallback="${SITE_BASE}${rel}" data-name="${name}" onerror="imgFallback(this)" ${attrs} />`
+  const [first, ...rest] = imgCandidates(name)
+  return `<img src="${first}" loading="lazy" data-fallbacks="${esc(rest.join('|'))}" data-name="${esc(name)}" onerror="imgFallback(this)" ${attrs} />`
 }
 
 function imgFallback(el) {
-  const fb = el.dataset.fallback
-  if (fb) { el.dataset.fallback = ''; el.src = fb; return }
+  const rest = (el.dataset.fallbacks || '').split('|').filter(Boolean)
+  if (rest.length) {
+    el.dataset.fallbacks = rest.slice(1).join('|')
+    el.src = rest[0]
+    return
+  }
   const div = document.createElement('div')
   div.className = 'img-name-fallback'
   div.textContent = el.dataset.name || '無圖片'
@@ -403,12 +470,36 @@ function switchTab(name) {
   if (name === 'code') generateCode()
 }
 
+// 本地模式：把原始檔案讀成 data URL 排隊，按「儲存到網站」時才真正寫進 public/portfolio/
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
+
+async function queueUpload(file) {
+  if (!LOCAL) return
+  pendingUploads.set(file.name, await fileToDataUrl(file))
+  updateSaveBtn()
+}
+
+function updateSaveBtn() {
+  const btn = $('save-site-btn')
+  if (!btn) return
+  const n = pendingUploads.size
+  btn.textContent = n > 0 ? `儲存到網站（含 ${n} 個檔案）` : '儲存到網站'
+}
+
 // Cover
 $('cover-input').addEventListener('change', async function(e) {
   const file = e.target.files[0]
   if (!file) return
   coverFileName = file.name
   $('cover-filename').value = file.name
+  queueUpload(file)
   coverDataUrl = await fileToThumb(file)
   $('cover-preview').src = coverDataUrl
   $('cover-preview').style.display = 'block'
@@ -423,12 +514,64 @@ $('cover-filename').addEventListener('input', function() {
 $('gallery-input').addEventListener('change', async function(e) {
   const files = Array.from(e.target.files)
   e.target.value = ''
+  await Promise.all(files.map(f => queueUpload(f)))
   const thumbs = await Promise.all(files.map(f => fileToThumb(f)))
   files.forEach((file, i) => {
     galleryFiles.push({ name: file.name, dataUrl: thumbs[i], captionZh: '', captionEn: '' })
   })
   renderGalleryPreview()
 })
+
+// PDF 上傳：填好檔名，本地模式下一併存進 public/portfolio/
+$('pdf-input').addEventListener('change', function(e) {
+  const file = e.target.files[0]
+  e.target.value = ''
+  if (!file) return
+  $('pdf').value = file.name
+  queueUpload(file)
+  showToast(LOCAL ? `已加入待存檔案：${file.name}` : `檔名已填入，請自行把 ${file.name} 放到 public/portfolio/`)
+})
+
+// 設計流程步驟
+function addProcessStep() {
+  processSteps.push({ titleZh: '', titleEn: '', textZh: '', textEn: '' })
+  renderProcess()
+}
+
+function removeProcessStep(i) {
+  processSteps.splice(i, 1)
+  renderProcess()
+}
+
+function moveProcessStep(i, dir) {
+  const n = i + dir
+  if (n < 0 || n >= processSteps.length) return
+  ;[processSteps[i], processSteps[n]] = [processSteps[n], processSteps[i]]
+  renderProcess()
+}
+
+function renderProcess() {
+  $('process-list').innerHTML = processSteps.map((p, i) => `
+    <div class="process-card">
+      <div class="process-head">
+        <span class="process-num">${String(i + 1).padStart(2, '0')}</span>
+        <div>
+          ${i > 0 ? `<button onclick="moveProcessStep(${i},-1)" title="上移">↑</button>` : ''}
+          ${i < processSteps.length - 1 ? `<button onclick="moveProcessStep(${i},1)" title="下移">↓</button>` : ''}
+          <button onclick="removeProcessStep(${i})" title="刪除">×</button>
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:8px">
+        <input placeholder="中文標題，例：痛點研究" value="${esc(p.titleZh)}" onchange="processSteps[${i}].titleZh=this.value" />
+        <input placeholder="English title, e.g. Insight" value="${esc(p.titleEn)}" onchange="processSteps[${i}].titleEn=this.value" />
+      </div>
+      <div class="form-row">
+        <textarea placeholder="中文說明" onchange="processSteps[${i}].textZh=this.value">${esc(p.textZh)}</textarea>
+        <textarea placeholder="English description" onchange="processSteps[${i}].textEn=this.value">${esc(p.textEn)}</textarea>
+      </div>
+    </div>
+  `).join('')
+}
 
 function addManualGallery() {
   const name = $('manual-gallery-name').value.trim()
@@ -522,6 +665,9 @@ function saveItem() {
     description: { zh: descZh, en: descEn },
     reflection: (reflZh || reflEn) ? { zh: reflZh, en: reflEn } : null,
     tags,
+    process: processSteps
+      .filter(p => p.titleZh || p.titleEn || p.textZh || p.textEn)
+      .map(p => ({ title: { zh: p.titleZh, en: p.titleEn }, text: { zh: p.textZh, en: p.textEn } })),
     gallery: galleryFiles.map(g => ({
       src: g.name.startsWith('portfolio/') ? g.name : `portfolio/${g.name}`,
       caption: { zh: g.captionZh, en: g.captionEn },
@@ -557,7 +703,9 @@ function clearForm() {
   coverFileName = ''
   coverDataUrl = ''
   galleryFiles = []
+  processSteps = []
   renderGalleryPreview()
+  renderProcess()
   editIndex = -1
   $('form-title').textContent = '新增作品'
 }
@@ -585,15 +733,16 @@ function editItem(index) {
     $('cover-preview').style.display = 'block'
     $('cover-text').style.display = 'none'
   } else if (item.cover) {
-    // 沒有縮圖時直接從本機檔案或線上網站載入封面預覽
-    const rel = encodeURI(item.cover.startsWith('portfolio/') ? item.cover : 'portfolio/' + item.cover)
+    // 沒有縮圖時，依序試各個可能的位置載入封面預覽
+    const [first, ...rest] = imgCandidates(item.cover)
     const pv = $('cover-preview')
+    let queue = rest
     pv.onerror = () => {
-      if (pv.dataset.fallback) { const fb = pv.dataset.fallback; pv.dataset.fallback = ''; pv.src = fb }
-      else { pv.style.display = 'none'; $('cover-text').style.display = '' }
+      if (queue.length) { pv.src = queue.shift(); return }
+      pv.style.display = 'none'
+      $('cover-text').style.display = ''
     }
-    pv.dataset.fallback = SITE_BASE + rel
-    pv.src = 'public/' + rel
+    pv.src = first
     pv.style.display = 'block'
     $('cover-text').style.display = 'none'
   }
@@ -601,10 +750,18 @@ function editItem(index) {
   galleryFiles = (item.gallery || []).map(g => ({
     name: g.src.replace('portfolio/', ''),
     dataUrl: g._dataUrl || '',
-    captionZh: g.caption.zh || '',
-    captionEn: g.caption.en || '',
+    captionZh: (g.caption && g.caption.zh) || '',
+    captionEn: (g.caption && g.caption.en) || '',
   }))
   renderGalleryPreview()
+
+  processSteps = (item.process || []).map(p => ({
+    titleZh: (p.title && p.title.zh) || '',
+    titleEn: (p.title && p.title.en) || '',
+    textZh: (p.text && p.text.zh) || '',
+    textEn: (p.text && p.text.en) || '',
+  }))
+  renderProcess()
 
   editIndex = index
   $('form-title').textContent = '編輯作品'
@@ -672,6 +829,7 @@ function generateCode() {
     obj.description = item.description
     if (item.reflection) obj.reflection = item.reflection
     obj.tags = item.tags
+    if (item.process && item.process.length > 0) obj.process = item.process
     if (item.gallery && item.gallery.length > 0) {
       obj.gallery = item.gallery.map(g => ({ src: g.src, caption: g.caption }))
     }
@@ -692,44 +850,300 @@ function copyCode() {
   })
 }
 
-// Pre-loaded data from existing portfolioData.js
+// 離線開啟時的預設資料，內容與 src/portfolioData.js 相同
+// （用 npm run manage 開啟時不會用到，那時直接讀真正的檔案）
 const PRELOADED = [
   {
-    cover: 'portfolio/S__4628507.jpg',
-    _coverDataUrl: '',
-    title: { zh: 'ERGO PEEL', en: 'ERGO PEEL' },
-    subtitle: { zh: '居家產品設計', en: 'Home Product Design' },
-    description: {
-      zh: '將人體工學融入最日常的備料動作，以拇指、食指、中指的自然夾持姿勢為核心，讓施力方向與手部肌肉走向一致。底部快拆式刀盤可自由切換削皮刀片或磨板，一個握把應對多種廚房需求。',
-      en: 'Seamlessly blending ergonomics into daily meal prep, ERGO PEEL centers on the natural pinch grip of the thumb, index, and middle fingers, aligning applying force with hand anatomy. Featuring a quick-release base, it easily switches between a peeler and a grater—handling diverse kitchen tasks with just one handle.'
+    cover: "portfolio/S__4628507.jpg",
+    title: {
+      zh: "ERGO PEEL",
+      en: "ERGO PEEL"
     },
-    tags: ['Solidworks', 'Claude Code'],
-    gallery: [
-      { src: 'portfolio/S__27705349_0.jpg', caption: { zh: '草模-1', en: 'Mockup-1' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705368_0.jpg', caption: { zh: '3D模型', en: '3D model' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705371_0.jpg', caption: { zh: '3D模型', en: '3D model' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705350_0.jpg', caption: { zh: '草模-2', en: 'Mockup-2' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705369_0.jpg', caption: { zh: '3D模型', en: '3D model' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705351_0.jpg', caption: { zh: '草模-3', en: 'Mockup-3' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705366_0.jpg', caption: { zh: '成品-1', en: 'Final product-1' }, _dataUrl: '' },
-      { src: 'portfolio/S__27705367_0.jpg', caption: { zh: '成品-2', en: 'Final product-2' }, _dataUrl: '' },
-      { src: 'portfolio/S__27729924_0.jpg', caption: { zh: '展示', en: 'Showcase' }, _dataUrl: '' },
-      { src: 'portfolio/IMG_6015.webp', caption: { zh: '主題表板', en: 'Display Board' }, _dataUrl: '' },
-      { src: 'portfolio/1.webp', caption: { zh: '產品表板-1', en: 'Presentation Board-1' }, _dataUrl: '' },
-      { src: 'portfolio/2.webp', caption: { zh: '產品表板-2', en: 'Presentation Board-2' }, _dataUrl: '' },
+    subtitle: {
+      zh: "居家產品設計",
+      en: "Home Product Design"
+    },
+    description: {
+      zh: "將人體工學融入最日常的備料動作，以拇指、食指、中指的自然夾持姿勢為核心，讓施力方向與手部肌肉走向一致。底部快拆式刀盤可自由切換削皮刀片或磨板，一個握把應對多種廚房需求。",
+      en: "Seamlessly blending ergonomics into daily meal prep, ERGO PEEL centers on the natural pinch grip of the thumb, index, and middle fingers, aligning applying force with hand anatomy. Featuring a quick-release base, it easily switches between a peeler and a grater—handling diverse kitchen tasks with just one handle."
+    },
+    reflection: {
+      zh: "人體工學的部分研究還不夠深入，還有產品表達不夠清楚，造型的表達應該要看一眼就懂、會用。",
+      en: "The ergonomic research needs more depth, and the product isn't communicating itself clearly enough. The form should be intuitive — understandable and usable at first glance."
+    },
+    tags: [
+      "Solidworks",
+      "Claude Code",
+      "Gemini"
     ],
-    pdf: { src: 'portfolio/ergo-peel.pdf', label: { zh: 'ERGO PEEL', en: 'ERGO PEEL' } }
+    process: [
+      {
+        title: {
+          zh: "痛點研究",
+          en: "Insight"
+        },
+        text: {
+          zh: "從日常備料的施力痛點出發，分析拇指、食指、中指的自然夾持姿勢，鎖定削皮動作的人體工學問題。",
+          en: "Started from the strain of daily meal prep — analyzing the natural pinch grip to pinpoint the ergonomic problem in peeling."
+        }
+      },
+      {
+        title: {
+          zh: "草模驗證",
+          en: "Prototyping"
+        },
+        text: {
+          zh: "以多輪草模快速測試夾持姿勢與施力角度，反覆修正握把型態，讓施力方向與手部肌肉走向一致。",
+          en: "Rapid mockups tested grip posture and force angles, iterating the handle form until force aligned with hand anatomy."
+        }
+      },
+      {
+        title: {
+          zh: "建模與成品",
+          en: "Build & Deliver"
+        },
+        text: {
+          zh: "以 SolidWorks 完成 3D 建模與快拆刀盤機構，產出實體成品，並以簡報表板完整呈現設計論述。",
+          en: "Modeled in SolidWorks with a quick-release blade mechanism, delivered the physical product and presentation boards."
+        }
+      }
+    ],
+    gallery: [
+      {
+        src: "portfolio/IMG_6015.webp",
+        caption: {
+          zh: "主題表板",
+          en: "Display Board"
+        }
+      },
+      {
+        src: "portfolio/1.webp",
+        caption: {
+          zh: "產品表板-1",
+          en: "Presentation Board-1"
+        }
+      },
+      {
+        src: "portfolio/2.webp",
+        caption: {
+          zh: "產品表板-2",
+          en: "Presentation Board-2"
+        }
+      },
+      {
+        src: "portfolio/S__27705349_0.jpg",
+        caption: {
+          zh: "草模-1",
+          en: "Mockup-1"
+        }
+      },
+      {
+        src: "portfolio/S__27705350_0.jpg",
+        caption: {
+          zh: "草模-2",
+          en: "Mockup-2"
+        }
+      },
+      {
+        src: "portfolio/S__27705351_0.jpg",
+        caption: {
+          zh: "草模-3",
+          en: "Mockup-3"
+        }
+      },
+      {
+        src: "portfolio/S__27705368_0.jpg",
+        caption: {
+          zh: "3D模型",
+          en: "3D model"
+        }
+      },
+      {
+        src: "portfolio/S__27705371_0.jpg",
+        caption: {
+          zh: "3D模型",
+          en: "3D model"
+        }
+      },
+      {
+        src: "portfolio/S__27705369_0.jpg",
+        caption: {
+          zh: "3D模型",
+          en: "3D model"
+        }
+      },
+      {
+        src: "portfolio/S__27705366_0.jpg",
+        caption: {
+          zh: "成品-1",
+          en: "Final product-1"
+        }
+      },
+      {
+        src: "portfolio/S__27705367_0.jpg",
+        caption: {
+          zh: "成品-2",
+          en: "Final product-2"
+        }
+      },
+      {
+        src: "portfolio/S__27729924_0.jpg",
+        caption: {
+          zh: "展示",
+          en: "Showcase"
+        }
+      }
+    ],
+    pdf: {
+      src: "portfolio/ergo-peel.pdf",
+      label: {
+        zh: "ERGO PEEL",
+        en: "ERGO PEEL"
+      }
+    }
+  },
+  {
+    cover: "portfolio/lumina-cover.webp",
+    title: {
+      zh: "Lumina 發光邊桌設計",
+      en: "Lumina Illuminated Side Table Design"
+    },
+    subtitle: {
+      zh: "家具設計",
+      en: "Furniture Design"
+    },
+    description: {
+      zh: "秉持「形隨機能」的精神，Lumina 剝離冗餘修飾，將家具精煉為純粹的幾何體塊。透過玻璃的透、鋼材的剛、混凝土的重，在理性結構中尋求平衡。幾何發光核心不僅是視覺焦點，更是溫暖空間與功能的匯集點。",
+      en: "Upholding the spirit of \"form follows function,\" Lumina strips away redundant ornamentation, refining the furniture into pure geometric volumes. Through the transparency of glass, the rigidity of steel, and the gravity of concrete, it seeks a harmonious balance within a rational structure. The geometric illuminating core is not only a visual focal point, but also a convergence point where warmth and functionality meet."
+    },
+    reflection: {
+      zh: "在 Lumina 的模型製作過程中，最大的工藝挑戰在於材料與製程的限制。原本計畫將幾何燈罩以 3D 列印進行全透明輸出，但在實際打磨時，發現內部的支撐材痕跡與層紋極難完全消除。為了克服這項工藝瓶頸，我轉而將挑戰轉化為設計機會——將燈罩表面改為特殊的幾何花紋設計。這個調整不僅完美隱蔽了製程瑕疵，更在光線穿透時，意外創造出層次豐富的光影紋理。這次經驗讓我深刻體會到，設計不只是追求理想中的完美，更是在 CMF（色彩、材質、工藝）與製造限制之間，靈活尋求最佳解的高效過程。",
+      en: "The biggest manufacturing challenge in this project lay in the limitations of materials and prototyping. Initially, I planned to 3D-print the geometric lampshade in full transparency. However, during the post-processing phase, I realized that the internal support marks and print lines were nearly impossible to eliminate completely. Instead of compromising, I turned this technical bottleneck into a design opportunity by introducing a patterned texture to the lampshade surface. This pivot not only effectively concealed the fabrication flaws but also unexpectedly created rich, textured light-and-shadow patterns when illuminated. This experience taught me that design is not just about pursuing theoretical perfection, but about agile problem-solving within the constraints of CMF and manufacturing realities."
+    },
+    tags: [
+      "Solidworks",
+      "Gemini"
+    ],
+    gallery: [
+      {
+        src: "portfolio/S__27705355_0.jpg",
+        caption: {
+          zh: "成品-1",
+          en: "Final product-1"
+        }
+      },
+      {
+        src: "portfolio/S__27705357_0.jpg",
+        caption: {
+          zh: "成品-2",
+          en: "Final product-2"
+        }
+      },
+      {
+        src: "portfolio/lumina-3d-model.jpg",
+        caption: {
+          zh: "3D建模",
+          en: "3D model"
+        }
+      },
+      {
+        src: "portfolio/lumina-showcase.jpg",
+        caption: {
+          zh: "展示",
+          en: "Showcase"
+        }
+      },
+      {
+        src: "portfolio/lumina-board.jpg",
+        caption: {
+          zh: "表板",
+          en: "Presentation Board"
+        }
+      }
+    ]
   }
 ]
 
-// Init
-loadFromStorage()
-if (items.length === 0) {
-  items = PRELOADED
-  saveToStorage()
-  renderItems()
-  generateCode()
+// 資料檔沒有管理工具內部用的欄位，載入時補齊，避免存檔時漏掉資料
+function normalizeItem(it) {
+  return {
+    cover: it.cover || '',
+    _coverDataUrl: '',
+    title: it.title || { zh: '', en: '' },
+    subtitle: it.subtitle || null,
+    description: it.description || { zh: '', en: '' },
+    reflection: it.reflection || null,
+    tags: it.tags || [],
+    process: it.process || [],
+    gallery: (it.gallery || []).map(g => ({
+      src: g.src,
+      caption: g.caption || { zh: '', en: '' },
+      _dataUrl: '',
+    })),
+    pdf: it.pdf || null,
+  }
 }
+
+// 本地模式：先把待上傳的檔案寫進 public/portfolio/，再把資料寫回 src/portfolioData.js
+async function saveToSite() {
+  const btn = $('save-site-btn')
+  btn.disabled = true
+  btn.textContent = '儲存中…'
+  try {
+    for (const [name, data] of pendingUploads) {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, data }),
+      })
+      if (!res.ok) throw new Error(`${name} 存檔失敗`)
+    }
+    pendingUploads.clear()
+
+    const res = await fetch('/api/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items }),
+    })
+    const info = await res.json().catch(() => ({}))
+    if (!res.ok) throw new Error(info.error || '寫入失敗')
+    showToast(`已寫入 src/portfolioData.js（${info.count} 個作品）`)
+  } catch (err) {
+    alert('儲存失敗：' + err.message)
+  } finally {
+    btn.disabled = false
+    updateSaveBtn()
+  }
+}
+
+// Init —— 先問本地伺服器，有回應就走本地模式，否則沿用瀏覽器儲存
+async function init() {
+  try {
+    const res = await fetch('/api/data')
+    if (res.ok) {
+      const data = await res.json()
+      LOCAL = true
+      document.body.classList.add('local-mode')
+      $('local-bar').classList.add('on')
+      $('page-subtitle').textContent = '本地模式：編輯完按「儲存到網站」，直接寫回專案檔案'
+      $('steps-local').style.display = ''
+      $('code-note-local').style.display = ''
+      items = (data.items || []).map(normalizeItem)
+      renderItems(); generateCode(); renderProcess()
+      return
+    }
+  } catch {
+    // 沒有本地伺服器（直接打開檔案或線上版），走離線模式
+  }
+  loadFromStorage()
+  if (items.length === 0) {
+    items = PRELOADED.map(normalizeItem)
+    saveToStorage()
+  }
+  renderItems(); generateCode(); renderProcess()
+}
+
+init()
 </script>
 </body>
 </html>

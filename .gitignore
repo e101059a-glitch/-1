@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# npm run manage 覆寫 portfolioData.js 前的自動備份
+.manage-backups
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

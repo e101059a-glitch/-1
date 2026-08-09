@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "manage": "node scripts/manage.mjs",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
