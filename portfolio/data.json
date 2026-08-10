@@ -166,6 +166,47 @@
       "Solidworks",
       "Gemini"
     ],
+    "gallery": [
+      {
+        "src": "portfolio/lumina-board.jpg",
+        "caption": {
+          "zh": "表板",
+          "en": "Presentation Board"
+        }
+      },
+      {
+        "src": "portfolio/lumina-3d-model.jpg",
+        "caption": {
+          "zh": "3D建模",
+          "en": "3D model"
+        }
+      },
+      {
+        "src": "portfolio/S__27705355_0.jpg",
+        "caption": {
+          "zh": "成品-1",
+          "en": "Final product-1"
+        }
+      },
+      {
+        "src": "portfolio/S__27705357_0.jpg",
+        "caption": {
+          "zh": "成品-2",
+          "en": "Final product-2"
+        }
+      },
+      {
+        "src": "portfolio/lumina-showcase.jpg",
+        "caption": {
+          "zh": "展示",
+          "en": "Showcase"
+        }
+      }
+    ],
+    "reflection": {
+      "zh": "最大的工藝挑戰在於材料與製程的限制。這次經驗讓我體會到，設計不只是追求理想中的完美，更是在色彩、材質、工藝與製造限制之間，靈活尋求最佳解的過程。",
+      "en": "The biggest challenge lay in the limits of materials and fabrication. This taught me that design isn't just about pursuing theoretical perfection — it's about agile problem-solving within the real constraints of color, material, craft, and manufacturing."
+    },
     "process": [
       {
         "title": {
@@ -195,47 +236,6 @@
         "text": {
           "zh": "完成鋼材、玻璃、混凝土的組裝與發光核心整合，並以表板與實體拍攝呈現最終設計論述。",
           "en": "Assembled the steel, glass, and concrete elements with the integrated light core, and presented the final design through boards and product photography."
-        }
-      }
-    ],
-    "reflection": {
-      "zh": "最大的工藝挑戰在於材料與製程的限制。這次經驗讓我體會到，設計不只是追求理想中的完美，更是在色彩、材質、工藝與製造限制之間，靈活尋求最佳解的過程。",
-      "en": "The biggest challenge lay in the limits of materials and fabrication. This taught me that design isn't just about pursuing theoretical perfection — it's about agile problem-solving within the real constraints of color, material, craft, and manufacturing."
-    },
-    "gallery": [
-      {
-        "src": "portfolio/S__27705355_0.jpg",
-        "caption": {
-          "zh": "成品-1",
-          "en": "Final product-1"
-        }
-      },
-      {
-        "src": "portfolio/S__27705357_0.jpg",
-        "caption": {
-          "zh": "成品-2",
-          "en": "Final product-2"
-        }
-      },
-      {
-        "src": "portfolio/lumina-3d-model.jpg",
-        "caption": {
-          "zh": "3D建模",
-          "en": "3D model"
-        }
-      },
-      {
-        "src": "portfolio/lumina-showcase.jpg",
-        "caption": {
-          "zh": "展示",
-          "en": "Showcase"
-        }
-      },
-      {
-        "src": "portfolio/lumina-board.jpg",
-        "caption": {
-          "zh": "表板",
-          "en": "Presentation Board"
         }
       }
     ]
