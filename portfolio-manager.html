@@ -145,8 +145,9 @@
   <!-- 用 npm run manage 開啟時才出現：可以直接寫回專案檔案 -->
   <div class="local-bar" id="local-bar">
     <div class="lb-text">
-      <strong>本地模式</strong> — 資料直接讀自 <code>public/portfolio/data.json</code>。<br />
-      編輯完按右邊按鈕，就會寫回檔案並把照片存進 <code>public/portfolio/</code>，不用下載也不用搬檔案。
+      <strong>本地模式</strong> — 按「儲存作品」就會自動寫進 <code>public/portfolio/data.json</code>，
+      照片也會直接存到 <code>public/portfolio/</code>。<br />
+      不用下載、不用搬檔案。右邊按鈕是手動再存一次用的。
     </div>
     <button class="btn btn-primary" onclick="saveToSite()" id="save-site-btn">儲存到網站</button>
   </div>
@@ -164,8 +165,8 @@
   <div class="how-to" id="how-to-local" style="display:none;">
     <h3>如何更新網站？（本地模式，只要 2 步）</h3>
     <ol>
-      <li>在這裡新增或編輯作品</li>
-      <li>按上方「<strong>儲存到網站</strong>」，再到終端機輸入 <code>npm run deploy</code></li>
+      <li>在這裡新增或編輯作品，按「<strong>儲存作品</strong>」（會自動寫進專案）</li>
+      <li>到終端機輸入 <code>npm run deploy</code></li>
     </ol>
     <p style="font-size:13px;color:#9b8e7e;margin-top:8px;">
       資料與照片都會自動寫進專案，覆蓋前會備份到 <code>.manage-backups/</code>。
@@ -432,10 +433,18 @@ async function init() {
   renderProcess();
 }
 
+// 本地模式的寫檔排隊，避免連續操作時互相覆蓋
+let savingChain = Promise.resolve();
+
 function persist() {
-  // 本地模式的真正儲存位置是 data.json，不需要也不該寫進瀏覽器
-  if (LOCAL) return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  if (!LOCAL) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    return;
+  }
+  // 本地模式：任何異動都直接寫回專案，存了就是完成，不用再按一次
+  savingChain = savingChain.then(() => pushToServer()).catch(err => {
+    alert('自動儲存失敗：' + err.message);
+  });
 }
 
 // 部署後的網站網址，本機找不到圖片時改從這裡載入預覽
@@ -720,7 +729,7 @@ function editItem(i) {
 function saveItem() {
   const titleZh = document.getElementById('title-zh').value.trim();
   const titleEn = document.getElementById('title-en').value.trim();
-  if (!titleZh && !titleEn) { toast('請輸入標題'); return; }
+  if (!titleZh && !titleEn) { toast('請輸入標題'); return false; }
 
   const coverFile = document.getElementById('cover-file').value.trim();
   const pdfFile = document.getElementById('pdf-file').value.trim();
@@ -765,14 +774,15 @@ function saveItem() {
 
   if (editIndex >= 0) {
     items[editIndex] = item;
-    toast('作品已更新！');
+    toast(LOCAL ? '作品已更新，並寫入網站' : '作品已更新！');
   } else {
     items.push(item);
-    toast('作品已新增！');
+    toast(LOCAL ? '作品已新增，並寫入網站' : '作品已新增！');
   }
   persist();
   renderList();
   switchTab('projects');
+  return true;
 }
 
 function confirmDelete(i) {
@@ -1024,28 +1034,53 @@ function renderCoverPreview(dataUrl) {
 }
 
 // ---- 本地模式：直接寫回專案檔案 ----
+
+/** 先把待上傳的檔案寫進 public/portfolio/，再把資料寫回 data.json */
+async function pushToServer() {
+  for (const [name, data] of pendingFiles) {
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, data: data })
+    });
+    if (!res.ok) throw new Error(name + ' 存檔失敗');
+  }
+  pendingFiles.clear();
+  updateFileButtons();
+
+  const res = await fetch('/api/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ items: items })
+  });
+  const info = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(info.error || '寫入失敗');
+  return info;
+}
+
+/** 表單還開著而且有填東西時，代表有還沒按「儲存作品」的編輯 */
+function hasUnsavedForm() {
+  const panel = document.getElementById('panel-add');
+  if (!panel || !panel.classList.contains('active')) return false;
+  return !!(document.getElementById('title-zh').value.trim()
+    || document.getElementById('title-en').value.trim());
+}
+
 async function saveToSite() {
+  // 拖曳排序、字幕這些都還在表單裡，沒按「儲存作品」就按這顆會被丟掉
+  if (hasUnsavedForm()) {
+    const ok = confirm('表單裡還有編輯中的內容（含照片順序），還沒按「儲存作品」。\n\n要先把它存起來再寫入網站嗎？');
+    if (ok) {
+      if (!saveItem()) return; // 標題沒填之類的，讓使用者先處理
+      return; // saveItem 會經由 persist 自動寫檔，不需要再寫一次
+    }
+  }
+
   const btn = document.getElementById('save-site-btn');
   btn.disabled = true;
   btn.textContent = '儲存中…';
   try {
-    for (const [name, data] of pendingFiles) {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name, data: data })
-      });
-      if (!res.ok) throw new Error(name + ' 存檔失敗');
-    }
-    pendingFiles.clear();
-
-    const res = await fetch('/api/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: items })
-    });
-    const info = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(info.error || '寫入失敗');
+    const info = await pushToServer();
     toast('已寫入 data.json（' + info.count + ' 個作品）');
   } catch (err) {
     alert('儲存失敗：' + err.message);
