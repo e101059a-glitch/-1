@@ -107,7 +107,9 @@ function Portfolio({ lang }) {
 
   useEffect(() => {
     const basePath = import.meta.env.BASE_URL
-    fetch(`${basePath}portfolio/data.json`)
+    // data.json 檔名固定，不像打包後的 JS／CSS 會換檔名，
+    // 不強制重新驗證的話瀏覽器會一直拿舊快取，更新了作品也看不到
+    fetch(`${basePath}portfolio/data.json`, { cache: 'no-cache' })
       .then(r => { if (r.ok) return r.json(); throw new Error() })
       .then(data => { if (data && data.length > 0) setPortfolioItems(data) })
       .catch(() => {})
