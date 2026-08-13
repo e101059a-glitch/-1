@@ -241,18 +241,18 @@
     ]
   },
   {
-    "cover": "portfolio/photo-grinder-board.webp",
+    "cover": "portfolio/mini-vw-bus.webp",
     "title": {
       "zh": "光的習作",
       "en": "Studies in Light"
     },
     "subtitle": {
-      "zh": "攝影課程・棚拍靜物",
-      "en": "Photography Course · Studio Still Life"
+      "zh": "攝影課程・靜物與場景",
+      "en": "Photography Course · Still Life & Scenes"
     },
     "description": {
-      "zh": "攝影課的棚拍練習。從零架設燈光，反覆調整光位與光比，看同一個物件怎麼因為光而改變質感與情緒。\n\n其中最花時間的是金屬。銀壺、搖酒器這類反光材質會把整個棚——包括燈具和自己——都照進去，得靠柔光與遮光一點一點把不該出現的東西擋掉，才留得住乾淨的高光。\n\n學會打光之後，我的作品成品照終於可以自己來。",
-      "en": "Studio exercises from a photography course. Setting up lighting from scratch, adjusting light position and ratio again and again, watching how the same object changes in texture and mood depending on how it's lit.\n\nMetal took the most time. Silver pots and cocktail shakers reflect the entire studio — the lights, and you — so it becomes a slow process of diffusing and flagging until only the clean highlights are left.\n\nLearning to light means I can finally photograph my own work myself."
+      "zh": "攝影課的練習，分成兩種完全不同的題目。\n\n一組是我自己塗裝的微縮模型場景。難處不是打光，而是怎麼讓一個放在桌上的東西看起來像真的存在。把相機降到場景裡小人的視線高度，用淺景深模擬人眼的距離感，畫面就會從「一個模型」變成「一個地方」。\n\n另一組是棚拍靜物。從零架設燈光，反覆調整光位與光比。最花時間的是金屬——銀壺、搖酒器這類反光材質會把整個棚，包括燈具和自己，都照進去，得靠柔光與遮光一點一點把不該出現的東西擋掉，才留得住乾淨的高光。\n\n從自己動手做出來，到把它拍成別人看得懂的樣子——這兩件事其實是同一條線。",
+      "en": "Two very different assignments from a photography course.\n\nOne is a miniature scene I built and painted myself. The difficulty here isn't lighting — it's making something sitting on a table look like a place that exists. Dropping the camera to the eye level of the figures, using shallow depth of field to imitate how distance reads to the human eye, and the frame stops being \"a model\" and becomes \"somewhere\".\n\nThe other is studio still life. Building the lighting from scratch, adjusting position and ratio over and over. Metal took the longest — silver pots and cocktail shakers reflect the entire studio, the lights and you included, so it becomes a slow process of diffusing and flagging until only the clean highlights are left.\n\nMaking the thing, then photographing it so other people understand it — those turn out to be the same line of work."
     },
     "tags": [
       "Canon",
@@ -272,12 +272,12 @@
       },
       {
         "title": {
-          "zh": "構圖與質感",
-          "en": "Composition & Texture"
+          "zh": "場景與視角",
+          "en": "Scene & Viewpoint"
         },
         "text": {
-          "zh": "調整背景、角度與景深，讓材質的細節被看見，同時把畫面裡多餘的東西拿掉。",
-          "en": "Adjusted background, angle, and depth of field so the material reads clearly, while stripping anything unnecessary out of the frame."
+          "zh": "拍微縮模型時把相機降到小人的視線高度，用淺景深製造距離感，讓場景看起來像實際存在的空間。",
+          "en": "For the miniatures, dropped the camera to the eye level of the figures and used shallow depth of field to build a sense of distance, so the set reads as a real space."
         }
       },
       {
@@ -286,16 +286,58 @@
           "en": "Post & Consistency"
         },
         "text": {
-          "zh": "以 Photoshop 統一整組照片的色調與亮度，讓它們看起來像同一組作品而不是零散的單張。",
-          "en": "Unified tone and exposure across the set in Photoshop so the images read as one body of work rather than separate shots."
+          "zh": "以 Photoshop 統一整組照片的色調與亮度，讓兩種題材看起來仍屬於同一組作品。",
+          "en": "Unified tone and exposure in Photoshop so both subjects still read as one body of work."
         }
       }
     ],
     "reflection": {
-      "zh": "最難的不是把東西拍清楚，是決定要讓人先看到哪裡。光可以強調，也可以隱藏，這跟做造型其實是同一件事——都在處理視覺的優先順序。\n\n還在練，離腦中想要的畫面還有一段距離。",
-      "en": "The hard part isn't making things sharp — it's deciding what someone should notice first. Light can emphasise and it can conceal, which turns out to be the same problem as shaping a form: both are about visual priority.\n\nStill practising. There's a gap between what I picture and what I get."
+      "zh": "最難的不是把東西拍清楚，是決定要讓人先看到哪裡。光可以強調，也可以隱藏，這跟做造型其實是同一件事——都在處理視覺的優先順序。\n\n拍自己做的模型時感覺特別明顯：東西是我做的，但拍不好就沒人看得出我在意的地方在哪。\n\n還在練，離腦中想要的畫面還有一段距離。",
+      "en": "The hard part isn't making things sharp — it's deciding what someone should notice first. Light can emphasise and it can conceal, which turns out to be the same problem as shaping a form: both are about visual priority.\n\nPhotographing something I made myself brought that into focus: I built the thing, but if it's badly shot nobody can tell which part I cared about.\n\nStill practising. There's a gap between what I picture and what I get."
     },
     "gallery": [
+      {
+        "src": "portfolio/mini-diorama-full.webp",
+        "caption": {
+          "zh": "場景全貌",
+          "en": "The Whole Scene"
+        }
+      },
+      {
+        "src": "portfolio/mini-vw-bus.webp",
+        "caption": {
+          "zh": "街角一隅",
+          "en": "Street Corner"
+        }
+      },
+      {
+        "src": "portfolio/mini-storefront.webp",
+        "caption": {
+          "zh": "店面立面",
+          "en": "Storefront"
+        }
+      },
+      {
+        "src": "portfolio/mini-street-wide.webp",
+        "caption": {
+          "zh": "街景廣角",
+          "en": "Wide View"
+        }
+      },
+      {
+        "src": "portfolio/mini-eye-level.webp",
+        "caption": {
+          "zh": "視線高度",
+          "en": "At Eye Level"
+        }
+      },
+      {
+        "src": "portfolio/mini-red-car.webp",
+        "caption": {
+          "zh": "停車格",
+          "en": "Parked"
+        }
+      },
       {
         "src": "portfolio/photo-grinder-board.webp",
         "caption": {
