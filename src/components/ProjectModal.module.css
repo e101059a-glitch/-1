@@ -96,6 +96,8 @@
   font-size: 15px;
   color: var(--color-muted);
   line-height: 1.9;
+  /* 保留內文裡的換行，長描述才能分段 */
+  white-space: pre-line;
 }
 
 .sectionTitle {
@@ -177,6 +179,7 @@
   font-style: italic;
   border-left: 2px solid var(--color-divider);
   padding-left: 16px;
+  white-space: pre-line;
 }
 
 .gallerySection {
