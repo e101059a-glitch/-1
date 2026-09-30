@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://e101059a-glitch.github.io/-1/sitemap.xml
