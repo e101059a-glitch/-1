@@ -15,6 +15,10 @@ const charVariant = {
   },
 }
 
+// The real text lives once in a visually hidden span; the animated letters
+// are drawn from data-char by CSS so they are not read as separate words.
+// aria-label on a plain span is ignored by many screen readers, which is why
+// the text is given as content instead.
 function SplitText({ text, className = '' }) {
   const chars = Array.from(text)
 
@@ -25,13 +29,15 @@ function SplitText({ text, className = '' }) {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.5 }}
-      aria-label={text}
     >
+      <span className="sr-only">{text}</span>
       {chars.map((c, i) => (
         <span key={`${c}-${i}`} className={styles.mask} aria-hidden="true">
-          <motion.span className={styles.char} variants={charVariant}>
-            {c === ' ' ? ' ' : c}
-          </motion.span>
+          <motion.span
+            className={styles.char}
+            data-char={c === ' ' ? ' ' : c}
+            variants={charVariant}
+          />
         </span>
       ))}
     </motion.span>
