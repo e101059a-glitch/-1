@@ -53,7 +53,8 @@ function Navbar({ lang, setLang }) {
           type="button"
           className={styles.menuButton}
           onClick={() => setOpen(!open)}
-          aria-label="Menu"
+          aria-label={lang === 'zh' ? '選單' : 'Menu'}
+          aria-expanded={open}
         >
           <span />
           <span />

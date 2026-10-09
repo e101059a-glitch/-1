@@ -140,6 +140,16 @@
   opacity: 0.8;
 }
 
+/* 外框畫在卡片內側，不然會被輪播容器的 overflow 切掉 */
+.projectCard:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: -2px;
+}
+
+.projectCard:focus-visible .imageOverlay {
+  opacity: 1;
+}
+
 .imageWrapper {
   position: relative;
   width: 100%;
@@ -177,7 +187,8 @@
 .viewBtn {
   padding: 10px 24px;
   background: #fff;
-  color: var(--color-text);
+  /* 白底按鈕固定用深色字；--color-text 在手機深色主題下是白色 */
+  color: #1a1a1a;
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.5px;

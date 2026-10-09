@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MotionConfig } from 'framer-motion'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
@@ -15,6 +15,10 @@ import ShaderBackground from './components/ShaderBackground.jsx'
 
 function App() {
   const [lang, setLang] = useState('zh')
+
+  useEffect(() => {
+    document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : 'en'
+  }, [lang])
 
   return (
     <MotionConfig reducedMotion="user">

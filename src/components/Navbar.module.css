@@ -92,7 +92,8 @@
   gap: 5px;
   background: none;
   border: none;
-  padding: 4px;
+  padding: 12px 8px;
+  margin: -8px -4px;
 }
 
 .menuButton span {

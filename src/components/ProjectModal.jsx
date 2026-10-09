@@ -1,12 +1,28 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, FileText, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import styles from './ProjectModal.module.css'
 
+const labels = {
+  zh: { close: '關閉', prev: '上一張', next: '下一張', viewImage: '放大檢視' },
+  en: { close: 'Close', prev: 'Previous image', next: 'Next image', viewImage: 'View larger' },
+}
+
 function ProjectModal({ item, lang, onClose }) {
   const [lightbox, setLightbox] = useState(null)
   const basePath = import.meta.env.BASE_URL
+  const l = labels[lang] || labels.zh
+
+  // 打開時把鍵盤焦點移到關閉鈕，關掉後還給原本點開它的作品卡片。
+  // 兩件事放在同一個 effect：開發模式的 StrictMode 會把 effect 跑兩次，
+  // 分開寫的話 cleanup 會把焦點又搶回卡片上
+  const closeRef = useRef(null)
+  useEffect(() => {
+    const opener = document.activeElement
+    closeRef.current?.focus()
+    return () => opener?.focus?.()
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -32,6 +48,7 @@ function ProjectModal({ item, lang, onClose }) {
   return (
     <AnimatePresence>
       <motion.div
+        key="modal"
         className={styles.overlay}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -45,8 +62,11 @@ function ProjectModal({ item, lang, onClose }) {
           exit={{ opacity: 0, y: 40 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
           onClick={(e) => e.stopPropagation()}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-modal-title"
         >
-          <button type="button" className={styles.closeBtn} onClick={onClose}>
+          <button type="button" className={styles.closeBtn} onClick={onClose} aria-label={l.close} ref={closeRef}>
             <X size={22} strokeWidth={1.5} />
           </button>
 
@@ -63,7 +83,7 @@ function ProjectModal({ item, lang, onClose }) {
 
           <div className={styles.body}>
             {/* Title area */}
-            <h2 className={styles.title}>{t(item.title)}</h2>
+            <h2 id="project-modal-title" className={styles.title}>{t(item.title)}</h2>
             {item.subtitle && (
               <p className={styles.subtitle}>{t(item.subtitle)}</p>
             )}
@@ -131,6 +151,15 @@ function ProjectModal({ item, lang, onClose }) {
                       key={i}
                       className={styles.galleryItem}
                       onClick={() => setLightbox(i)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${t(img.caption) || `${i + 1}`} — ${l.viewImage}`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          setLightbox(i)
+                        }
+                      }}
                     >
                       <div className={styles.galleryImageWrapper}>
                         <img
@@ -173,6 +202,7 @@ function ProjectModal({ item, lang, onClose }) {
       {/* Lightbox */}
       {lightbox !== null && item.gallery && (
         <motion.div
+          key="lightbox"
           className={styles.lightboxOverlay}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -183,6 +213,8 @@ function ProjectModal({ item, lang, onClose }) {
             type="button"
             className={styles.lightboxClose}
             onClick={() => setLightbox(null)}
+            aria-label={l.close}
+            autoFocus
           >
             <X size={24} strokeWidth={1.5} />
           </button>
@@ -192,6 +224,7 @@ function ProjectModal({ item, lang, onClose }) {
               type="button"
               className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
               onClick={(e) => { e.stopPropagation(); setLightbox(lightbox - 1) }}
+              aria-label={l.prev}
             >
               <ChevronLeft size={32} strokeWidth={1.5} />
             </button>
@@ -218,6 +251,7 @@ function ProjectModal({ item, lang, onClose }) {
               type="button"
               className={`${styles.lightboxNav} ${styles.lightboxNext}`}
               onClick={(e) => { e.stopPropagation(); setLightbox(lightbox + 1) }}
+              aria-label={l.next}
             >
               <ChevronRight size={32} strokeWidth={1.5} />
             </button>
