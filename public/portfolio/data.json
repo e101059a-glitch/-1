@@ -10,8 +10,8 @@
       "en": "Home Product Design"
     },
     "description": {
-      "zh": "將人體工學融入最日常的備料動作，以拇指、食指、中指的自然夾持姿勢為核心，讓施力方向與手部肌肉走向一致。底部快拆式刀盤可自由切換削皮刀片或磨板，一個握把應對多種廚房需求。",
-      "en": "Seamlessly blending ergonomics into daily meal prep, ERGO PEEL centers on the natural pinch grip of the thumb, index, and middle fingers, aligning applying force with hand anatomy. Featuring a quick-release base, it easily switches between a peeler and a grater—handling diverse kitchen tasks with just one handle."
+      "zh": "傳統削皮刀迫使手腕長時間扭轉，備料一久就痠。ERGO PEEL 從手部結構出發：拇指抵住側面，食指與中指夾持握把，讓施力方向與肌肉走向一致，而不是跟它對抗。\n\n握把上的每個曲面都對應一根手指的自然姿勢——頂部護手拱、側邊拇指靠面、正面四個橢圓指槽。設計的核心是底部的快拆刀盤：同一支握把可以換上削皮刀片或磨板，一件工具應付多種備料；刀盤與握把完全分離，各自清洗，食材殘渣不會卡在縫隙裡。\n\n設計對象是需要長時間備料的家庭廚師、關節敏感或容易疲勞的人，以及想讓廚具精簡又多用途的使用者。",
+      "en": "Conventional peelers force the wrist to twist, and long prep sessions turn into fatigue. ERGO PEEL starts from the structure of the hand: the thumb braces against the side while the index and middle fingers pinch the handle, so force follows the direction of the muscles instead of working against them.\n\nEvery surface maps to a finger — a guard arch on top, a thumb rest on the side, four oval finger grooves on the front. The core of the design is a quick-release blade plate underneath: one shared handle takes either a peeling blade or a grater, so a single tool covers several prep tasks. The plate separates completely from the handle, so each part is washed on its own and there are no gaps for food to collect in.\n\nDesigned for home cooks who prep for long stretches, people with sensitive or easily tired joints, and anyone who wants fewer, more versatile kitchen tools."
     },
     "tags": [
       "Solidworks",
@@ -26,7 +26,7 @@
         },
         "text": {
           "zh": "從日常備料的施力痛點出發，分析拇指、食指、中指的自然夾持姿勢，鎖定削皮動作的人體工學問題。",
-          "en": "Started from the strain of daily meal prep — analyzing the natural pinch grip to pinpoint the ergonomic problem in peeling."
+          "en": "Started from the strain of daily meal prep — analyzing the natural pinch grip to pinpoint the ergonomic problem with conventional peelers."
         }
       },
       {
@@ -36,7 +36,7 @@
         },
         "text": {
           "zh": "以多輪草模快速測試夾持姿勢與施力角度，反覆修正握把型態，讓施力方向與手部肌肉走向一致。",
-          "en": "Rapid mockups tested grip posture and force angles, iterating the handle form until force aligned with hand anatomy."
+          "en": "Ran rounds of quick mockups to test grip posture and force angles, refining the handle until the direction of force matched the hand’s anatomy."
         }
       },
       {
@@ -46,13 +46,13 @@
         },
         "text": {
           "zh": "以 SolidWorks 完成 3D 建模與快拆刀盤機構，產出實體成品，並以簡報表板完整呈現設計論述。",
-          "en": "Modeled in SolidWorks with a quick-release blade mechanism, delivered the physical product and presentation boards."
+          "en": "Modeled the form and the quick-release blade mechanism in SolidWorks, then delivered the physical product and a set of presentation boards."
         }
       }
     ],
     "reflection": {
-      "zh": "人體工學的部分研究還不夠深入，產品表達也不夠清楚——造型應該要讓人看一眼就懂、就會用。",
-      "en": "The ergonomic research needs more depth, and the product isn't communicating itself clearly enough. The form should be intuitive — understandable and usable at first glance."
+      "zh": "人體工學的部分研究還不夠深入。握把曲面主要靠多輪草模試握來修正，下一步應該找不同手型、不同年齡的使用者實測，讓指槽尺寸有數據支撐，而不只是憑手感。\n\n產品表達也不夠清楚——第一次拿到的人，不一定知道手指該放在哪裡。夾持握法本來就和一般削皮刀不同，更需要靠造型本身去引導：好的造型應該讓人看一眼就懂、拿起來就會用，而不是靠說明。",
+      "en": "The ergonomic research didn't go deep enough. The handle surfaces were refined mostly by trying rounds of mockups in the hand; the next step would be testing with users of different hand sizes and ages, so the groove dimensions are backed by data rather than feel.\n\nThe product also doesn't explain itself clearly — someone picking it up for the first time won't necessarily know where their fingers go. Because the pinch grip is unlike a regular peeler, the form itself has to do the guiding. Good form should be understood at a glance and usable the moment you pick it up, without instructions."
     },
     "gallery": [
       {
@@ -101,35 +101,35 @@
         "src": "portfolio/S__27705368_0.jpg",
         "caption": {
           "zh": "3D模型",
-          "en": "3D model"
+          "en": "3D Model"
         }
       },
       {
         "src": "portfolio/S__27705371_0.jpg",
         "caption": {
           "zh": "3D模型",
-          "en": "3D model"
+          "en": "3D Model"
         }
       },
       {
         "src": "portfolio/S__27705369_0.jpg",
         "caption": {
           "zh": "3D模型",
-          "en": "3D model"
+          "en": "3D Model"
         }
       },
       {
         "src": "portfolio/S__27705366_0.jpg",
         "caption": {
           "zh": "成品-1",
-          "en": "Final product-1"
+          "en": "Final Product-1"
         }
       },
       {
         "src": "portfolio/S__27705367_0.jpg",
         "caption": {
           "zh": "成品-2",
-          "en": "Final product-2"
+          "en": "Final Product-2"
         }
       },
       {
@@ -152,7 +152,7 @@
     "cover": "portfolio/lumina-cover.webp",
     "title": {
       "zh": "Lumina 發光邊桌設計",
-      "en": "Lumina Illuminated Side Table Design"
+      "en": "Lumina Illuminated Side Table"
     },
     "subtitle": {
       "zh": "家具設計",
@@ -178,21 +178,21 @@
         "src": "portfolio/lumina-3d-model.jpg",
         "caption": {
           "zh": "3D建模",
-          "en": "3D model"
+          "en": "3D Model"
         }
       },
       {
         "src": "portfolio/S__27705355_0.jpg",
         "caption": {
           "zh": "成品-1",
-          "en": "Final product-1"
+          "en": "Final Product-1"
         }
       },
       {
         "src": "portfolio/S__27705357_0.jpg",
         "caption": {
           "zh": "成品-2",
-          "en": "Final product-2"
+          "en": "Final Product-2"
         }
       },
       {

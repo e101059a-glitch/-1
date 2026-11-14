@@ -15,11 +15,11 @@ const content = {
   },
   en: {
     heading: 'About',
-    body: "3rd-year Industrial Design student at National Kaohsiung Normal University, minoring in Business Administration. Passionate about the full product design process — from brainstorming to physical execution — with hands-on experience in 3D modeling using SolidWorks and Rhino. I believe great design must also stand up to business validation. Currently building hands-on experience with the long-term goal of pursuing a graduate degree abroad, deepening my focus at the intersection of design and business.",
+    body: "3rd-year Industrial Design student at National Kaohsiung Normal University, minoring in Business Administration. Passionate about the full product design process — from brainstorming to a physical result — and experienced in 3D modeling with SolidWorks and Rhino. I believe good design is more than form: it also has to hold up commercially. I'm building practical experience now, with the goal of pursuing a graduate degree abroad at the intersection of design and business.",
     bullets: [
       'Photography course with hands-on studio setup experience',
-      'Actively use Midjourney, Claude, and Gemini in creative workflow',
-      'Varsity badminton team member, competed in National Collegiate Athletic Games',
+      'Actively use Midjourney, Claude and Gemini in my creative workflow',
+      'Varsity badminton team member; competed for the university at the National Intercollegiate Athletic Games',
       'Passionate about miniature painting, enjoying the process of fine-tuning details until everything feels balanced',
     ],
   },

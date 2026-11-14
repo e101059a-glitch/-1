@@ -17,7 +17,7 @@ const content = {
     title: 'Travis',
     subtitle: 'Industrial Design × Business',
     description:
-      "3rd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with business strategy, seeking summer internship opportunities.",
+      "3rd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with a business perspective; currently seeking internships in design or business.",
     primary: 'View Portfolio',
     secondary: 'Get in Touch',
     scrollHint: 'Scroll',

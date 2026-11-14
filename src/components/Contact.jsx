@@ -30,7 +30,7 @@ const content = {
   },
   en: {
     heading: 'Contact',
-    intro: "Let's connect and explore opportunities together!",
+    intro: "I'm looking for internships in design or business — feel free to get in touch and talk about where the two meet.",
   },
 }
 
