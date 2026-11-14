@@ -36,9 +36,9 @@ const portfolioItems = [
       en: "The ergonomic research needs more depth, and the product isn't communicating itself clearly enough. The form should be intuitive — understandable and usable at first glance."
     },
     gallery: [
-      { src: 'portfolio/IMG_6015.png', caption: { zh: '主題表板', en: 'Display Board' } },
-      { src: 'portfolio/1.png', caption: { zh: '產品表板-1', en: 'Presentation Board-1' } },
-      { src: 'portfolio/2.png', caption: { zh: '產品表板-2', en: 'Presentation Board-2' } },
+      { src: 'portfolio/ergo-board-theme.webp', caption: { zh: '主題表板', en: 'Display Board' } },
+      { src: 'portfolio/ergo-board-1.webp', caption: { zh: '產品表板-1', en: 'Presentation Board-1' } },
+      { src: 'portfolio/ergo-board-2.webp', caption: { zh: '產品表板-2', en: 'Presentation Board-2' } },
       { src: 'portfolio/S__27705349_0.jpg', caption: { zh: '草模-1', en: 'Mockup-1' } },
       { src: 'portfolio/S__27705350_0.jpg', caption: { zh: '草模-2', en: 'Mockup-2' } },
       { src: 'portfolio/S__27705351_0.jpg', caption: { zh: '草模-3', en: 'Mockup-3' } },
@@ -50,7 +50,7 @@ const portfolioItems = [
       { src: 'portfolio/S__27729924_0.jpg', caption: { zh: '展示', en: 'Showcase' } }
     ],
     pdf: {
-      src: 'portfolio/ERGO PEEL 簡報.pdf.pdf',
+      src: 'portfolio/ergo-peel.pdf',
       label: { zh: 'ERGO PEEL', en: 'ERGO PEEL' }
     }
   },
