@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { Mail } from 'lucide-react'
+import { Mail, Download } from 'lucide-react'
+import { useResumeAvailable, RESUME_URL, RESUME_FILENAME } from '../useResume.js'
 import SplitText from './SplitText.jsx'
 import styles from './Contact.module.css'
 
@@ -42,6 +43,16 @@ const contacts = [
 
 function Contact({ lang }) {
   const t = content[lang]
+  const hasResume = useResumeAvailable()
+  const items = hasResume
+    ? [...contacts, {
+        icon: Download,
+        label: lang === 'zh' ? '履歷' : 'Résumé',
+        value: lang === 'zh' ? '下載 PDF（中英）' : 'Download PDF (Chinese / English)',
+        href: RESUME_URL,
+        download: RESUME_FILENAME,
+      }]
+    : contacts
 
   return (
     <section id="contact" className={styles.contact}>
@@ -69,11 +80,12 @@ function Contact({ lang }) {
         </motion.p>
 
         <div className={styles.list}>
-          {contacts.map((c, i) => (
+          {items.map((c, i) => (
             <motion.a
               key={c.label}
               href={c.href}
-              target="_blank"
+              download={c.download}
+              target={c.download ? undefined : '_blank'}
               rel="noreferrer"
               className={styles.item}
               initial={{ opacity: 0, y: 20 }}

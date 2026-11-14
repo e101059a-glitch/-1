@@ -51,6 +51,7 @@
   gap: 16px;
   margin-top: 48px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .primaryButton,
@@ -121,4 +122,21 @@
     left: 50%;
     transform: translateX(-50%);
   }
+}
+
+.resumeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 4px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: var(--color-muted);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.resumeLink:hover {
+  color: var(--color-text);
+  border-bottom-color: var(--color-text);
 }
