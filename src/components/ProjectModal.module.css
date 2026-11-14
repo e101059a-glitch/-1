@@ -42,6 +42,7 @@
 }
 
 .coverWrapper {
+  position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
@@ -202,6 +203,7 @@
 }
 
 .galleryImageWrapper {
+  position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
@@ -212,7 +214,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s ease;
 }
 
 .galleryItem:hover .galleryImage {

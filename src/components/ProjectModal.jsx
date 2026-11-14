@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, FileText, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import styles from './ProjectModal.module.css'
+import FadeImage from './FadeImage.jsx'
 
 const labels = {
   zh: { close: '關閉', prev: '上一張', next: '下一張', viewImage: '放大檢視' },
@@ -73,7 +74,7 @@ function ProjectModal({ item, lang, onClose }) {
           {/* Hero cover */}
           {item.cover && (
             <div className={styles.coverWrapper}>
-              <img
+              <FadeImage
                 src={`${basePath}${item.cover}`}
                 alt={t(item.title)}
                 className={styles.coverImage}
@@ -162,10 +163,11 @@ function ProjectModal({ item, lang, onClose }) {
                       }}
                     >
                       <div className={styles.galleryImageWrapper}>
-                        <img
+                        <FadeImage
                           src={`${basePath}${img.src}`}
                           alt={t(img.caption)}
                           className={styles.galleryImage}
+                          loading="lazy"
                         />
                       </div>
                       {img.caption && t(img.caption) && (
