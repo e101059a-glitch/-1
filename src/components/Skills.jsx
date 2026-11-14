@@ -16,7 +16,7 @@ const categories = [
   {
     zh: '攝影',
     en: 'Photography',
-    items: [{ zh: '攝影棚架設', en: 'Studio Setup' }, { zh: '室內攝影', en: 'Interior Photography' }],
+    items: [{ zh: '攝影棚架設', en: 'Studio Setup' }, { zh: '產品攝影', en: 'Product Photography' }],
   },
   {
     zh: 'AI 工具',

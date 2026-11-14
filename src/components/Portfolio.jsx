@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import staticItems from '../portfolioData.js'
 import ProjectModal from './ProjectModal.jsx'
 import SplitText from './SplitText.jsx'
+import FadeImage from './FadeImage.jsx'
 import styles from './Portfolio.module.css'
 
 const heading = { zh: '作品集', en: 'Portfolio' }
@@ -72,10 +73,11 @@ function ProjectCard({ item, lang, index, onClick }) {
     >
       <div className={styles.imageWrapper}>
         {hasCover ? (
-          <img
+          <FadeImage
             src={`${basePath}${item.cover}`}
             alt={item.title[lang]}
             className={styles.image}
+            loading="lazy"
           />
         ) : (
           <div className={styles.imagePlaceholder}>
