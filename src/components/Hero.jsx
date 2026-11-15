@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion'
 import MagneticButton from './MagneticButton.jsx'
 import FlipText from './FlipText.jsx'
-import { Download } from 'lucide-react'
-import { useResumeAvailable, RESUME_URL, RESUME_FILENAME } from '../useResume.js'
+import ResumeMenu from './ResumeMenu.jsx'
 import styles from './Hero.module.css'
 
 const content = {
@@ -13,7 +12,6 @@ const content = {
       '國立高雄師範大學工業設計系三年級，輔修事業經營學系。以設計思維結合商業視角，正尋找設計或商業實習機會。',
     primary: '查看作品集',
     secondary: '聯絡我',
-    resume: '下載履歷',
     scrollHint: 'Scroll',
   },
   en: {
@@ -23,14 +21,12 @@ const content = {
       "3rd-year Industrial Design student at NKNU, minoring in Business Administration. Combining design thinking with a business perspective; currently seeking internships in design or business.",
     primary: 'View Portfolio',
     secondary: 'Get in Touch',
-    resume: 'Download Résumé',
     scrollHint: 'Scroll',
   },
 }
 
 function Hero({ lang }) {
   const t = content[lang]
-  const hasResume = useResumeAvailable()
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -94,12 +90,7 @@ function Hero({ lang }) {
           >
             <FlipText text={t.secondary} />
           </MagneticButton>
-          {hasResume && (
-            <a className={styles.resumeLink} href={RESUME_URL} download={RESUME_FILENAME}>
-              <Download size={15} strokeWidth={1.75} aria-hidden="true" />
-              {t.resume}
-            </a>
-          )}
+          <ResumeMenu lang={lang} />
         </motion.div>
       </div>
 
