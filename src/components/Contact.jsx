@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Mail, Download } from 'lucide-react'
-import { useResumeAvailable, RESUME_URL, RESUME_FILENAME } from '../useResume.js'
+import { resumeVersions, resumeLink } from '../resume.js'
 import SplitText from './SplitText.jsx'
 import styles from './Contact.module.css'
 
@@ -43,16 +43,6 @@ const contacts = [
 
 function Contact({ lang }) {
   const t = content[lang]
-  const hasResume = useResumeAvailable()
-  const items = hasResume
-    ? [...contacts, {
-        icon: Download,
-        label: lang === 'zh' ? '履歷' : 'Résumé',
-        value: lang === 'zh' ? '下載 PDF（中英）' : 'Download PDF (Chinese / English)',
-        href: RESUME_URL,
-        download: RESUME_FILENAME,
-      }]
-    : contacts
 
   return (
     <section id="contact" className={styles.contact}>
@@ -80,12 +70,11 @@ function Contact({ lang }) {
         </motion.p>
 
         <div className={styles.list}>
-          {items.map((c, i) => (
+          {contacts.map((c, i) => (
             <motion.a
               key={c.label}
               href={c.href}
-              download={c.download}
-              target={c.download ? undefined : '_blank'}
+              target="_blank"
               rel="noreferrer"
               className={styles.item}
               initial={{ opacity: 0, y: 20 }}
@@ -100,6 +89,25 @@ function Contact({ lang }) {
               </div>
             </motion.a>
           ))}
+          <motion.div
+            className={`${styles.item} ${styles.resumeItem}`}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, delay: contacts.length * 0.08, ease: 'easeOut' }}
+          >
+            <Download className={styles.icon} width={20} height={20} strokeWidth={1.5} />
+            <div className={styles.textGroup}>
+              <span className={styles.label}>{lang === 'zh' ? '履歷下載' : 'Résumé'}</span>
+              <span className={styles.resumeLinks}>
+                {resumeVersions.map((v) => (
+                  <a key={v.id} className={styles.resumeLink} {...resumeLink(v.id, lang)}>
+                    {v[lang]}
+                  </a>
+                ))}
+              </span>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
